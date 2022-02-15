@@ -5,13 +5,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import com.jogamp.opengl.GLException;
-
-import kendzi.kendzi3d.resource.inter.ResourceService;
-
-import org.apache.log4j.Logger;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
+import kendzi.kendzi3d.resource.inter.ResourceService;
+import org.apache.log4j.Logger;
 
 public class FileTextureBuilder implements TextureBuilder {
     /** Log. */

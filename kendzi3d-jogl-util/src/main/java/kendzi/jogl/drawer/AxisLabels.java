@@ -13,10 +13,8 @@ import java.util.List;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
-
-import kendzi.jogl.Gl2Draw;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
+import kendzi.jogl.Gl2Draw;
 
 /**
  * Draws axis labels.
@@ -144,8 +142,8 @@ public class AxisLabels implements Gl2Draw {
     }
 
     /**
-     * Draw text at (x,y,z), with the text centered in the x-direction, facing
-     * along the +z axis.
+     * Draw text at (x,y,z), with the text centered in the x-direction, facing along
+     * the +z axis.
      *
      * @param gl
      *            gl2
@@ -169,8 +167,8 @@ public class AxisLabels implements Gl2Draw {
     }
 
     /**
-     * Draw list of texts described by pText. Each text have (x,y,z), with the
-     * text centered in the x-direction, facing along the +z axis.
+     * Draw list of texts described by pText. Each text have (x,y,z), with the text
+     * centered in the x-direction, facing along the +z axis.
      *
      * @param gl
      *            gl2

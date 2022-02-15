@@ -12,7 +12,6 @@ import javax.swing.WindowConstants;
 
 import kendzi.kendzi3d.models.library.ui.LocalModelsDict;
 import kendzi.kendzi3d.resource.inter.ResourceService;
-
 import org.apache.log4j.Logger;
 
 public class LocalModelsDictAction extends LocalModelsDict {
@@ -165,7 +164,6 @@ public class LocalModelsDictAction extends LocalModelsDict {
 
     /*
      * (non-Javadoc)
-     *
      * @see kendzi.josm.kendzi3d.ui.pointModel.LocalModelsDict#getListModel()
      */
     @Override
@@ -173,17 +171,15 @@ public class LocalModelsDictAction extends LocalModelsDict {
         return new FileListModel();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see kendzi.josm.kendzi3d.ui.pointModel.LocalModelsDict#selectValue()
      */
     @Override
     protected boolean selectValueAndClose() {
         String val = (String) this.listModels.getSelectedValue();
         if (val == null) {
-            JOptionPane.showMessageDialog(null,
-                    "Error row is not selected!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error row is not selected!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -197,6 +193,5 @@ public class LocalModelsDictAction extends LocalModelsDict {
     public String getModel() {
         return this.model;
     }
-
 
 }

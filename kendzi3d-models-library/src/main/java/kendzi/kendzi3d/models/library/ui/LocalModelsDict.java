@@ -25,10 +25,8 @@ public class LocalModelsDict extends JDialog {
 
     protected JList listModels;
 
-//    private DefaultListModel listModel;
+    // private DefaultListModel listModel;
     protected AbstractListModel listModel;
-
-
 
     /**
      * Launch the application.
@@ -56,7 +54,6 @@ public class LocalModelsDict extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new BorderLayout(0, 0));
 
-
         JPanel panel = new JPanel();
         contentPanel.add(panel, BorderLayout.NORTH);
         {
@@ -65,19 +62,16 @@ public class LocalModelsDict extends JDialog {
             panel.add(rdbtnPluginDir);
         }
 
-
         listModel = getListModel();
 
         listModels = new JList();
         listModels.setModel(listModel);
 
-
         JScrollPane scrollPane = new JScrollPane();
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         scrollPane.setViewportView(listModels);
-//            scrollPane.setRowHeaderView(listModels);
-
+        // scrollPane.setRowHeaderView(listModels);
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -106,7 +100,6 @@ public class LocalModelsDict extends JDialog {
         });
         cancelButton.setActionCommand("Cancel");
         buttonPane.add(cancelButton);
-
 
     }
 

@@ -83,5 +83,4 @@ public class ValidateUtil {
         return parseInteger(pStr) != null;
     }
 
-
 }

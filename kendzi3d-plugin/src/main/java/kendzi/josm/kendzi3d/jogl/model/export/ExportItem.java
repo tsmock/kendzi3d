@@ -10,7 +10,6 @@ public class ExportItem {
     private Point3d point;
     private Vector3d scale;
 
-
     public ExportItem(Model model, Point3d point, Vector3d scale) {
         super();
         this.model = model;
@@ -26,7 +25,8 @@ public class ExportItem {
     }
 
     /**
-     * @param model the model to set
+     * @param model
+     *            the model to set
      */
     public void setModel(Model model) {
         this.model = model;
@@ -40,7 +40,8 @@ public class ExportItem {
     }
 
     /**
-     * @param point the point to set
+     * @param point
+     *            the point to set
      */
     public void setPoint(Point3d point) {
         this.point = point;
@@ -54,11 +55,11 @@ public class ExportItem {
     }
 
     /**
-     * @param scale the scale to set
+     * @param scale
+     *            the scale to set
      */
     public void setScale(Vector3d scale) {
         this.scale = scale;
     }
-
 
 }

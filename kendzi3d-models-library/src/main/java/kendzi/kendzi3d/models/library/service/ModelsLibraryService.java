@@ -1,9 +1,5 @@
 package kendzi.kendzi3d.models.library.service;
 
-import generated.ModelsLibrary;
-import generated.NodeModel;
-import generated.WayNodeModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +7,13 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import generated.ModelsLibrary;
+import generated.NodeModel;
+import generated.WayNodeModel;
 import kendzi.kendzi3d.models.library.dao.LibraryResourcesDao;
 import kendzi.kendzi3d.models.library.dao.ModelLibraryXmlDao;
 import kendzi.kendzi3d.models.library.exception.ModelLibraryLoadException;
 import kendzi.kendzi3d.resource.inter.ResourceService;
-
 import org.apache.log4j.Logger;
 
 public class ModelsLibraryService {
@@ -33,7 +31,6 @@ public class ModelsLibraryService {
 
     private List<ModelsLibraryDataChangeEvent> pointModelDataChange = new ArrayList<ModelsLibraryDataChangeEvent>();
 
-
     public void addPointModelDataChangeListener(ModelsLibraryDataChangeEvent pointModelDataChange) {
         this.pointModelDataChange.add(pointModelDataChange);
     }
@@ -50,8 +47,11 @@ public class ModelsLibraryService {
         }
     }
 
-    /** Constructor.
-     * @param urlReciverService url reciver service
+    /**
+     * Constructor.
+     * 
+     * @param urlReciverService
+     *            url reciver service
      */
     @Inject
     public ModelsLibraryService(ResourceService urlReciverService, LibraryResourcesDao libraryResourcesMemoryDao) {
@@ -64,7 +64,7 @@ public class ModelsLibraryService {
         init();
     }
 
-    private Map<String,ModelsLibrary> modelLibrary = new HashMap<String, ModelsLibrary>();
+    private Map<String, ModelsLibrary> modelLibrary = new HashMap<String, ModelsLibrary>();
 
     public List<NodeModel> findAllNodeModels() {
 
@@ -174,7 +174,6 @@ public class ModelsLibraryService {
         }
         return modelLibrary.get(fileKey).getNodeModel();
     }
-
 
     public void setDefaultResourcesPaths() {
         libraryResourcesDao.setDefaultResourcesPaths();

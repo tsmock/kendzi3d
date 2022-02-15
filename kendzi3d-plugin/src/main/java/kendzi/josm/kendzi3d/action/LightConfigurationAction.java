@@ -10,12 +10,10 @@ import static org.openstreetmap.josm.tools.I18n.*;
 
 import java.awt.event.ActionEvent;
 
+import com.google.inject.Inject;
 import kendzi3d.light.service.impl.LightService;
 import kendzi3d.light.ui.action.LightFrameAction;
-
 import org.openstreetmap.josm.actions.JosmAction;
-
-import com.google.inject.Inject;
 
 /**
  * Light configuration action.

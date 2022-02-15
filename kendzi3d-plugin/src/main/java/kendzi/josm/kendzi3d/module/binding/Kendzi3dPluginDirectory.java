@@ -11,6 +11,7 @@ import com.google.inject.BindingAnnotation;
  * Annotates the URL of the foo server.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 @BindingAnnotation
-public @interface Kendzi3dPluginDirectory {}
+public @interface Kendzi3dPluginDirectory {
+}

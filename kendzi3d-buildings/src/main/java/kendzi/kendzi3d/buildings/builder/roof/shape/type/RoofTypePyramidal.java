@@ -15,7 +15,6 @@ import javax.vecmath.Vector3d;
 
 import com.dreizak.miniball.highdim.Miniball;
 import com.dreizak.miniball.model.ArrayPointSet;
-
 import kendzi.jogl.model.factory.MeshFactory;
 import kendzi.jogl.model.factory.MeshFactoryUtil;
 import kendzi.jogl.texture.dto.TextureData;
@@ -94,8 +93,7 @@ public class RoofTypePyramidal extends RectangleRoofTypeBuilder {
 
         for (int i = 0; i < mp.length; i++) {
 
-            MeshFactoryUtil.addPolygonToRoofMesh(meshRoof, mp[i], planes[i], roofLine[i], roofTexture, textureOffset[i],
-                    0);
+            MeshFactoryUtil.addPolygonToRoofMesh(meshRoof, mp[i], planes[i], roofLine[i], roofTexture, textureOffset[i], 0);
         }
 
         HeightCalculator hc = new BetweenLinesHeightCalculator(lines, planes);
@@ -238,8 +236,7 @@ public class RoofTypePyramidal extends RectangleRoofTypeBuilder {
      * @param middlePoint
      * @return
      */
-    private MultiPolygonList2d[] createMP(List<Point2d> outlineConvexHull, List<Point2d> outlineList,
-            Point2d middlePoint) {
+    private MultiPolygonList2d[] createMP(List<Point2d> outlineConvexHull, List<Point2d> outlineList, Point2d middlePoint) {
 
         MultiPolygonList2d outlineMultiPolygon = new MultiPolygonList2d(new PolygonList2d(outlineList));
 
@@ -256,8 +253,7 @@ public class RoofTypePyramidal extends RectangleRoofTypeBuilder {
         return ret;
     }
 
-    private static MultiPolygonList2d intersectionOfLeftSideOfMultipleCuts(MultiPolygonList2d polygons,
-            Point2d... lines) {
+    private static MultiPolygonList2d intersectionOfLeftSideOfMultipleCuts(MultiPolygonList2d polygons, Point2d... lines) {
         return PolygonSplitHelper.intersectionOfLeftSideOfMultipleCuts(polygons,
                 PolygonSplitHelper.polygonalChaniToLineArray(lines));
     }

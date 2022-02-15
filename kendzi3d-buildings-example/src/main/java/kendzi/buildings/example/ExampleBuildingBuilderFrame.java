@@ -9,7 +9,6 @@ import javax.vecmath.Point2d;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
-
 import kendzi.jogl.model.geometry.Model;
 import kendzi.jogl.model.render.ModelRender;
 import kendzi.jogl.texture.TextureCacheServiceImpl;
@@ -62,9 +61,9 @@ public class ExampleBuildingBuilderFrame extends BaseJoglFrame {
         super.init(drawable);
 
         /*
-         * This is required only for textures file finding. Renderer use it to
-         * load files with textures. If textures are not used but only colored
-         * materials it is not required.
+         * This is required only for textures file finding. Renderer use it to load
+         * files with textures. If textures are not used but only colored materials it
+         * is not required.
          */
         ResourceService resourceService = new LocalResourceReciver();
 

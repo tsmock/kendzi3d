@@ -6,7 +6,6 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUquadric;
-
 import kendzi.jogl.util.ColorUtil;
 import kendzi.jogl.util.DrawUtil;
 import kendzi.kendzi3d.editor.selection.editor.EditorType;

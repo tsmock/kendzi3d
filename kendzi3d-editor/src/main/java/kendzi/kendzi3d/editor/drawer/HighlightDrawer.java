@@ -5,7 +5,6 @@ import java.awt.Color;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2GL3;
-
 import kendzi.jogl.Gl2Draw;
 import kendzi.jogl.util.ColorUtil;
 

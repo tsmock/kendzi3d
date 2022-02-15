@@ -1,8 +1,8 @@
 package kendzi.kendzi3d.editor.example.objects.render;
 
-import com.jogamp.opengl.GL2;
 import javax.vecmath.Point3d;
 
+import com.jogamp.opengl.GL2;
 import kendzi.jogl.util.DrawUtil;
 import kendzi.kendzi3d.editor.example.objects.Roof;
 

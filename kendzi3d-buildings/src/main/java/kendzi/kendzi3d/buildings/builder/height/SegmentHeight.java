@@ -15,14 +15,17 @@ public class SegmentHeight extends LineSegment2d {
         this.beginHeight = beginHeight;
         this.endHeight = endHeight;
     }
+
     /**
      * @return the beginHeight
      */
     public double getBeginHeight() {
         return beginHeight;
     }
+
     /**
-     * @param beginHeight the beginHeight to set
+     * @param beginHeight
+     *            the beginHeight to set
      */
     public void setBeginHeight(double beginHeight) {
         this.beginHeight = beginHeight;
@@ -34,14 +37,13 @@ public class SegmentHeight extends LineSegment2d {
     public double getEndHeight() {
         return endHeight;
     }
+
     /**
-     * @param endHeight the endHeight to set
+     * @param endHeight
+     *            the endHeight to set
      */
     public void setEndHeight(double endHeight) {
         this.endHeight = endHeight;
     }
 
-
-
 }
-

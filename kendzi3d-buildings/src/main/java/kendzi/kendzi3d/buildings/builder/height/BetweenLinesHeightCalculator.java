@@ -14,7 +14,8 @@ import javax.vecmath.Point2d;
 import kendzi.math.geometry.Plane3d;
 import kendzi.math.geometry.line.LinePoints2d;
 import kendzi.math.geometry.polygon.split.EnrichPolygonalChainUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Calculate heights on line segments. Height is stored in planes. Planes are
@@ -25,7 +26,7 @@ import org.apache.log4j.Logger;
 public class BetweenLinesHeightCalculator implements HeightCalculator {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(BetweenLinesHeightCalculator.class);
+    private static final Logger log = LogManager.getLogger(BetweenLinesHeightCalculator.class);
 
     /**
      * Lines splitting 2d surface on smaller parts.

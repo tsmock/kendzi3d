@@ -12,14 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import com.google.inject.Inject;
 import kendzi.josm.kendzi3d.metadata.ModelMetadata;
 import kendzi.josm.kendzi3d.metadata.TextureMetadata;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import kendzi.util.UrlUtil;
-
-import org.apache.log4j.Logger;
-
-import com.google.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Store metadata for 3d object like default height, textures. Metadata are
@@ -31,7 +30,7 @@ import com.google.inject.Inject;
 public class MetadataCacheService {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(MetadataCacheService.class);
+    private static final Logger log = LogManager.getLogger(MetadataCacheService.class);
 
     /**
      * File url reciver service.
@@ -124,9 +123,8 @@ public class MetadataCacheService {
     }
 
     /**
-     * Gets metadata for model from cache or load it from properties file.
-     * Location of properties file is
-     * {PLUGIN_DIR_NAME}/resources/metadata.properties
+     * Gets metadata for model from cache or load it from properties file. Location
+     * of properties file is {PLUGIN_DIR_NAME}/resources/metadata.properties
      * 
      * @param pId
      *            of model

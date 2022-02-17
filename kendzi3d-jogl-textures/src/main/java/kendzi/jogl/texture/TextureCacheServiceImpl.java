@@ -15,24 +15,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.glu.GLU;
-
-import kendzi.jogl.texture.builder.TextureBuilder;
-import kendzi.kendzi3d.resource.inter.ResourceService;
-
-import org.apache.log4j.Logger;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+import kendzi.jogl.texture.builder.TextureBuilder;
+import kendzi.kendzi3d.resource.inter.ResourceService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TextureCacheServiceImpl implements kendzi.jogl.texture.TextureCacheService {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(TextureCacheServiceImpl.class);
+    private static final Logger log = LogManager.getLogger(TextureCacheServiceImpl.class);
 
     /**
      * File url reciver service.

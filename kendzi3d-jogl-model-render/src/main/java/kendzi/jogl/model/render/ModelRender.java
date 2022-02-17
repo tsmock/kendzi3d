@@ -8,15 +8,12 @@ package kendzi.jogl.model.render;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES1;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.util.texture.Texture;
-
 import kendzi.jogl.model.geometry.Face;
 import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
@@ -24,6 +21,8 @@ import kendzi.jogl.model.geometry.material.AmbientDiffuseComponent;
 import kendzi.jogl.model.geometry.material.Material;
 import kendzi.jogl.model.geometry.material.OtherComponent;
 import kendzi.jogl.texture.TextureCacheService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Renderer for models. Main interaction with opengl backend.
@@ -31,7 +30,7 @@ import kendzi.jogl.texture.TextureCacheService;
 public class ModelRender {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(ModelRender.class);
+    private static final Logger log = LogManager.getLogger(ModelRender.class);
 
     private static final int[] GL_TEXTURE = { GL2.GL_TEXTURE0, GL2.GL_TEXTURE1, GL2.GL_TEXTURE2, GL2.GL_TEXTURE3 };
 
@@ -282,9 +281,8 @@ public class ModelRender {
                 }
             } else {
                 /*
-                 * Calculates texture color by choosing color value between
-                 * previous texture and current one. As switch key use alpha
-                 * channel from previous texture.
+                 * Calculates texture color by choosing color value between previous texture and
+                 * current one. As switch key use alpha channel from previous texture.
                  */
                 gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_COMBINE);
                 gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_COMBINE_RGB, GL2ES1.GL_INTERPOLATE);
@@ -299,8 +297,8 @@ public class ModelRender {
                 gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_OPERAND2_RGB, GL.GL_SRC_ALPHA);
 
                 /*
-                 * The final alpha should be 1. Sum both alpha channels from
-                 * previous texture and current one.
+                 * The final alpha should be 1. Sum both alpha channels from previous texture
+                 * and current one.
                  */
                 gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_COMBINE_ALPHA, GL2ES1.GL_ADD);
                 gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_OPERAND0_ALPHA, GL2ES1.GL_PREVIOUS);
@@ -445,8 +443,8 @@ public class ModelRender {
     }
 
     /**
-     * Setups default material for opengl context. It allow to rested opengl
-     * state to its default when next rendering loop starts.
+     * Setups default material for opengl context. It allow to rested opengl state
+     * to its default when next rendering loop starts.
      *
      * @param gl
      *            context

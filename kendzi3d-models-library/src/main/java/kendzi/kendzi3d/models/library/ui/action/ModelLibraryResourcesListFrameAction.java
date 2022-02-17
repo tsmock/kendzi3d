@@ -23,7 +23,8 @@ import kendzi.kendzi3d.models.library.service.ModelsLibraryService;
 import kendzi.kendzi3d.models.library.ui.ModelLibraryResourcesListFrame;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import kendzi.util.StringUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Ui for list of resource in models library.
@@ -33,7 +34,7 @@ import org.apache.log4j.Logger;
 public class ModelLibraryResourcesListFrameAction extends ModelLibraryResourcesListFrame {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(ModelLibraryResourcesListFrameAction.class);
+    private static final Logger log = LogManager.getLogger(ModelLibraryResourcesListFrameAction.class);
 
     /**
      * Point model service.

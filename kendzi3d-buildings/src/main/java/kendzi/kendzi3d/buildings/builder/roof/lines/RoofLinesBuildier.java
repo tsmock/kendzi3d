@@ -41,7 +41,8 @@ import kendzi.math.geometry.polygon.MultiPolygonList2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import kendzi.math.geometry.triangulate.Poly2TriUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Roof builder for roof described using RoofLines tagging schema.
@@ -50,7 +51,7 @@ import org.apache.log4j.Logger;
  */
 public class RoofLinesBuildier {
     /** Log. */
-    private static final Logger log = Logger.getLogger(RoofLinesBuildier.class);
+    private static final Logger log = LogManager.getLogger(RoofLinesBuildier.class);
 
     /**
      * Builds roof. Roof is build into given model factory.

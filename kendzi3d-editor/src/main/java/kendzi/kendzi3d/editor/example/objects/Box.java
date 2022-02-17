@@ -15,11 +15,12 @@ import kendzi.kendzi3d.editor.selection.event.ArrowEditorChangeEvent;
 import kendzi.kendzi3d.editor.selection.event.EditorChangeEvent;
 import kendzi.kendzi3d.editor.selection.event.SelectEvent;
 import kendzi.kendzi3d.editor.selection.listener.ObjectSelectionListener.EditorChangeListener;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Box implements EditableObject, EditorChangeListener {
 
-    private static final Logger LOG = Logger.getLogger(Box.class);
+    private static final Logger LOG = LogManager.getLogger(Box.class);
 
     private final Point3d position = new Point3d(0, 0, -2);
 

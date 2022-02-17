@@ -8,12 +8,13 @@ import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.Measurement;
 import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.MeasurementKey;
 import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.MeasurementParserUtil;
 import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.MeasurementUnit;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractRoofTypeBuilder implements RoofTypeBuilder {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(RectangleRoofTypeBuilder.class);
+    private static final Logger log = LogManager.getLogger(RectangleRoofTypeBuilder.class);
 
     public AbstractRoofTypeBuilder() {
         super();

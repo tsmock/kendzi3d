@@ -18,7 +18,8 @@ import javax.swing.JTextArea;
 
 import com.google.inject.Inject;
 import kendzi.josm.kendzi3d.module.binding.Kendzi3dPluginDirectory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.actions.JosmAction;
 
 /**
@@ -30,7 +31,7 @@ import org.openstreetmap.josm.actions.JosmAction;
 public class ShowPluginDirAction extends JosmAction {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(ShowPluginDirAction.class);
+    private static final Logger log = LogManager.getLogger(ShowPluginDirAction.class);
 
     /**
      *

@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.jogamp.opengl.GL2;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
+import com.jogamp.opengl.GL2;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.MaterialFactory;
 import kendzi.jogl.model.factory.MeshFactory;
@@ -36,8 +36,8 @@ import kendzi.math.geometry.Triangle2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import kendzi.math.geometry.triangulate.Poly2TriSimpleUtil;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
@@ -52,7 +52,7 @@ public class Water extends AbstractModel {
 
     /** Log. */
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(Water.class);
+    private static final Logger log = LogManager.getLogger(Water.class);
 
     /**
      * Renderer of model.

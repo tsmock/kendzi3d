@@ -8,11 +8,12 @@ import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 import kendzi.kendzi3d.resource.inter.ResourceService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FileTextureBuilder implements TextureBuilder {
     /** Log. */
-    private static final Logger log = Logger.getLogger(FileTextureBuilder.class);
+    private static final Logger log = LogManager.getLogger(FileTextureBuilder.class);
 
     /**
      * File url reciver service.

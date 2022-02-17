@@ -11,7 +11,8 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
@@ -23,7 +24,7 @@ import org.openstreetmap.josm.plugins.PluginInformation;
 public abstract class NativeLibPlugin extends Plugin {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(NativeLibPlugin.class);
+    private static final Logger log = LogManager.getLogger(NativeLibPlugin.class);
 
     /**
      * @param info

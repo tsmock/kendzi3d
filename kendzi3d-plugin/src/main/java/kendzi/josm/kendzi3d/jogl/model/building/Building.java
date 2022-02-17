@@ -54,7 +54,8 @@ import kendzi.kendzi3d.editor.selection.editor.EditorType;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import kendzi.math.geometry.bbox.Bbox2d;
 import kendzi.math.geometry.line.LineSegment3d;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.PrimitiveId;
@@ -68,7 +69,7 @@ import org.openstreetmap.josm.data.osm.Way;
 public class Building extends AbstractModel implements RebuildableWorldObject, WorldObjectDebugDrawable, OsmPrimitiveWorldObject {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(Building.class);
+    private static final Logger log = LogManager.getLogger(Building.class);
 
     /**
      * Renderer of model.

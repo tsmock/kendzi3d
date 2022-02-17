@@ -27,7 +27,8 @@ import javax.xml.bind.Unmarshaller;
 import kendzi.jogl.texture.dto.TextureData;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import kendzi.util.UrlUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.kendzi3d.ObjectFactory;
 import org.kendzi3d.TextureLibrary;
 import org.kendzi3d.TextureSet;
@@ -38,7 +39,7 @@ public class TextureLibraryService implements TextureLibraryStorageService {
     public static final String TEXTURE_LIBRARY_WIKI_XML = "/textures/textureLibraryWiki.xml";
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(TextureLibraryService.class);
+    private static final Logger log = LogManager.getLogger(TextureLibraryService.class);
 
     Map<String, ArrayList<TextureData>> textureMap = new HashMap<String, ArrayList<TextureData>>();
 

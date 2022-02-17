@@ -6,7 +6,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
 public class UrlUtil {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(UrlUtil.class);
+    private static final Logger log = LogManager.getLogger(UrlUtil.class);
 
     /**
      * Test if file from url exist.

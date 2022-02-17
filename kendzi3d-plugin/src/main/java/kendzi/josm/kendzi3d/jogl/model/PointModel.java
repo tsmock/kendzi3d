@@ -14,15 +14,11 @@ import java.util.List;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import org.apache.log4j.Logger;
-import org.openstreetmap.josm.data.osm.Node;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUquadric;
-
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Model;
 import kendzi.jogl.model.geometry.material.AmbientDiffuseComponent;
@@ -50,6 +46,9 @@ import kendzi.kendzi3d.expressions.functions.Vector3dZFunction;
 import kendzi.kendzi3d.expressions.functions.WayNodeDirectionFunction;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import kendzi.util.StringUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openstreetmap.josm.data.osm.Node;
 
 /**
  * Model builder for objects loaded from obj files.
@@ -60,7 +59,7 @@ import kendzi.util.StringUtil;
 public class PointModel extends AbstractPointModel implements DLODSuport {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(PointModel.class);
+    private static final Logger log = LogManager.getLogger(PointModel.class);
 
     public static boolean debug = false;
 
@@ -346,8 +345,8 @@ public class PointModel extends AbstractPointModel implements DLODSuport {
             buildModel(LOD.LOD1);
         }
 
-        return Collections.singletonList(new ExportItem(modelLod.get(LOD.LOD1), new Point3d(getGlobalX(), 0,
-                -getGlobalY()), new Vector3d(1, 1, 1)));
+        return Collections.singletonList(
+                new ExportItem(modelLod.get(LOD.LOD1), new Point3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
     }
 
     @Override

@@ -4,9 +4,8 @@
   <artifactId>kendzi3d-jogl-example</artifactId>
   <dependencies>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>kendzi.kendzi3d</groupId>

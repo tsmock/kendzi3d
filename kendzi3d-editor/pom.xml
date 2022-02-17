@@ -4,6 +4,16 @@
   <artifactId>kendzi3d-editor</artifactId>
   <dependencies>
     <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>kendzi.kendzi3d</groupId>
       <artifactId>kendzi3d-jogl-textures-library-res</artifactId>
       <version>1.0.206-SNAPSHOT</version>

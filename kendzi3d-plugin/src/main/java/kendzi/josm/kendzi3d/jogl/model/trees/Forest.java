@@ -18,12 +18,8 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import org.apache.log4j.Logger;
-import org.openstreetmap.josm.data.osm.Way;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
-
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -41,6 +37,9 @@ import kendzi.kendzi3d.world.MultiPointWorldObject;
 import kendzi.math.geometry.Triangulate;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openstreetmap.josm.data.osm.Way;
 
 /**
  * Representing trees in row model.
@@ -50,7 +49,7 @@ import kendzi.math.geometry.polygon.PolygonUtil;
 public class Forest extends AbstractWayModel implements MultiPointWorldObject {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(Forest.class);
+    private static final Logger log = LogManager.getLogger(Forest.class);
 
     ModelCacheService modelCacheService;
     MetadataCacheService metadataCacheService;

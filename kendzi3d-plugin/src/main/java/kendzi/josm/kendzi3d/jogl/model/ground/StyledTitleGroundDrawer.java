@@ -21,7 +21,8 @@ import kendzi.jogl.texture.TextureCacheService;
 import kendzi.jogl.texture.TextureCacheServiceImpl;
 import kendzi.josm.kendzi3d.data.perspective.Perspective3D;
 import kendzi.josm.kendzi3d.data.perspective.Perspective3dProvider;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.EastNorth;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -34,7 +35,7 @@ import org.openstreetmap.josm.gui.NavigatableComponent;
 public class StyledTitleGroundDrawer extends GroundDrawer {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(StyledTitleGroundDrawer.class);
+    private static final Logger log = LogManager.getLogger(StyledTitleGroundDrawer.class);
 
     /**
      * Title size in meters.

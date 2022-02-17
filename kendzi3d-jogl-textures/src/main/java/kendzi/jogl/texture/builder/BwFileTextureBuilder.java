@@ -12,7 +12,8 @@ import javax.imageio.ImageIO;
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import kendzi.kendzi3d.resource.inter.ResourceService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Creates black and white texture image from provided image.
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class BwFileTextureBuilder implements TextureBuilder {
     /** Log. */
-    private static final Logger log = Logger.getLogger(BwFileTextureBuilder.class);
+    private static final Logger log = LogManager.getLogger(BwFileTextureBuilder.class);
 
     /**
      * File url receiver service.

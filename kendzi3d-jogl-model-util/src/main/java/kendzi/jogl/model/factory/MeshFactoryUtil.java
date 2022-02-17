@@ -17,12 +17,13 @@ import kendzi.math.geometry.polygon.MultiPolygonList2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import kendzi.math.geometry.triangulate.Poly2TriSimpleUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MeshFactoryUtil {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(MeshFactoryUtil.class);
+    private static final Logger log = LogManager.getLogger(MeshFactoryUtil.class);
 
     public static kendzi.jogl.model.factory.MeshFactory cubeMesh(Point3d start) {
         return cubeMesh(start, new Vector3d(1, 1, 1));

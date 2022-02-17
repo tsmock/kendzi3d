@@ -45,7 +45,8 @@ import kendzi.math.geometry.Bool.CSG.Vertex;
 import kendzi.math.geometry.line.LineLinear2d;
 import kendzi.math.geometry.line.LineParametric2d;
 import kendzi.math.geometry.point.Vector2dUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
 
@@ -58,7 +59,7 @@ public class Wall extends AbstractWayModel {
 
     /** Log. */
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(Wall.class);
+    private static final Logger log = LogManager.getLogger(Wall.class);
 
     private static final java.lang.Double FENCE_HEIGHT = 1d;
 

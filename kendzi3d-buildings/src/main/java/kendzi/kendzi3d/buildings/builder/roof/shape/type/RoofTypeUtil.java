@@ -21,12 +21,13 @@ import kendzi.math.geometry.line.LinePoints2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonUtil;
 import kendzi.math.geometry.polygon.split.EnrichPolygonalChainUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RoofTypeUtil {
     /** Log. */
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(RoofTypeUtil.class);
+    private static final Logger log = LogManager.getLogger(RoofTypeUtil.class);
 
     /**
      * Make mesh of vertical wall e.g. It is wall under the roof. The wall base is

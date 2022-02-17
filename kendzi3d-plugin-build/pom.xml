@@ -17,9 +17,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
+      <groupId>org.openstreetmap.josm.plugins</groupId>
       <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
+      <version>SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -3,14 +3,15 @@ package kendzi.kendzi3d.editor.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import kendzi.kendzi3d.editor.example.ui.ExampleFrame;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 public class ExampleMain {
 
     public static void main(String[] args) {
 
         // Set up a simple configuration that logs on the console.
-        BasicConfigurator.configure();
+        Configurator.initialize(new DefaultConfiguration());
 
         Injector injector = Guice.createInjector(new ExampleModule());
 

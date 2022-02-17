@@ -16,12 +16,13 @@ import kendzi.kendzi3d.buildings.builder.roof.shape.dormer.space.RoofHooksSpace;
 import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.Measurement;
 import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.MeasurementKey;
 import kendzi.kendzi3d.buildings.model.roof.shape.DormerType;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RoofDormerTypeEmpty implements RoofDormerType {
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(RoofDormerTypeEmpty.class);
+    private static final Logger log = LogManager.getLogger(RoofDormerTypeEmpty.class);
 
     @Override
     public DormerType getType() {

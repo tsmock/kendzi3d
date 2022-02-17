@@ -28,7 +28,8 @@ import kendzi.math.geometry.line.LinePoints2d;
 import kendzi.math.geometry.polygon.MultiPolygonList2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Roof type 1.1.
@@ -40,7 +41,7 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
 
     /** Log. */
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(RoofType1v1.class);
+    private static final Logger log = LogManager.getLogger(RoofType1v1.class);
 
     @Override
     public RoofTypeOutput buildRectangleRoof(RectangleRoofTypeConf conf) {

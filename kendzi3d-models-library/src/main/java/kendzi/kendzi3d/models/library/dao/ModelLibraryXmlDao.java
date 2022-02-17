@@ -25,7 +25,8 @@ import kendzi.kendzi3d.models.library.exception.ModelLibraryLoadException;
 import kendzi.kendzi3d.models.library.service.ModelsLibraryService;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import kendzi.util.UrlUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Access to model library stored in xml files.
@@ -37,7 +38,7 @@ public class ModelLibraryXmlDao {
     private static final String XSD_PACKAGE = "generated";
 
     /** Log. */
-    private static final Logger log = Logger.getLogger(ModelsLibraryService.class);
+    private static final Logger log = LogManager.getLogger(ModelsLibraryService.class);
 
     private ResourceService resourceManager;
 

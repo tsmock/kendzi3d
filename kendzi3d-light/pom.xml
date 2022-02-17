@@ -25,7 +25,6 @@
     <dependency>
       <groupId>org.ejml</groupId>
       <artifactId>ejml-all</artifactId>
-      <version>${ejml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.joml</groupId>

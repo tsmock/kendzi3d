@@ -17,38 +17,38 @@ import org.ejml.data.DMatrixRMaj;
 import org.ejml.simple.SimpleMatrix;
 
 public class SimpleMatrixUtil {
+    private SimpleMatrixUtil() {
+        // Hide constructor
+    }
 
     public static String matrixToString(SimpleMatrix m) {
         DMatrixRMaj mat = m.getMatrix();
         StringBuilder sb = new StringBuilder();
-        // Send all output to the Appendable object sb
-        Formatter formatter = new Formatter(sb, Locale.US);
 
         // Explicit argument indices may be used to re-order output.
 
         int numChar = 6;
         int precision = 3;
-        sb.append("DenseMatrix64F  numRows = " + mat.numRows + " numCols = " + mat.numCols + "\n");
+        sb.append("DenseMatrix64F  numRows = ").append(mat.numRows).append(" numCols = ").append(mat.numCols).append("\n");
 
         String format = "%" + numChar + "." + precision + "f ";
 
-        for (int y = 0; y < mat.numRows; y++) {
-            for (int x = 0; x < mat.numCols; x++) {
+        // Send all output to the Appendable object sb
+        try (Formatter formatter = new Formatter(sb, Locale.US)) {
+            for (int y = 0; y < mat.numRows; y++) {
+                for (int x = 0; x < mat.numCols; x++) {
 
-                formatter.format(format, mat.get(y, x));
-                // sb.append("\n");
+                    formatter.format(format, mat.get(y, x));
+                    // sb.append("\n");
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
         }
         return sb.toString();
-
     }
 
     public static String matrixToMatlab(SimpleMatrix m) {
-        if (m == null) {
-            return " [ ]; ";
-        }
-        if ((m.numRows() == 0) || (m.numCols() == 0)) {
+        if (m == null || m.numRows() == 0 || m.numCols() == 0) {
             return " [ ]; ";
         }
 
@@ -59,12 +59,11 @@ public class SimpleMatrixUtil {
 
         sb.append(space);
         sb.append("[ ");
-        for (int y = 0; y < mat.numRows; y++) {
-            for (int x = 0; x < mat.numCols; x++) {
+        for (int y = 0; y < mat.getNumRows(); y++) {
+            for (int x = 0; x < mat.getNumCols(); x++) {
                 if (x != 0) {
                     sb.append(", ");
                 }
-
                 sb.append(mat.get(y, x));
 
                 // formatter.format(format, mat.get(y, x));
@@ -80,27 +79,26 @@ public class SimpleMatrixUtil {
     }
 
     public static String ff(Integer n) {
-        return ff(new Double(n));
+        return ff(n.doubleValue());
     }
 
     public static String ff(Double n) {
         StringBuilder sb = new StringBuilder();
-        Formatter formatter = new Formatter(sb, Locale.US);
-        int numChar = 6;
-        int precision = 3;
+        try (Formatter formatter = new Formatter(sb, Locale.US)) {
+            int numChar = 6;
+            int precision = 3;
 
-        String format = "%" + numChar + "." + precision + "f ";
+            String format = "%" + numChar + "." + precision + "f ";
 
-        formatter.format(format, n);
+            formatter.format(format, n);
 
-        return sb.toString();
-
+            return sb.toString();
+        }
     }
 
     public static String ff2(Number n) {
         String pattern = "0.000E0";
         DecimalFormat myFormatter = new DecimalFormat(pattern);
-        String output = myFormatter.format(n);
-        return output;
+        return myFormatter.format(n);
     }
 }

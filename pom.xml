@@ -20,7 +20,7 @@
   </distributionManagement>
   <properties>
     <java.version>1.8</java.version>
-    <ejml.version>0.32</ejml.version>
+    <ejml.version>0.41</ejml.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <joml.version>1.10.3</joml.version>
     <junit.version>4.13.2</junit.version>
@@ -39,6 +39,18 @@
         <!-- artifact from josm repository -->
         <groupId>org.openstreetmap.josm</groupId>
         <artifactId>josm</artifactId>
+        <version>SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openstreetmap.josm.plugins</groupId>
+        <artifactId>log4j</artifactId>
+        <version>SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openstreetmap.josm.plugins</groupId>
+        <artifactId>ejml</artifactId>
         <version>SNAPSHOT</version>
         <scope>provided</scope>
       </dependency>
@@ -74,9 +86,10 @@
         <!-- TODO check if log4j includes sl4j in JOSM -->
       </dependency>
       <dependency>
-        <groupId>org.openstreetmap.josm.plugins</groupId>
-        <artifactId>log4j</artifactId>
-        <version>SNAPSHOT</version>
+        <groupId>org.ejml</groupId>
+        <artifactId>ejml-all</artifactId>
+        <version>${ejml.version}</version>
+        <!-- Provided by JOSM EJML plugin -->
         <scope>provided</scope>
       </dependency>
       <dependency>

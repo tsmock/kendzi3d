@@ -1,8 +1,7 @@
 package kendzi.kendzi3d.expressions.functions;
 
-import javax.vecmath.Vector3d;
-
 import kendzi.kendzi3d.expressions.Context;
+import org.joml.Vector3d;
 
 public class Vector3dXFunction extends OneParamFunction implements NamedFunction {
 

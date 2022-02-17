@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import kendzi.jogl.camera.Camera;
@@ -33,6 +30,8 @@ import kendzi.josm.kendzi3d.util.ModelUtil;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
@@ -89,7 +88,7 @@ public class Tree extends AbstractPointModel implements DLODSuport {
 
         super(node, perspective);
 
-        modelLod = new EnumMap<LOD, Model>(LOD.class);
+        modelLod = new EnumMap<>(LOD.class);
 
         scale = new Vector3d(1d, 1d, 1d);
 
@@ -140,7 +139,7 @@ public class Tree extends AbstractPointModel implements DLODSuport {
 
         Bounds bounds = model2.getBounds();
 
-        double modelHeight = bounds.max.y;
+        double modelHeight = bounds.max.y();
 
         double modelScaleHeight = height / modelHeight;
 
@@ -285,7 +284,7 @@ public class Tree extends AbstractPointModel implements DLODSuport {
             gl.glTranslated(getGlobalX(), minHeight, -getGlobalY());
 
             gl.glEnable(GLLightingFunc.GL_NORMALIZE);
-            gl.glScaled(scale.x, scale.y, scale.z);
+            gl.glScaled(scale.x(), scale.y(), scale.z());
 
             modelRender.render(gl, model2);
 
@@ -315,7 +314,7 @@ public class Tree extends AbstractPointModel implements DLODSuport {
         }
 
         return Collections.singletonList(
-                new ExportItem(modelLod.get(LOD.LOD1), new Point3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
+                new ExportItem(modelLod.get(LOD.LOD1), new Vector3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
     }
 
     @Override
@@ -324,7 +323,7 @@ public class Tree extends AbstractPointModel implements DLODSuport {
     }
 
     @Override
-    public Point3d getPosition() {
+    public Vector3dc getPosition() {
         return getPoint();
     }
 }

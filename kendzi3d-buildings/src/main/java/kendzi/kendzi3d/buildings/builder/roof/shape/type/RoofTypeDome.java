@@ -6,12 +6,8 @@
 
 package kendzi.kendzi3d.buildings.builder.roof.shape.type;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import kendzi.jogl.model.factory.FaceFactory;
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
@@ -26,12 +22,15 @@ import kendzi.kendzi3d.buildings.builder.roof.shape.measurement.MeasurementUnit;
 import kendzi.kendzi3d.buildings.model.roof.shape.DormerRoofModel;
 import kendzi.math.geometry.point.TransformationMatrix2d;
 import kendzi.math.geometry.point.TransformationMatrix3d;
-import kendzi.math.geometry.point.Vector3dUtil;
 import kendzi.math.geometry.polygon.CircleInsidePolygon;
 import kendzi.math.geometry.polygon.CircleInsidePolygon.Circle;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import org.ejml.simple.SimpleMatrix;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  * Roof type 5.6.
@@ -39,14 +38,13 @@ import org.ejml.simple.SimpleMatrix;
  * @author Tomasz Kędziora (Kendzi)
  */
 public class RoofTypeDome extends AbstractRoofTypeBuilder {
-
     @Override
-    public RoofTypeOutput buildRoof(Point2d startPoint, PolygonWithHolesList2d buildingPolygon, DormerRoofModel roof,
+    public RoofTypeOutput buildRoof(Vector2dc startPoint, PolygonWithHolesList2d buildingPolygon, DormerRoofModel roof,
             double height, RoofMaterials roofTextureData) {
 
-        SimpleMatrix transformLocal = TransformationMatrix2d.tranA(-startPoint.x, -startPoint.y);
+        SimpleMatrix transformLocal = TransformationMatrix2d.tranA(-startPoint.x(), -startPoint.y());
 
-        List<Point2d> polygon = buildingPolygon.getOuter().getPoints();
+        List<Vector2dc> polygon = buildingPolygon.getOuter().getPoints();
 
         polygon = TransformationMatrix2d.transformList(polygon, transformLocal);
 
@@ -61,14 +59,14 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
 
         RoofTypeOutput rto = build(polygon, h1, angle, roofTextureData);
 
-        SimpleMatrix transformGlobal = TransformationMatrix3d.tranA(startPoint.x, height - rto.getHeight(), -startPoint.y);
+        SimpleMatrix transformGlobal = TransformationMatrix3d.tranA(startPoint.x(), height - rto.getHeight(), -startPoint.y());
         rto.setTransformationMatrix(transformGlobal);
 
         return rto;
 
     }
 
-    protected RoofTypeOutput build(List<Point2d> borderList, Double height, Double angle, RoofMaterials roofTextureData) {
+    protected RoofTypeOutput build(List<Vector2dc> borderList, Double height, Double angle, RoofMaterials roofTextureData) {
 
         MeshFactory meshDome = createRoofMesh(roofTextureData);
 
@@ -85,7 +83,7 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         RoofTypeOutput rto = new RoofTypeOutput();
         rto.setHeight(height);
 
-        rto.setMesh(Arrays.asList(meshDome));
+        rto.setMesh(Collections.singletonList(meshDome));
 
         rto.setRoofHooksSpaces(null);
 
@@ -94,31 +92,31 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         return rto;
     }
 
-    private void buildRotaryShape(MeshFactory meshFactory, List<Point2d> borderList, Point2d center, double height,
+    private void buildRotaryShape(MeshFactory meshFactory, List<Vector2dc> borderList, Vector2dc center, double height,
             int numberOfCrossSplits, TextureData roofTexture) {
 
         int crossCount = numberOfCrossSplits + 1;
 
         // create cross section
-        Point2d[] crossSection = new Point2d[crossCount];
+        Vector2dc[] crossSection = new Vector2dc[crossCount];
         for (int i = 0; i < crossCount; i++) {
 
             double a = Math.toRadians(90) / (crossCount - 1) * i;
 
-            crossSection[i] = new Point2d(Math.cos(a), Math.sin(a) * height);
+            crossSection[i] = new Vector2d(Math.cos(a), Math.sin(a) * height);
         }
 
         buildRotaryShape(meshFactory, center, borderList, crossSection, roofTexture);
     }
 
-    public static void buildRotaryShape(MeshFactory meshFactory, Point2d center, List<Point2d> borderList, Point2d[] crossSection,
-            TextureData roofTexture) {
+    public static void buildRotaryShape(MeshFactory meshFactory, Vector2dc center, List<Vector2dc> borderList,
+            Vector2dc[] crossSection, TextureData roofTexture) {
 
         int crossCount = crossSection.length;
         int pointCount = borderList.size();
 
         // create points
-        Point3d[][] mesh = buildMesh(center, borderList, crossSection);
+        Vector3dc[][] mesh = buildMesh(center, borderList, crossSection);
 
         TextureQuadIndex[][] tc = buildTextureMapping(meshFactory, mesh, pointCount, crossCount);
 
@@ -127,7 +125,7 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         // add vertex to mesh
         int[][] pointsIntex = RoofType5v6.addVertexToMeshFactory(meshFactory, mesh, pointCount, crossCount);
 
-        Point3d center3d = new Point3d(center.x, 0, -center.y);
+        Vector3dc center3d = new Vector3d(center.x(), 0, -center.y());
 
         // add soft normals vectors
         int[][] softNormalsIndexs = buildNormalsIndexs(meshFactory, mesh, center3d, pointCount, crossCount);
@@ -159,24 +157,25 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         }
     }
 
-    private static Point3d[][] buildMesh(Point2d center, List<Point2d> borderList, Point2d[] crossSection) {
+    private static Vector3dc[][] buildMesh(Vector2dc center, List<Vector2dc> borderList, Vector2dc[] crossSection) {
 
         int pointCount = borderList.size();
         int crossCount = crossSection.length;
 
-        Point3d[][] mesh = new Point3d[pointCount][];
+        Vector3dc[][] mesh = new Vector3dc[pointCount][];
         for (int i = 0; i < pointCount; i++) {
-            Point2d outlinePoint = borderList.get(i);
+            Vector2dc outlinePoint = borderList.get(i);
 
-            Point3d point = new Point3d(outlinePoint.x - center.x, 1, -(outlinePoint.y - center.y));
+            Vector3dc point = new Vector3d(outlinePoint.x() - center.x(), 1, -(outlinePoint.y() - center.y()));
 
-            Point3d[] crossMesh = new Point3d[crossCount];
+            Vector3dc[] crossMesh = new Vector3dc[crossCount];
 
             for (int j = 0; j < crossCount; j++) {
                 // point
-                Point2d cross = crossSection[j];
+                Vector2dc cross = crossSection[j];
 
-                crossMesh[j] = new Point3d(point.x * cross.x + center.x, point.y * cross.y, point.z * cross.x - center.y);
+                crossMesh[j] = new Vector3d(point.x() * cross.x() + center.x(), point.y() * cross.y(),
+                        point.z() * cross.x() - center.y());
 
             }
             mesh[i] = crossMesh;
@@ -184,7 +183,7 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         return mesh;
     }
 
-    public static int[][] buildNormalsIndexs(MeshFactory meshFactory, Point3d[][] mesh, Point3d center3d, int pointCount,
+    public static int[][] buildNormalsIndexs(MeshFactory meshFactory, Vector3dc[][] mesh, Vector3dc center3d, int pointCount,
             int crossCount) {
 
         int[][] softNormalsIndexs = new int[pointCount][];
@@ -195,10 +194,9 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
 
             for (int j = 0; j < crossCount; j++) {
 
-                Point3d p = mesh[i][j];
+                Vector3dc p = mesh[i][j];
 
-                Vector3d n = Vector3dUtil.fromTo(center3d, p);
-                n.normalize();
+                Vector3d n = new Vector3d(center3d).sub(p).normalize();
 
                 int in = meshFactory.addNormal(n);
                 softNormalsIndexs[i][j] = in;
@@ -207,7 +205,7 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
         return softNormalsIndexs;
     }
 
-    private static TextureQuadIndex[][] buildTextureMapping(MeshFactory meshFactory, Point3d[][] mesh, int pointCount,
+    private static TextureQuadIndex[][] buildTextureMapping(MeshFactory meshFactory, Vector3dc[][] mesh, int pointCount,
             int crossCount) {
 
         // pointCount - number of points on outline

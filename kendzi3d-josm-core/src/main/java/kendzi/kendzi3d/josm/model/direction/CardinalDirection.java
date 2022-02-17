@@ -8,7 +8,8 @@
  */
 package kendzi.kendzi3d.josm.model.direction;
 
-import javax.vecmath.Vector2d;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
 
 /**
  * Direction in Cardinal.
@@ -39,7 +40,7 @@ public class CardinalDirection implements Direction {
     }
 
     @Override
-    public Vector2d getVector() {
+    public Vector2dc getVector() {
         double angle = Math.toRadians(getAngle());
         return new Vector2d(Math.sin(angle), Math.cos(angle));
     }

@@ -36,9 +36,6 @@ public class DebugPointModelToggleAction extends ToggleAction {
 
     /**
      * Constructor of debug toggle action.
-     *
-     * @param pModelRender
-     *            model render
      */
     @Inject
     public DebugPointModelToggleAction() {

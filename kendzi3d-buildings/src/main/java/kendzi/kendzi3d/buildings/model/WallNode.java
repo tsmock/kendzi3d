@@ -2,9 +2,8 @@ package kendzi.kendzi3d.buildings.model;
 
 import java.util.List;
 
-import javax.vecmath.Point2d;
-
 import kendzi.kendzi3d.buildings.model.element.BuildingNodeElement;
+import org.joml.Vector2dc;
 
 public class WallNode {
 
@@ -12,13 +11,13 @@ public class WallNode {
         //
     }
 
-    public WallNode(Point2d point, List<BuildingNodeElement> buildingNodeElements) {
+    public WallNode(Vector2dc point, List<BuildingNodeElement> buildingNodeElements) {
         super();
         this.point = point;
         this.buildingNodeElements = buildingNodeElements;
     }
 
-    Point2d point;
+    Vector2dc point;
 
     // powtazanie do gory
     List<BuildingNodeElement> buildingNodeElements;
@@ -26,7 +25,7 @@ public class WallNode {
     /**
      * @return the point
      */
-    public Point2d getPoint() {
+    public Vector2dc getPoint() {
         return this.point;
     }
 
@@ -34,7 +33,7 @@ public class WallNode {
      * @param point
      *            the point to set
      */
-    public void setPoint(Point2d point) {
+    public void setPoint(Vector2dc point) {
         this.point = point;
     }
 

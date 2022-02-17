@@ -6,7 +6,7 @@
 
 package kendzi.josm.kendzi3d.action;
 
-import static org.openstreetmap.josm.tools.I18n.*;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import kendzi.josm.kendzi3d.jogl.model.export.ExportWorker;
 import kendzi.josm.kendzi3d.jogl.model.export.ui.action.ExportUiAction;
 import kendzi.kendzi3d.editor.EditableObject;
 import kendzi.kendzi3d.world.WorldObject;
-import org.apache.log4j.Logger;
 import org.openstreetmap.josm.actions.JosmAction;
 
 /**
@@ -34,10 +33,6 @@ import org.openstreetmap.josm.actions.JosmAction;
  *
  */
 public class ExportAction extends JosmAction {
-
-    /** Log. */
-    private static final Logger log = Logger.getLogger(ExportAction.class);
-
     /**
      *
      */
@@ -89,11 +84,11 @@ public class ExportAction extends JosmAction {
     private void exportService(ExportModelConf conf) {
         // it should be service?
 
-        List<ExportItem> itemsToExport = new ArrayList<ExportItem>();
+        List<ExportItem> itemsToExport = new ArrayList<>();
 
         List<EditableObject> allObjects = kendzi3dCore.getEditableObjects();
 
-        List<WorldObject> modelList = new ArrayList<WorldObject>();
+        List<WorldObject> modelList = new ArrayList<>();
         for (EditableObject editableList : allObjects) {
             if (editableList instanceof WorldObject) {
                 modelList.add((WorldObject) editableList);
@@ -117,7 +112,7 @@ public class ExportAction extends JosmAction {
 
     public List<ExportItem> exportLayer(List<WorldObject> modelList, ExportModelConf conf) {
 
-        List<ExportItem> ret = new ArrayList<ExportItem>();
+        List<ExportItem> ret = new ArrayList<>();
 
         for (WorldObject model : modelList) {
             if (model instanceof ExportModel) {

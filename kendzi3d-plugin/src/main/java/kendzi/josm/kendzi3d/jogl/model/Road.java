@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import com.jogamp.opengl.GL2;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.FaceFactory;
@@ -33,6 +29,9 @@ import kendzi.josm.kendzi3d.util.ModelUtil;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
 
@@ -68,7 +67,7 @@ public class Road extends AbstractWayModel {
     /**
      * List of road points.
      */
-    private List<Point2d> list = new ArrayList<Point2d>();
+    private List<Vector2dc> list = new ArrayList<Vector2dc>();
 
     /**
      * Width of road.
@@ -113,9 +112,9 @@ public class Road extends AbstractWayModel {
     public void buildWorldObject() {
 
         // FIXME object is not in local coordinates!
-        setPoint(new Point3d());
+        setPoint(new Vector3d());
 
-        List<Point2d> pointList = new ArrayList<Point2d>();
+        List<Vector2dc> pointList = new ArrayList<Vector2dc>();
 
         for (int i = 0; i < way.getNodesCount(); i++) {
             Node node = way.getNode(i);
@@ -152,12 +151,12 @@ public class Road extends AbstractWayModel {
 
             int flatNormalI = meshWalls.addNormal(flatSurface);
 
-            Point2d beginPoint = list.get(0);
+            Vector2dc beginPoint = list.get(0);
             for (int i = 1; i < list.size(); i++) {
-                Point2d endPoint = list.get(i);
+                Vector2dc endPoint = list.get(i);
 
-                double x = endPoint.x - beginPoint.x;
-                double y = endPoint.y - beginPoint.y;
+                double x = endPoint.x() - beginPoint.x();
+                double y = endPoint.y() - beginPoint.y();
                 // calc lenght of road segment
                 double mod = Math.sqrt(x * x + y * y);
 
@@ -174,7 +173,7 @@ public class Road extends AbstractWayModel {
                 double borderX = normX + 0.2 * orthX / mod;
                 double borderY = normY + 0.2 * orthY / mod;
 
-                double uEnd = distance / texture.getLenght();
+                double uEnd = distance / texture.getLength();
 
                 // left border
                 int tcb1 = meshWalls.addTextCoord(new TextCoord(0, 0.99999d));
@@ -199,26 +198,26 @@ public class Road extends AbstractWayModel {
                 int tce5 = meshWalls.addTextCoord(new TextCoord(uEnd, 0.99999d));
 
                 // left border
-                int wbi1 = meshWalls.addVertex(new Point3d(beginPoint.x + borderX, 0.0d, -(beginPoint.y + borderY)));
+                int wbi1 = meshWalls.addVertex(new Vector3d(beginPoint.x() + borderX, 0.0d, -(beginPoint.y() + borderY)));
                 // left part of road
-                int wbi2 = meshWalls.addVertex(new Point3d(beginPoint.x + normX, 0.1d, -(beginPoint.y + normY)));
+                int wbi2 = meshWalls.addVertex(new Vector3d(beginPoint.x() + normX, 0.1d, -(beginPoint.y() + normY)));
                 // middle part of road
-                int wbi3 = meshWalls.addVertex(new Point3d(beginPoint.x, 0.15d, -beginPoint.y));
+                int wbi3 = meshWalls.addVertex(new Vector3d(beginPoint.x(), 0.15d, -beginPoint.y()));
                 // right part of road
-                int wbi4 = meshWalls.addVertex(new Point3d(beginPoint.x - normX, 0.1d, -(beginPoint.y - normY)));
+                int wbi4 = meshWalls.addVertex(new Vector3d(beginPoint.x() - normX, 0.1d, -(beginPoint.y() - normY)));
                 // right border
-                int wbi5 = meshWalls.addVertex(new Point3d(beginPoint.x - borderX, 0.0d, -(beginPoint.y - borderY)));
+                int wbi5 = meshWalls.addVertex(new Vector3d(beginPoint.x() - borderX, 0.0d, -(beginPoint.y() - borderY)));
 
                 // left border
-                int wei1 = meshWalls.addVertex(new Point3d(endPoint.x + borderX, 0.0d, -(endPoint.y + borderY)));
+                int wei1 = meshWalls.addVertex(new Vector3d(endPoint.x() + borderX, 0.0d, -(endPoint.y() + borderY)));
                 // left part of road
-                int wei2 = meshWalls.addVertex(new Point3d(endPoint.x + normX, 0.1d, -(endPoint.y + normY)));
+                int wei2 = meshWalls.addVertex(new Vector3d(endPoint.x() + normX, 0.1d, -(endPoint.y() + normY)));
                 // middle part of road
-                int wei3 = meshWalls.addVertex(new Point3d(endPoint.x, 0.15d, -endPoint.y));
+                int wei3 = meshWalls.addVertex(new Vector3d(endPoint.x(), 0.15d, -endPoint.y()));
                 // right part of road
-                int wei4 = meshWalls.addVertex(new Point3d(endPoint.x - normX, 0.1d, -(endPoint.y - normY)));
+                int wei4 = meshWalls.addVertex(new Vector3d(endPoint.x() - normX, 0.1d, -(endPoint.y() - normY)));
                 // right border
-                int wei5 = meshWalls.addVertex(new Point3d(endPoint.x - borderX, 0.0d, -(endPoint.y - borderY)));
+                int wei5 = meshWalls.addVertex(new Vector3d(endPoint.x() - borderX, 0.0d, -(endPoint.y() - borderY)));
 
                 leftBorder.addVert(wbi1, tcb1, flatNormalI);
                 leftBorder.addVert(wbi2, tcb2, flatNormalI);
@@ -310,12 +309,12 @@ public class Road extends AbstractWayModel {
      */
     private class TextureData {
         String file;
-        double lenght;
+        double length;
 
         private TextureData(String pFile, double pLenght) {
             super();
             file = pFile;
-            lenght = pLenght;
+            length = pLenght;
         }
 
         /**
@@ -336,16 +335,16 @@ public class Road extends AbstractWayModel {
         /**
          * @return the lenght
          */
-        public double getLenght() {
-            return lenght;
+        public double getLength() {
+            return length;
         }
 
         /**
          * @param pLenght
          *            the lenght to set
          */
-        public void setLenght(double pLenght) {
-            lenght = pLenght;
+        public void setLength(double pLenght) {
+            length = pLenght;
         }
 
     }
@@ -371,9 +370,7 @@ public class Road extends AbstractWayModel {
             }
         }
 
-        Double paramWidth = metadataCacheService.getPropertitesDouble("roads.highway_" + highway + ".width", DEFAULT_ROAD_WIDTH);
-
-        return paramWidth;
+        return metadataCacheService.getPropertitesDouble("roads.highway_" + highway + ".width", DEFAULT_ROAD_WIDTH);
 
     }
 
@@ -396,7 +393,7 @@ public class Road extends AbstractWayModel {
         }
 
         return Collections
-                .singletonList(new ExportItem(model, new Point3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
+                .singletonList(new ExportItem(model, new Vector3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
     }
 
     @Override
@@ -405,7 +402,7 @@ public class Road extends AbstractWayModel {
     }
 
     @Override
-    public Point3d getPosition() {
+    public Vector3dc getPosition() {
         return getPoint();
     }
 

@@ -5,15 +5,12 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2GL3;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.glu.GLU;
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
+import com.jogamp.opengl.util.gl2.GLUT;
 import kendzi.jogl.camera.Viewport;
 import kendzi.jogl.util.DrawUtil;
-import kendzi.math.geometry.point.Vector3dUtil;
-
-import com.jogamp.opengl.util.gl2.GLUT;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  * Drawer for measure tap.
@@ -47,45 +44,37 @@ public class MeasureDrawer {
      * @param lineWidth
      *            line width
      */
-    public void drawYMeasureWithArrows(GL2 gl, Point3d begin, Point3d end, double value, Viewport viewport,
+    public void drawYMeasureWithArrows(GL2 gl, Vector3dc begin, Vector3dc end, double value, Viewport viewport,
             double horizontalDistance, double arrowHeight, double arrowWidth, float lineWidth) {
 
         gl.glLineWidth(lineWidth);
 
-        Vector3d screenHorizontally = new Vector3d(viewport.getScreenHorizontally());
-        screenHorizontally.normalize();
+        Vector3d screenHorizontally = new Vector3d(viewport.getScreenHorizontally()).normalize();
 
-        Vector3d arrowheadBaseWidthVector = new Vector3d(screenHorizontally);
-        arrowheadBaseWidthVector.scale(arrowWidth);
+        Vector3d arrowheadBaseWidthVector = new Vector3d(screenHorizontally).mul(arrowWidth);
 
-        screenHorizontally.scale(horizontalDistance);
+        screenHorizontally.mul(horizontalDistance);
 
         // top horizontal line
-        drawLine(gl, end.x, end.y, end.z, //
-                end.x + screenHorizontally.x, end.y + screenHorizontally.y, end.z + screenHorizontally.z);
+        drawLine(gl, end.x(), end.y(), end.z(), //
+                end.x() + screenHorizontally.x, end.y() + screenHorizontally.y, end.z() + screenHorizontally.z);
 
         // bottom horizontal line
-        drawLine(gl, begin.x, begin.y, begin.z, //
-                begin.x + screenHorizontally.x, begin.y + screenHorizontally.y, begin.z + screenHorizontally.z);
+        drawLine(gl, begin.x(), begin.y(), begin.z(), //
+                begin.x() + screenHorizontally.x, begin.y() + screenHorizontally.y, begin.z() + screenHorizontally.z);
 
-        screenHorizontally.scale(0.5);
+        screenHorizontally.mul(0.5);
 
-        Point3d bottomArrowhead = new Point3d(screenHorizontally);
+        Vector3d bottomArrowhead = new Vector3d(screenHorizontally);
         bottomArrowhead.add(begin);
-        Point3d topArrowhead = new Point3d(screenHorizontally);
+        Vector3d topArrowhead = new Vector3d(screenHorizontally);
         topArrowhead.add(end);
 
         // vertical line
         drawLine(gl, bottomArrowhead, topArrowhead);
 
         // vertical line arrows
-        Vector3d arrowVector = Vector3dUtil.fromTo(bottomArrowhead, topArrowhead);
-        arrowVector.normalize();
-        arrowVector.scale(arrowHeight);
-
-        Point3d bottomArrowheadRight = new Point3d(bottomArrowhead);
-        bottomArrowheadRight.add(arrowVector);
-        bottomArrowheadRight.sub(arrowheadBaseWidthVector);
+        Vector3d arrowVector = bottomArrowhead.sub(topArrowhead, new Vector3d()).normalize().mul(arrowHeight);
 
         // bottom arrow
         drawFlatArrowhead(gl, bottomArrowhead, arrowVector, arrowheadBaseWidthVector);
@@ -95,25 +84,23 @@ public class MeasureDrawer {
         // top arrow
         drawFlatArrowhead(gl, topArrowhead, arrowVector, arrowheadBaseWidthVector);
 
-        Point3d center = new Point3d(bottomArrowhead);
-        center.add(topArrowhead);
-        center.scale(0.5);
+        Vector3d center = new Vector3d(bottomArrowhead).add(topArrowhead).mul(0.5);
 
         drawNumberBox(gl, glu, glut, center, value, viewport);
     }
 
-    private void drawFlatArrowhead(GL2 gl, Point3d arrowheadPoint, Vector3d arrowheadVector, Vector3d arrowheadWidthVector) {
+    private void drawFlatArrowhead(GL2 gl, Vector3dc arrowheadPoint, Vector3d arrowheadVector, Vector3d arrowheadWidthVector) {
         gl.glBegin(GL.GL_TRIANGLES);
 
-        gl.glVertex3d(arrowheadPoint.x, arrowheadPoint.y, arrowheadPoint.z);
+        gl.glVertex3d(arrowheadPoint.x(), arrowheadPoint.y(), arrowheadPoint.z());
         gl.glVertex3d(//
-                arrowheadPoint.x + arrowheadVector.x + arrowheadWidthVector.x,//
-                arrowheadPoint.y + arrowheadVector.y + arrowheadWidthVector.y,//
-                arrowheadPoint.z + arrowheadVector.z + arrowheadWidthVector.z);
+                arrowheadPoint.x() + arrowheadVector.x + arrowheadWidthVector.x, //
+                arrowheadPoint.y() + arrowheadVector.y + arrowheadWidthVector.y, //
+                arrowheadPoint.z() + arrowheadVector.z + arrowheadWidthVector.z);
         gl.glVertex3d( //
-                arrowheadPoint.x + arrowheadVector.x - arrowheadWidthVector.x,//
-                arrowheadPoint.y + arrowheadVector.y - arrowheadWidthVector.y,//
-                arrowheadPoint.z + arrowheadVector.z - arrowheadWidthVector.z);
+                arrowheadPoint.x() + arrowheadVector.x - arrowheadWidthVector.x, //
+                arrowheadPoint.y() + arrowheadVector.y - arrowheadWidthVector.y, //
+                arrowheadPoint.z() + arrowheadVector.z - arrowheadWidthVector.z);
 
         gl.glEnd();
     }
@@ -126,20 +113,20 @@ public class MeasureDrawer {
         gl.glEnd();
     }
 
-    private void drawLine(GL2 gl, Point3d begin, Point3d end) {
+    private void drawLine(GL2 gl, Vector3dc begin, Vector3dc end) {
 
         gl.glBegin(GL.GL_LINES);
-        gl.glVertex3d(begin.x, begin.y, begin.z);
-        gl.glVertex3d(end.x, end.y, end.z);
+        gl.glVertex3d(begin.x(), begin.y(), begin.z());
+        gl.glVertex3d(end.x(), end.y(), end.z());
         gl.glEnd();
     }
 
-    private void drawNumberBox(GL2 gl, GLU glu, GLUT glut, Point3d point, Double value, Viewport viewport) {
+    private void drawNumberBox(GL2 gl, GLU glu, GLUT glut, Vector3dc point, Double value, Viewport viewport) {
 
         gl.glDisable(GLLightingFunc.GL_LIGHTING);
         String msg = String.format("%.2f m", (double) value);
 
-        Point2d p = viewport.project(gl, glu, point);
+        Vector2d p = viewport.project(gl, glu, point);
         int fontSize = 18;
         int msgWidth = glut.glutBitmapLength(GLUT.BITMAP_HELVETICA_18, msg);
 

@@ -9,6 +9,10 @@
       <artifactId>josm</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.joml</groupId>
+      <artifactId>joml</artifactId>
+    </dependency>
+    <dependency>
       <groupId>kendzi.kendzi3d</groupId>
       <artifactId>kendzi3d-jogl-model</artifactId>
       <version>1.0.206-SNAPSHOT</version>

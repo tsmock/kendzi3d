@@ -9,13 +9,12 @@
 
 package kendzi.josm.kendzi3d.jogl.model.ground;
 
-import javax.vecmath.Point3d;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.texture.Texture;
 import kendzi.jogl.texture.TextureCacheService;
 import kendzi.jogl.texture.dto.TextureData;
 import kendzi.jogl.texture.library.TextureLibraryStorageService;
+import org.joml.Vector3dc;
 
 public class GroundDrawer {
 
@@ -34,7 +33,7 @@ public class GroundDrawer {
         //
     }
 
-    public void draw(GL2 gl, Point3d cameraPosition) {
+    public void draw(GL2 gl, Vector3dc cameraPosition) {
         gl.glEnable(GL2.GL_LIGHTING);
         gl.glEnable(GL2.GL_TEXTURE_2D);
 
@@ -49,14 +48,14 @@ public class GroundDrawer {
 
         double groundSize = 1500.0;
 
-        Point3d c = cameraPosition;
+        Vector3dc c = cameraPosition;
 
         // gl.glTexCoord2d(tc.left(), tc.bottom());
-        double xRight = c.x + groundSize;
-        double xLeft = c.x - groundSize;
+        double xRight = c.x() + groundSize;
+        double xLeft = c.x() - groundSize;
 
-        double zButtom = c.z + groundSize;
-        double zTop = c.z - groundSize;
+        double zButtom = c.z() + groundSize;
+        double zTop = c.z() - groundSize;
 
         gl.glNormal3d(0, 1, 0);
 

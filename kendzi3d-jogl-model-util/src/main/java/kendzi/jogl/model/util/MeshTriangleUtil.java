@@ -3,11 +3,10 @@ package kendzi.jogl.model.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
 import kendzi.jogl.model.geometry.Face;
 import kendzi.jogl.model.geometry.Mesh;
+import org.joml.Vector3dc;
 
 /**
  * Util for mesh conversion.
@@ -16,21 +15,24 @@ import kendzi.jogl.model.geometry.Mesh;
  *
  */
 public class MeshTriangleUtil {
+    private MeshTriangleUtil() {
+        // Hide constructor
+    }
 
     /**
-     * Converts given mesh into list of triangles. Triangles points are returned
-     * in single list. Size of that list is always factor of three. <br>
+     * Converts given mesh into list of triangles. Triangles points are returned in
+     * single list. Size of that list is always factor of three. <br>
      * <b> XXX This method is not optimal, should be re-write as iterator. </b>
      *
      * @param mesh
      *            mesh
      * @return list of triangles read from mesh
      */
-    public static List<Point3d> toTriangles(Mesh mesh) {
+    public static List<Vector3dc> toTriangles(Mesh mesh) {
 
-        List<Point3d> points = new ArrayList<Point3d>();
+        List<Vector3dc> points = new ArrayList<>();
 
-        Point3d[] vertices = mesh.vertices;
+        Vector3dc[] vertices = mesh.vertices;
         for (Face f : mesh.face) {
             List<Integer> ti = convertToTriangles(f.vertIndex, f.type);
 
@@ -42,7 +44,7 @@ public class MeshTriangleUtil {
     }
 
     private static List<Integer> convertToTriangles(int[] vertIndex, int type) {
-        ArrayList<Integer> ret = new ArrayList<Integer>();
+        ArrayList<Integer> ret = new ArrayList<>();
 
         if (type == FaceType.QUADS.getType()) {
 

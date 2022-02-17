@@ -6,14 +6,16 @@
 
 package kendzi.jogl.util;
 
-import javax.vecmath.Point3d;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2GL3;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
+import org.joml.Vector3dc;
 
 public class DrawUtil {
+    private DrawUtil() {
+        // Hide constructor
+    }
 
     public static void drawDotY(GL2 pGl, double radius, int numberOfPoints) {
 
@@ -226,98 +228,97 @@ public class DrawUtil {
         gl.glEnd();
     }
 
-    public static void drawFullBox(GL2 gl, Point3d max, Point3d min) {
+    public static void drawFullBox(GL2 gl, Vector3dc max, Vector3dc min) {
 
         // right
         gl.glBegin(GL2GL3.GL_QUADS);
         gl.glNormal3d(1d, 0, 0);
-        gl.glVertex3d(max.x, max.y, max.z);
-        gl.glVertex3d(max.x, min.y, max.z);
-        gl.glVertex3d(max.x, min.y, min.z);
-        gl.glVertex3d(max.x, max.y, min.z);
+        gl.glVertex3d(max.x(), max.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), min.z());
+        gl.glVertex3d(max.x(), max.y(), min.z());
 
         // back
         gl.glNormal3d(0, 0, -1d);
-        gl.glVertex3d(max.x, max.y, min.z);
-        gl.glVertex3d(max.x, min.y, min.z);
-        gl.glVertex3d(min.x, min.y, min.z);
-        gl.glVertex3d(min.x, max.y, min.z);
+        gl.glVertex3d(max.x(), max.y(), min.z());
+        gl.glVertex3d(max.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), min.z());
 
         // left
         gl.glNormal3d(-1d, 0, 0);
-        gl.glVertex3d(min.x, max.y, min.z);
-        gl.glVertex3d(min.x, min.y, min.z);
-        gl.glVertex3d(min.x, min.y, max.z);
-        gl.glVertex3d(min.x, max.y, max.z);
+        gl.glVertex3d(min.x(), max.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), max.z());
+        gl.glVertex3d(min.x(), max.y(), max.z());
 
         // front
         gl.glNormal3d(0, 0, 1d);
-        gl.glVertex3d(min.x, max.y, max.z);
-        gl.glVertex3d(min.x, min.y, max.z);
-        gl.glVertex3d(max.x, min.y, max.z);
-        gl.glVertex3d(max.x, max.y, max.z);
+        gl.glVertex3d(min.x(), max.y(), max.z());
+        gl.glVertex3d(min.x(), min.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), max.z());
+        gl.glVertex3d(max.x(), max.y(), max.z());
 
         // top
         gl.glNormal3d(0, 1d, 0);
-        gl.glVertex3d(max.x, max.y, max.z);
-        gl.glVertex3d(max.x, max.y, min.z);
-        gl.glVertex3d(min.x, max.y, min.z);
-        gl.glVertex3d(min.x, max.y, max.z);
+        gl.glVertex3d(max.x(), max.y(), max.z());
+        gl.glVertex3d(max.x(), max.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), max.z());
 
         // bottom
         gl.glNormal3d(0, -1d, 0);
-        gl.glVertex3d(max.x, min.y, max.z);
-        gl.glVertex3d(max.x, min.y, min.z);
-        gl.glVertex3d(min.x, min.y, min.z);
-        gl.glVertex3d(min.x, min.y, max.z);
+        gl.glVertex3d(max.x(), min.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), max.z());
 
         gl.glEnd();
     }
 
-    public static void drawBox(GL2 gl, Point3d max, Point3d min) {
-
+    public static void drawBox(GL2 gl, Vector3dc max, Vector3dc min) {
         gl.glBegin(GL.GL_LINES);
 
-        gl.glVertex3d(max.x, max.y, min.z);
-        gl.glVertex3d(min.x, max.y, min.z);
+        gl.glVertex3d(max.x(), max.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), min.z());
 
-        gl.glVertex3d(max.x, min.y, min.z);
-        gl.glVertex3d(min.x, min.y, min.z);
+        gl.glVertex3d(max.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), min.y(), min.z());
 
-        gl.glVertex3d(max.x, min.y, max.z);
-        gl.glVertex3d(min.x, min.y, max.z);
+        gl.glVertex3d(max.x(), min.y(), max.z());
+        gl.glVertex3d(min.x(), min.y(), max.z());
 
         gl.glEnd();
 
         gl.glBegin(GL.GL_LINE_LOOP);
 
-        gl.glVertex3d(max.x, max.y, max.z);
-        gl.glVertex3d(max.x, min.y, max.z);
-        gl.glVertex3d(max.x, min.y, min.z);
-        gl.glVertex3d(max.x, max.y, min.z);
-        gl.glVertex3d(max.x, max.y, max.z);
+        gl.glVertex3d(max.x(), max.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), max.z());
+        gl.glVertex3d(max.x(), min.y(), min.z());
+        gl.glVertex3d(max.x(), max.y(), min.z());
+        gl.glVertex3d(max.x(), max.y(), max.z());
 
-        gl.glVertex3d(min.x, max.y, max.z);
-        gl.glVertex3d(min.x, min.y, max.z);
-        gl.glVertex3d(min.x, min.y, min.z);
-        gl.glVertex3d(min.x, max.y, min.z);
-        gl.glVertex3d(min.x, max.y, max.z);
+        gl.glVertex3d(min.x(), max.y(), max.z());
+        gl.glVertex3d(min.x(), min.y(), max.z());
+        gl.glVertex3d(min.x(), min.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), min.z());
+        gl.glVertex3d(min.x(), max.y(), max.z());
 
         gl.glEnd();
     }
 
-    public static void drawFlatArrowY(GL2 gl, double lenght, double lenghtArrow, double widthBase, double widthArrow) {
+    public static void drawFlatArrowY(GL2 gl, double length, double lengthArrow, double widthBase, double widthArrow) {
 
-        double lenghtBase = lenght - lenghtArrow;
+        double lengthBase = length - lengthArrow;
 
         gl.glBegin(GL.GL_TRIANGLE_FAN);
-        gl.glVertex3d(lenght, 0, 0);
-        gl.glVertex3d(lenghtBase, 0, -widthArrow);
-        gl.glVertex3d(lenghtBase, 0, -widthBase);
+        gl.glVertex3d(length, 0, 0);
+        gl.glVertex3d(lengthBase, 0, -widthArrow);
+        gl.glVertex3d(lengthBase, 0, -widthBase);
         gl.glVertex3d(0, 0, -widthBase);
         gl.glVertex3d(0, 0, widthBase);
-        gl.glVertex3d(lenghtBase, 0, widthBase);
-        gl.glVertex3d(lenghtBase, 0, widthArrow);
+        gl.glVertex3d(lengthBase, 0, widthBase);
+        gl.glVertex3d(lengthBase, 0, widthArrow);
 
         gl.glEnd();
     }

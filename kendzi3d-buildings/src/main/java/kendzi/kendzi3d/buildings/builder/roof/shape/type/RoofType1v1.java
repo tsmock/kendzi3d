@@ -10,10 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.model.factory.MeshFactory;
 import kendzi.jogl.model.factory.MeshFactoryUtil;
 import kendzi.jogl.texture.dto.TextureData;
@@ -30,6 +26,8 @@ import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
 
 /**
  * Roof type 1.1.
@@ -46,9 +44,9 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
     @Override
     public RoofTypeOutput buildRectangleRoof(RectangleRoofTypeConf conf) {
 
-        Double h1 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_1, 0d);
-        Double h2 = getHeightDegreesMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_2, 0, conf.getRecHeight(), 30d);
-        Double h3 = getHeightDegreesMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_3, 0, conf.getRecWidth(), 30d);
+        double h1 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_1, 0d);
+        double h2 = getHeightDegreesMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_2, 0, conf.getRecHeight(), 30d);
+        double h3 = getHeightDegreesMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_3, 0, conf.getRecWidth(), 30d);
 
         return build(conf.getBuildingPolygon(), conf.getRecHeight(), conf.getRecWidth(), conf.getRectangleContur(), h1, h2, h3,
                 conf.getRoofTextureData());
@@ -66,14 +64,14 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
      * @return
      */
     protected RoofTypeOutput build(PolygonWithHolesList2d buildingPolygon, double recHeight, double recWidth,
-            Point2d[] rectangleContur, double h1, double h2, double h3, RoofMaterials roofTextureData) {
+            Vector2dc[] rectangleContur, double h1, double h2, double h3, RoofMaterials roofTextureData) {
 
         MeshFactory meshBorder = createFacadeMesh(roofTextureData);
         MeshFactory meshRoof = createRoofMesh(roofTextureData);
 
         TextureData roofTexture = roofTextureData.getRoof().getTextureData();
 
-        List<Point2d> pBorderList = buildingPolygon.getOuter().getPoints();
+        List<Vector2dc> pBorderList = buildingPolygon.getOuter().getPoints();
 
         PolygonList2d borderPolygon = new PolygonList2d(pBorderList);
         MultiPolygonList2d topMP = new MultiPolygonList2d(borderPolygon);
@@ -86,7 +84,7 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
 
         HeightCalculator hc = new MultiSplitHeightCalculator() {
             @Override
-            public double calcHeight(Point2d point) {
+            public double calcHeight(Vector2dc point) {
                 return RoofType1v1.calcHeight(point, planeTop);
             }
 
@@ -124,16 +122,11 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
      */
     private Plane3d createRoofPlane(double h1, double h2, double h3, double recWidth, double recHeight) {
 
-        Point3d p1 = new Point3d(0, h1, 0);
+        Vector3d p1 = new Vector3d(0, h1, 0);
 
-        Vector3d v2 = new Vector3d(0, h2, -recHeight);
-        v2.sub(p1);
+        Vector3d v2 = new Vector3d(0, h2, -recHeight).sub(p1);
 
-        Vector3d v3 = new Vector3d(recWidth, h3, 0);
-        v3.sub(p1);
-
-        Vector3d normal = new Vector3d();
-        normal.cross(v3, v2);
+        Vector3d normal = new Vector3d(recWidth, h3, 0).sub(p1).cross(v2);
 
         return new Plane3d(p1, normal);
     }
@@ -147,10 +140,10 @@ public class RoofType1v1 extends RectangleRoofTypeBuilder {
      *            the top plane
      * @return the height of point
      */
-    private static double calcHeight(Point2d point, Plane3d planeTop) {
+    private static double calcHeight(Vector2dc point, Plane3d planeTop) {
 
-        double x = point.x;
-        double z = -point.y;
+        double x = point.x();
+        double z = -point.y();
 
         return planeTop.calcYOfPlane(x, z);
     }

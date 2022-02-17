@@ -9,14 +9,16 @@
 
 package kendzi.jogl.model.factory;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.model.geometry.TextCoord;
 import kendzi.jogl.texture.dto.TextureData;
 import kendzi.math.geometry.Algebra;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 public class TextCordFactory {
+    private TextCordFactory() {
+        // Hide constructor
+    }
 
     /**
      * Texture projection on surface.
@@ -33,8 +35,8 @@ public class TextCordFactory {
      *            texture
      * @return uv cordinates for texture
      */
-    public static TextCoord calcFlatSurfaceUV(Point3d pPointToCalc, Vector3d pPlaneNormal, Vector3d pLineVector,
-            Point3d pStartPoint, TextureData pTexture) {
+    public static TextCoord calcFlatSurfaceUV(Vector3dc pPointToCalc, Vector3dc pPlaneNormal, Vector3dc pLineVector,
+            Vector3dc pStartPoint, TextureData pTexture) {
         return calcFlatSurfaceUV(pPointToCalc, pPlaneNormal, pLineVector, pStartPoint, pTexture, 0, 0);
     }
 
@@ -57,8 +59,8 @@ public class TextCordFactory {
      *            offset for texture V
      * @return uv cordinates for texture
      */
-    public static TextCoord calcFlatSurfaceUV(Point3d pPointToCalc, Vector3d pPlaneNormal, Vector3d pLineVector,
-            Point3d pStartPoint, TextureData pTexture, double textureOffsetU, double textureOffsetV) {
+    public static TextCoord calcFlatSurfaceUV(Vector3dc pPointToCalc, Vector3dc pPlaneNormal, Vector3dc pLineVector,
+            Vector3dc pStartPoint, TextureData pTexture, double textureOffsetU, double textureOffsetV) {
 
         Vector3d p = new Vector3d(pPointToCalc);
         Vector3d base = new Vector3d(pStartPoint);
@@ -66,7 +68,7 @@ public class TextCordFactory {
 
         p.add(base);
 
-        Vector3d orthogonalProjectionU = Algebra.orthogonalProjection(pLineVector, p);
+        Vector3dc orthogonalProjectionU = Algebra.orthogonalProjection(pLineVector, p);
 
         double u = orthogonalProjectionU.length() / pTexture.getWidth();
 
@@ -74,12 +76,10 @@ public class TextCordFactory {
             u = u * -1;
         }
 
-        Vector3d cross = new Vector3d();
-
-        cross.cross(pPlaneNormal, pLineVector);
+        Vector3d cross = pPlaneNormal.cross(pLineVector, new Vector3d());
         // cross.cross(pLineVector, pPlaneNormal);
 
-        Vector3d orthogonalProjectionV = Algebra.orthogonalProjection(cross, p);
+        Vector3dc orthogonalProjectionV = Algebra.orthogonalProjection(cross, p);
 
         double v = orthogonalProjectionV.length() / pTexture.getHeight();
 

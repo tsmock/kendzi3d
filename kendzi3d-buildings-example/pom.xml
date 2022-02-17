@@ -4,6 +4,10 @@
   <artifactId>kendzi3d-buildings-example</artifactId>
   <dependencies>
     <dependency>
+      <groupId>org.joml</groupId>
+      <artifactId>joml</artifactId>
+    </dependency>
+    <dependency>
       <groupId>kendzi.kendzi3d</groupId>
       <artifactId>kendzi3d-jogl-model-util</artifactId>
       <version>1.0.206-SNAPSHOT</version>

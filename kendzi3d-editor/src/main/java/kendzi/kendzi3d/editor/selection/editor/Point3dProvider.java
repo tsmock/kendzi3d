@@ -1,14 +1,14 @@
 package kendzi.kendzi3d.editor.selection.editor;
 
-import javax.vecmath.Point3d;
+import org.joml.Vector3dc;
 
 /**
  * Simple wrapper for Point3d class. Point3d don't have setters and getters so
  * we need simple proxy to control values before they are read.
  */
-public class Point3dProvider {
+public class Point3dProvider<P extends Vector3dc> {
 
-    private final Point3d point;
+    private final P point;
 
     /**
      * Constructor.
@@ -16,7 +16,7 @@ public class Point3dProvider {
      * @param point
      *            provided point
      */
-    public Point3dProvider(Point3d point) {
+    public Point3dProvider(P point) {
         this.point = point;
     }
 
@@ -25,7 +25,7 @@ public class Point3dProvider {
      * 
      * @return point
      */
-    public Point3d provide() {
+    public P provide() {
         return point;
-    };
+    }
 }

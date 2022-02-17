@@ -12,10 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.model.factory.MaterialFactory;
 import kendzi.jogl.model.factory.MeshFactory;
 import kendzi.jogl.model.factory.ModelFactory;
@@ -40,6 +36,9 @@ import kendzi.kendzi3d.buildings.output.RoofDebugOutput;
 import kendzi.math.geometry.point.TransformationMatrix3d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import org.ejml.simple.SimpleMatrix;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  * Builder for solid roof with shapes described by name and world description.
@@ -48,6 +47,9 @@ import org.ejml.simple.SimpleMatrix;
  * @author Tomasz Kędziora (kendzi)
  */
 public class ShapeRoofBuilder {
+    private ShapeRoofBuilder() {
+        // Hide constructor
+    }
 
     /**
      * Shape roof builder.
@@ -85,9 +87,9 @@ public class ShapeRoofBuilder {
 
         PolygonWithHolesList2d buildingPolygon = BuildingUtil.buildingPartToPolygonWithHoles(buildingPart);
 
-        List<Point2d> polygon = buildingPolygon.getOuter().getPoints();
+        List<Vector2dc> polygon = buildingPolygon.getOuter().getPoints();
 
-        Point2d startPoint = polygon.get(0);
+        Vector2dc startPoint = polygon.get(0);
 
         RoofTypeBuilder roofType = getRoofType(dormerRoof);
 
@@ -158,27 +160,25 @@ public class ShapeRoofBuilder {
 
         SimpleMatrix normalMatrix = transformationMatrix.invert().transpose();
 
-        Set<Vector3d> procesed = new HashSet<Vector3d>();
+        Set<Vector3dc> procesed = new HashSet<>();
 
-        List<Point3d> vertices = new ArrayList<Point3d>();
+        List<Vector3dc> vertices = new ArrayList<>();
         for (int i = 0; i < mesh.vertices.size(); i++) {
-            Point3d p = mesh.vertices.get(i);
+            Vector3dc p = mesh.vertices.get(i);
 
-            vertices.add(TransformationMatrix3d.transform(p, transformationMatrix));
+            vertices.add(TransformationMatrix3d.transform(p, transformationMatrix, true));
         }
         mesh.vertices = vertices;
 
-        List<Vector3d> normals = new ArrayList<Vector3d>();
+        List<Vector3dc> normals = new ArrayList<>();
         for (int i = 0; i < mesh.normals.size(); i++) {
-            Vector3d v = mesh.normals.get(i);
+            Vector3dc v = mesh.normals.get(i);
             // if (procesed.contains(v)) {
             // continue;
             // }
             procesed.add(v);
 
-            v = TransformationMatrix3d.transform(v, normalMatrix);
-            // XXX !!!;
-            v.normalize();
+            v = new Vector3d(TransformationMatrix3d.transform(v, normalMatrix, false)).normalize();
 
             normals.add(v);
         }
@@ -186,17 +186,17 @@ public class ShapeRoofBuilder {
     }
 
     private static RoofDebugOutput buildDebugInfo(RoofTypeOutput rto, List<RoofDormerTypeOutput> roofExtensionsList,
-            Point2d startPoint, double height) {
+            Vector2dc startPoint, double height) {
 
-        Point3d startPointMark = new Point3d(startPoint.x, height, -startPoint.y);
+        Vector3dc startPointMark = new Vector3d(startPoint.x(), height, -startPoint.y());
 
-        List<Point3d> rectangleTransf = new ArrayList<Point3d>();
+        List<Vector3dc> rectangleTransf = new ArrayList<>();
 
-        List<Point3d> rectangle = rto.getRectangle();
+        List<Vector3dc> rectangle = rto.getRectangle();
         for (int i = 0; i < rectangle.size(); i++) {
-            Point3d p = rectangle.get(i);
+            Vector3dc p = rectangle.get(i);
 
-            rectangleTransf.add(TransformationMatrix3d.transform(p, rto.getTransformationMatrix()));
+            rectangleTransf.add(TransformationMatrix3d.transform(p, rto.getTransformationMatrix(), true));
         }
         rto.setRectangle(rectangleTransf);
         RoofDebugOutput out = new RoofDebugOutput();

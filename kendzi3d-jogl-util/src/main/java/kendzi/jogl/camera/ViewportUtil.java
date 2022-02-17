@@ -1,13 +1,14 @@
 package kendzi.jogl.camera;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
+import org.joml.Vector3dc;
 
 public class ViewportUtil {
+    private ViewportUtil() {
+        // Hide constructor
+    }
 
     /**
      * Setup camera position and direction.
@@ -23,12 +24,13 @@ public class ViewportUtil {
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
 
-        Point3d position = viewport.getPosition();
-        Vector3d lookAt = viewport.getLookAt();
-        Vector3d lookUp = viewport.getLookUp();
+        Vector3dc position = viewport.getPosition();
+        Vector3dc lookAt = viewport.getLookAt();
+        Vector3dc lookUp = viewport.getLookUp();
 
         // sets camera position and direction
-        new GLU().gluLookAt(position.x, position.y, position.z, lookAt.x, lookAt.y, lookAt.z, lookUp.x, lookUp.y, lookUp.z);
+        new GLU().gluLookAt(position.x(), position.y(), position.z(), lookAt.x(), lookAt.y(), lookAt.z(), lookUp.x(), lookUp.y(),
+                lookUp.z());
     }
 
     /**

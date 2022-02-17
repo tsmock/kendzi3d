@@ -9,13 +9,8 @@ package kendzi.josm.kendzi3d.jogl.model.building;
 import java.awt.Color;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -56,6 +51,9 @@ import kendzi.math.geometry.bbox.Bbox2d;
 import kendzi.math.geometry.line.LineSegment3d;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.PrimitiveId;
@@ -88,7 +86,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
     private OsmPrimitive primitive;
 
-    private List<Selection> selection = Collections.<Selection> emptyList();
+    private List<Selection> selection = Collections.emptyList();
 
     private Bounds bounds;
 
@@ -98,7 +96,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
     private BuildingDebugData debug;
 
-    private final static float[] ROOF_EDGES_COLOR = ColorUtil.colorToArray(Color.RED.darker());
+    private static final float[] ROOF_EDGES_COLOR = ColorUtil.colorToArray(Color.RED.darker());
 
     private List<Editor> editors;
 
@@ -172,8 +170,8 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
     private BuildingDebugData prepareDebugInformation(BuildingOutput buildModel) {
         BuildingDebugData d = new BuildingDebugData();
 
-        List<LineSegment3d> edges = new ArrayList<LineSegment3d>();
-        List<BuildingDebugDrawer> debugPart = new ArrayList<BuildingDebugDrawer>();
+        List<LineSegment3d> edges = new ArrayList<>();
+        List<BuildingDebugDrawer> debugPart = new ArrayList<>();
 
         if (buildModel.getBuildingPartOutput() != null) {
             for (BuildingPartOutput bo : buildModel.getBuildingPartOutput()) {
@@ -199,7 +197,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
     private List<Selection> parseSelection(long wayId, final BuildingModel bm) {
 
         {
-            List<Editor> updatedEditors = new ArrayList<Editor>();
+            List<Editor> updatedEditors = new ArrayList<>();
             List<BuildingPart> parts = bm.getParts();
             if (parts != null) {
                 for (final BuildingPart bp : parts) {
@@ -219,7 +217,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
                                     getBuildingPart().setMaxHeight(value);
 
                                     generatePreview();
-                                };
+                                }
 
                             };
                             editorHeight.setOffset(0.1);
@@ -235,7 +233,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
                         double minHeight = bp.getDefaultMinHeight();
                         double maxHeight = bp.getDefaultMaxHeight();
-                        Point3d partCenter = new Point3d( //
+                        Vector3d partCenter = new Vector3d( //
                                 (bounds.getxMax() + bounds.getxMin()) / 2d, //
                                 minHeight, //
                                 -(bounds.getyMax() + bounds.getyMin()) / 2d);
@@ -271,7 +269,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
                                 }
 
                                 generatePreview();
-                            };
+                            }
 
                             @Override
                             protected void updateTags(AbstractMap<String, String> tags) {
@@ -296,9 +294,8 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
                     double roofHeight = bp.getRoof().getRoofHeight();
 
                     final CachePoint3dProvider roofHeightCenter = new CachePoint3dProvider() {
-
                         @Override
-                        public void beforeProvide(Point3d point) {
+                        public void beforeProvide(Vector3d point) {
                             point.x = (bounds.getxMax() + bounds.getxMin()) / 2d;
                             point.y = bp.getDefaultMaxHeight();
                             point.z = -(bounds.getyMax() + bounds.getyMin()) / 2d;
@@ -326,10 +323,10 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
                 for (WallPart wp : wallParts) {
                     for (WallNode wn : wp.getNodes()) {
 
-                        Point2d p = wn.getPoint();
+                        Vector2dc p = wn.getPoint();
 
-                        bf.addPoint(p.x, bp.getDefaultMinHeight(), -p.y);
-                        bf.addPoint(p.x, bp.getDefaultMaxHeight(), -p.y);
+                        bf.addPoint(p.x(), bp.getDefaultMinHeight(), -p.y());
+                        bf.addPoint(p.x(), bp.getDefaultMaxHeight(), -p.y());
                     }
                 }
             }
@@ -338,7 +335,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
         final Bounds bounds = bf.toBounds();
         this.bounds = bounds;
 
-        return Arrays.asList((Selection) new ModelSelection(bounds.getCenter(), bounds.getRadius()) {
+        return Collections.singletonList(new ModelSelection(bounds.getCenter(), bounds.getRadius()) {
 
             @Override
             public List<Editor> getEditors() {
@@ -388,7 +385,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
         for (WallPart wp : wallParts) {
             for (WallNode wn : wp.getNodes()) {
 
-                Point2d p = wn.getPoint();
+                Vector2dc p = wn.getPoint();
 
                 bbox.addPoint(p);
             }
@@ -407,9 +404,9 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
         // XXX move draw debug do new method
         gl.glPushMatrix();
 
-        Point3d position = getPosition();
+        Vector3dc position = getPosition();
 
-        gl.glTranslated(position.x, position.y, position.z);
+        gl.glTranslated(position.x(), position.y(), position.z());
 
         modelRender.render(gl, model);
 
@@ -432,11 +429,11 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
             gl.glBegin(GL.GL_LINES);
 
-            Point3d begin = line.getBegin();
-            Point3d end = line.getEnd();
+            Vector3dc begin = line.getBegin();
+            Vector3dc end = line.getEnd();
 
-            gl.glVertex3d(begin.x, begin.y, begin.z);
-            gl.glVertex3d(end.x, end.y, end.z);
+            gl.glVertex3d(begin.x(), begin.y(), begin.z());
+            gl.glVertex3d(end.x(), end.y(), end.z());
 
             gl.glEnd();
         }
@@ -449,7 +446,7 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
         }
 
         return Collections
-                .singletonList(new ExportItem(model, new Point3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
+                .singletonList(new ExportItem(model, new Vector3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
     }
 
     @Override
@@ -468,13 +465,13 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
     }
 
     @Override
-    public Point3d getPosition() {
+    public Vector3dc getPosition() {
         return getPoint();
     }
 
     private static class BuildingDebugData {
 
-        private List<BuildingDebugDrawer> debugParts = new ArrayList<BuildingDebugDrawer>();
+        private List<BuildingDebugDrawer> debugParts = new ArrayList<>();
         private List<LineSegment3d> edges;
 
         /**
@@ -518,9 +515,9 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
         gl.glPushMatrix();
 
-        Point3d position = getPosition();
+        Vector3dc position = getPosition();
 
-        gl.glTranslated(position.x, position.y, position.z);
+        gl.glTranslated(position.x(), position.y(), position.z());
 
         if (debug != null && debug.getEdges() != null) {
             drawEdges(gl, debug.getEdges());

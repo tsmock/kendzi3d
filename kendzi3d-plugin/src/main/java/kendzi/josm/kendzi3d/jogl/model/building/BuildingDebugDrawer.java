@@ -6,13 +6,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import kendzi.jogl.util.DrawUtil;
 import kendzi.kendzi3d.buildings.output.RoofDebugOutput;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  * 
@@ -36,7 +35,7 @@ public class BuildingDebugDrawer {
     private final static float SCALE_FACTOR = 0.01f;
 
     protected RoofDebugOutput debug;
-    private List<Point3d> scaledBBox;
+    private List<Vector3dc> scaledBBox;
 
     /**
      * @param debug
@@ -63,23 +62,23 @@ public class BuildingDebugDrawer {
 
         gl.glBegin(GL2.GL_LINE_LOOP);
 
-        List<Point3d> rectangle = scaledBBox();
+        List<Vector3dc> rectangle = scaledBBox();
 
         for (int i = 0; i < rectangle.size(); i++) {
 
-            Point3d point3d = rectangle.get(i);
+            Vector3dc point3d = rectangle.get(i);
 
-            gl.glVertex3d(point3d.x, point3d.y, point3d.z);
+            gl.glVertex3d(point3d.x(), point3d.y(), point3d.z());
 
         }
         gl.glEnd();
 
         for (int i = 0; i < rectangle.size(); i++) {
-            Point3d point3d = rectangle.get(i);
-            drawAxisText(gl, ("rec point " + (i + 1)), point3d.x, point3d.y, point3d.z);
+            Vector3dc point3d = rectangle.get(i);
+            drawAxisText(gl, ("rec point " + (i + 1)), point3d.x(), point3d.y(), point3d.z());
         }
         //
-        // Point2d point2d = this.firstPoint;
+        // Vector2dc point2d = this.firstPoint;
 
         float[] rgba = new float[4];
         // green
@@ -87,9 +86,9 @@ public class BuildingDebugDrawer {
 
         if (this.debug != null && this.debug.getStartPoint() != null) {
 
-            double x = this.debug.getStartPoint().x;
-            double y = this.debug.getStartPoint().y;
-            double z = this.debug.getStartPoint().z;
+            double x = this.debug.getStartPoint().x();
+            double y = this.debug.getStartPoint().y();
+            double z = this.debug.getStartPoint().z();
             double d = 0.25;
 
             gl.glPushMatrix();
@@ -103,7 +102,7 @@ public class BuildingDebugDrawer {
 
     }
 
-    private List<Point3d> scaledBBox() {
+    private List<Vector3dc> scaledBBox() {
         if (this.scaledBBox == null) {
             this.scaledBBox = scalePolygon3d(this.debug.getBbox(), 0.1d);
         }
@@ -119,32 +118,32 @@ public class BuildingDebugDrawer {
      *            scale
      * @return scaled polygon
      */
-    public static List<Point3d> scalePolygon3d(List<Point3d> points, double scale) {
+    public static List<Vector3dc> scalePolygon3d(List<Vector3dc> points, double scale) {
 
         if (points == null) {
             return null;
         }
 
-        List<Point3d> ret = new ArrayList<Point3d>();
+        List<Vector3dc> ret = new ArrayList<>();
         double middleX = 0;
         double middleY = 0;
         double middleZ = 0;
 
-        for (Point3d p : points) {
-            middleX = middleX + p.x;
-            middleY = middleY + p.y;
-            middleZ = middleZ + p.z;
+        for (Vector3dc p : points) {
+            middleX = middleX + p.x();
+            middleY = middleY + p.y();
+            middleZ = middleZ + p.z();
         }
 
-        Point3d middle = new Point3d(middleX / points.size(), middleY / points.size(), middleZ / points.size());
+        Vector3dc middle = new Vector3d(middleX / points.size(), middleY / points.size(), middleZ / points.size());
 
-        for (Point3d p : points) {
+        for (Vector3dc p : points) {
             Vector3d v = new Vector3d(p);
             v.sub(middle);
             v.normalize();
-            v.scale(scale);
+            v.mul(scale);
 
-            Point3d bigger = new Point3d(p);
+            Vector3d bigger = new Vector3d(p);
             bigger.add(v);
             ret.add(bigger);
         }

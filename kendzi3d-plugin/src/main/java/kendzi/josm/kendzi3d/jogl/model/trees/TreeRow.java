@@ -12,11 +12,6 @@ import java.util.List;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector2d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -31,7 +26,10 @@ import kendzi.josm.kendzi3d.service.ModelCacheService;
 import kendzi.josm.kendzi3d.util.ModelUtil;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import kendzi.kendzi3d.world.MultiPointWorldObject;
-
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.osm.Way;
 
 /**
@@ -66,7 +64,7 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
 
     Vector3d scale;
 
-    private List<Point2d> hookPoints;
+    private List<Vector2dc> hookPoints;
 
     private Integer numOfTrees;
 
@@ -80,7 +78,7 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
             MetadataCacheService metadataCacheService) {
         super(pWay, perspective);
 
-        modelLod = new EnumMap<LOD, Model>(LOD.class);
+        modelLod = new EnumMap<>(LOD.class);
 
         scale = new Vector3d(1d, 1d, 1d);
 
@@ -124,7 +122,7 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
         }
     }
 
-    private List<Point2d> calsHookPoints(List<Point2d> points, Integer numOfTrees) {
+    private List<Vector2dc> calsHookPoints(List<Vector2dc> points, Integer numOfTrees) {
 
         double distance = calcDistance(points);
 
@@ -132,15 +130,15 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
             numOfTrees = (int) Math.round(distance / 5d);
         }
 
-        List<Point2d> ret = new ArrayList<Point2d>();
+        List<Vector2dc> ret = new ArrayList<>();
 
         double repeatEvery = distance / numOfTrees;
 
         double lastOffset = 0;
 
-        Point2d b = points.get(0);
+        Vector2dc b = points.get(0);
         for (int i = 1; i < points.size(); i++) {
-            Point2d e = points.get(i);
+            Vector2dc e = points.get(i);
             distance = e.distance(b);
 
             lastOffset = splitVector(b, e, lastOffset, repeatEvery, ret);
@@ -152,7 +150,7 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
         return ret;
     }
 
-    private double splitVector(Point2d b, Point2d e, double left, double every, List<Point2d> ret) {
+    private double splitVector(Vector2dc b, Vector2dc e, double left, double every, List<Vector2dc> ret) {
         Vector2d v = new Vector2d(e);
         v.sub(b);
         double distance = v.length();
@@ -162,16 +160,14 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
 
         v.normalize();
 
-        Vector2d beginVector = new Vector2d(v);
-        beginVector.scale(left);
+        Vector2d beginVector = new Vector2d(v).mul(left);
 
-        Vector2d everyVector = new Vector2d(v);
-        everyVector.scale(every);
+        Vector2d everyVector = new Vector2d(v).mul(every);
 
         Vector2d repeat = beginVector;
 
         do {
-            ret.add(new Point2d(b.x + repeat.x, b.y + repeat.y));
+            ret.add(new Vector2d(b.x() + repeat.x(), b.y() + repeat.y()));
 
             repeat.add(everyVector);
 
@@ -182,16 +178,16 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
 
     }
 
-    private double calcDistance(List<Point2d> points) {
+    private double calcDistance(List<Vector2dc> points) {
 
         if (points == null || points.size() < 2) {
             return 0d;
         }
         double distance = 0;
 
-        Point2d b = points.get(0);
+        Vector2dc b = points.get(0);
         for (int i = 1; i < points.size(); i++) {
-            Point2d e = points.get(i);
+            Vector2dc e = points.get(i);
             distance = distance + e.distance(b);
 
             b = e;
@@ -203,9 +199,9 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
 
         Bounds bounds = model2.getBounds();
 
-        double modelHeight = bounds.max.y;
+        double modelHeight = bounds.max.y();
 
-        double modelWidht = Math.max(bounds.max.x - bounds.min.x, bounds.max.z - bounds.min.z);
+        double modelWidht = Math.max(bounds.max.x() - bounds.min.x(), bounds.max.z() - bounds.min.z());
 
         double modelScaleHeight = height / modelHeight;
 
@@ -234,13 +230,13 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
 
             gl.glEnable(GLLightingFunc.GL_NORMALIZE);
 
-            for (Point2d hook : hookPoints) {
+            for (Vector2dc hook : hookPoints) {
 
                 gl.glPushMatrix();
 
-                gl.glTranslated(getGlobalX() + hook.x, 0, -(getGlobalY() + hook.y));
+                gl.glTranslated(getGlobalX() + hook.x(), 0, -(getGlobalY() + hook.y()));
 
-                gl.glScaled(scale.x, scale.y, scale.z);
+                gl.glScaled(scale.x(), scale.y(), scale.z());
 
                 modelRender.render(gl, model2);
 
@@ -267,13 +263,13 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
             buildModel(LOD.LOD1);
         }
 
-        List<ExportItem> ret = new ArrayList<ExportItem>();
+        List<ExportItem> ret = new ArrayList<>();
 
-        for (Point2d hook : hookPoints) {
+        for (Vector2dc hook : hookPoints) {
 
-            Point3d p = new Point3d(getGlobalX() + hook.x, 0, -(getGlobalY() + hook.y));
+            Vector3d p = new Vector3d(getGlobalX() + hook.x(), 0, -(getGlobalY() + hook.y()));
 
-            Vector3d s = new Vector3d(scale.x, scale.y, scale.z);
+            Vector3d s = new Vector3d(scale.x(), scale.y(), scale.z());
             ret.add(new ExportItem(modelLod.get(LOD.LOD1), p, s));
 
         }
@@ -281,11 +277,11 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
     }
 
     @Override
-    public List<Point3d> getPoints() {
-        List<Point3d> ret = new ArrayList<Point3d>();
+    public List<Vector3dc> getPoints() {
+        List<Vector3dc> ret = new ArrayList<>();
 
-        for (Point2d hook : hookPoints) {
-            ret.add(new Point3d(hook.x, 0, -hook.y));
+        for (Vector2dc hook : hookPoints) {
+            ret.add(new Vector3d(hook.x(), 0, -hook.y()));
         }
         return ret;
     }
@@ -296,7 +292,7 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
     }
 
     @Override
-    public Point3d getPosition() {
+    public Vector3dc getPosition() {
         return getPoint();
     }
 }

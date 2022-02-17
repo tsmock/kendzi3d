@@ -1,19 +1,19 @@
 package kendzi.kendzi3d.editor.selection.editor;
 
-import javax.vecmath.Point3d;
+import org.joml.Vector3d;
 
 /**
- * Simple proxy around Point3d class. Store new instance of point. When point is
- * provided allow to implement method beforeProvide which could re-calculate
+ * Simple proxy around Vector3d class. Store new instance of point. When point
+ * is provided allow to implement method beforeProvide which could re-calculate
  * value of point.
  */
-public abstract class CachePoint3dProvider extends Point3dProvider {
+public abstract class CachePoint3dProvider extends Point3dProvider<Vector3d> {
 
     /**
      * Constructor.
      */
     public CachePoint3dProvider() {
-        super(new Point3d());
+        super(new Vector3d());
     }
 
     /**
@@ -22,13 +22,13 @@ public abstract class CachePoint3dProvider extends Point3dProvider {
      * @param point
      *            point which will be cached
      */
-    public CachePoint3dProvider(Point3d point) {
-        super(new Point3d(point));
+    public CachePoint3dProvider(Vector3d point) {
+        super(new Vector3d(point));
     }
 
     @Override
-    public Point3d provide() {
-        Point3d point = super.provide();
+    public Vector3d provide() {
+        Vector3d point = new Vector3d(super.provide());
         beforeProvide(point);
         return point;
     }
@@ -39,5 +39,5 @@ public abstract class CachePoint3dProvider extends Point3dProvider {
      * @param cached
      *            local cache of value
      */
-    public abstract void beforeProvide(Point3d cached);
+    public abstract void beforeProvide(Vector3d cached);
 }

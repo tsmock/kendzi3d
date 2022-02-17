@@ -9,10 +9,6 @@ package kendzi.kendzi3d.buildings.builder.roof.shape.type;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.model.factory.MeshFactory;
 import kendzi.jogl.model.factory.MeshFactoryUtil;
 import kendzi.jogl.texture.dto.TextureData;
@@ -28,6 +24,9 @@ import kendzi.math.geometry.polygon.MultiPolygonList2d;
 import kendzi.math.geometry.polygon.PolygonList2d;
 import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import kendzi.math.geometry.polygon.split.PolygonSplitHelper;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
 
 /**
  * Roof type 4.2.
@@ -39,11 +38,11 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
     @Override
     public RoofTypeOutput buildRectangleRoof(RectangleRoofTypeConf conf) {
 
-        Double h1 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_1, 2.5d);
-        Double h2 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_2, h1 * 2d / 3d);
+        double h1 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_1, 2.5d);
+        double h2 = getHeightMeters(conf.getMeasurements(), MeasurementKey.HEIGHT_2, h1 * 2d / 3d);
 
-        Double l2 = getLenghtMetersPersent(conf.getMeasurements(), MeasurementKey.LENGTH_2, conf.getRecHeight() / 2,
-                conf.getRecHeight() / 2d * 1d / 3d);
+        double l2 = getLenghtMetersPersent(conf.getMeasurements(), MeasurementKey.LENGTH_2, conf.getRecHeight() / 2,
+                conf.getRecHeight() / 2d / 3d);
 
         return build(conf.getBuildingPolygon(), conf.getRecHeight(), conf.getRecWidth(), conf.getRectangleContur(), h1, h2, l2,
                 conf.getRoofTextureData());
@@ -65,9 +64,9 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
      * @return
      */
     protected RoofTypeOutput build(PolygonWithHolesList2d buildingPolygon, double recHeight, double recWidth,
-            Point2d[] rectangleContur, double h1, double h2, double l2, RoofMaterials roofTextureData) {
+            Vector2dc[] rectangleContur, double h1, double h2, double l2, RoofMaterials roofTextureData) {
 
-        List<Point2d> pBorderList = buildingPolygon.getOuter().getPoints();
+        List<Vector2dc> pBorderList = buildingPolygon.getOuter().getPoints();
 
         MeshFactory meshBorder = createFacadeMesh(roofTextureData);
         MeshFactory meshRoof = createRoofMesh(roofTextureData);
@@ -76,17 +75,17 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
 
         double halfRecHeight = 0.5d * recHeight;
 
-        Point2d rightTop = new Point2d(recWidth, recHeight);
-        Point2d rightMiddleTopPoint = new Point2d(recWidth - l2, recHeight - l2);
-        Point2d rightCenterPoint = new Point2d(recWidth - halfRecHeight, halfRecHeight);
-        Point2d rightMiddleBottomPoint = new Point2d(recWidth - l2, l2);
-        Point2d rightBottom = new Point2d(recWidth, 0);
+        Vector2d rightTop = new Vector2d(recWidth, recHeight);
+        Vector2d rightMiddleTopPoint = new Vector2d(recWidth - l2, recHeight - l2);
+        Vector2d rightCenterPoint = new Vector2d(recWidth - halfRecHeight, halfRecHeight);
+        Vector2d rightMiddleBottomPoint = new Vector2d(recWidth - l2, l2);
+        Vector2d rightBottom = new Vector2d(recWidth, 0);
 
-        Point2d leftTop = new Point2d(0, recHeight);
-        Point2d leftMiddleTopPoint = new Point2d(l2, recHeight - l2);
-        Point2d leftCenterPoint = new Point2d(halfRecHeight, halfRecHeight);
-        Point2d leftMiddleBottomPoint = new Point2d(l2, l2);
-        Point2d leftBottom = new Point2d(0, 0);
+        Vector2d leftTop = new Vector2d(0, recHeight);
+        Vector2d leftMiddleTopPoint = new Vector2d(l2, recHeight - l2);
+        Vector2d leftCenterPoint = new Vector2d(halfRecHeight, halfRecHeight);
+        Vector2d leftMiddleBottomPoint = new Vector2d(l2, l2);
+        Vector2d leftBottom = new Vector2d(0, 0);
 
         final LinePoints2d tLine = new LinePoints2d(leftMiddleTopPoint, rightMiddleTopPoint);
         final LinePoints2d mLine = new LinePoints2d(leftCenterPoint, rightCenterPoint);
@@ -101,24 +100,16 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
         final LinePoints2d rtLine = new LinePoints2d(rightTop, rightCenterPoint);
         final LinePoints2d rbLine = new LinePoints2d(rightCenterPoint, rightBottom);
 
-        Vector3d nt = new Vector3d(0, l2, -h2);
-        nt.normalize();
-        Vector3d nmt = new Vector3d(0, recHeight * 0.5d - l2, -(h1 - h2));
-        nmt.normalize();
+        Vector3d nt = new Vector3d(0, l2, -h2).normalize();
+        Vector3d nmt = new Vector3d(0, recHeight * 0.5d - l2, -(h1 - h2)).normalize();
 
-        Vector3d nmb = new Vector3d(0, recHeight * 0.5d - l2, h1 - h2);
-        nmb.normalize();
-        Vector3d nb = new Vector3d(0, l2, h2);
-        nb.normalize();
+        Vector3d nmb = new Vector3d(0, recHeight * 0.5d - l2, h1 - h2).normalize();
+        Vector3d nb = new Vector3d(0, l2, h2).normalize();
 
-        Vector3d nr = new Vector3d(h2, l2, 0);
-        nr.normalize();
-        Vector3d nmr = new Vector3d(h1 - h2, recHeight * 0.5d - l2, 0);
-        nmr.normalize();
-        Vector3d nl = new Vector3d(-h2, l2, 0);
-        nl.normalize();
-        Vector3d nml = new Vector3d(-(h1 - h2), recHeight * 0.5d - l2, 0);
-        nml.normalize();
+        Vector3d nr = new Vector3d(h2, l2, 0).normalize();
+        Vector3d nmr = new Vector3d(h1 - h2, recHeight * 0.5d - l2, 0).normalize();
+        Vector3d nl = new Vector3d(-h2, l2, 0).normalize();
+        Vector3d nml = new Vector3d(-(h1 - h2), recHeight * 0.5d - l2, 0).normalize();
 
         PolygonList2d borderPolygon = new PolygonList2d(pBorderList);
         MultiPolygonList2d borderMultiPolygon = new MultiPolygonList2d(borderPolygon);
@@ -142,9 +133,9 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
         MultiPolygonList2d rightMiddleMP = intersectionOfLeftSideOfMultipleCuts(borderMultiPolygon, rightMiddleBottomPoint,
                 rightMiddleTopPoint, rightCenterPoint, rightMiddleBottomPoint);
 
-        Point3d planeLeftBottomPoint = new Point3d(leftMiddleBottomPoint.x, h2, -leftMiddleBottomPoint.y);
+        Vector3d planeLeftBottomPoint = new Vector3d(leftMiddleBottomPoint.x, h2, -leftMiddleBottomPoint.y);
 
-        Point3d planeRightTopPoint = new Point3d(rightMiddleTopPoint.x, h2, -rightMiddleTopPoint.y);
+        Vector3d planeRightTopPoint = new Vector3d(rightMiddleTopPoint.x, h2, -rightMiddleTopPoint.y);
 
         final Plane3d planeBottom = new Plane3d(planeLeftBottomPoint, nb);
 
@@ -181,7 +172,7 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
 
         HeightCalculator hc = new MultiSplitHeightCalculator() {
             @Override
-            public double calcHeight(Point2d point) {
+            public double calcHeight(Vector2dc point) {
                 return RoofType4v2.calcHeight(point, mLine, bLine, tLine, lLine, rLine, lbLine, ltLine, rtLine, rbLine, planeTop,
                         planeMiddleTop, planeMiddleBottom, planeBottom, planeLeft, planeMiddleLeft, planeRight, planeMiddleRight);
             }
@@ -205,9 +196,9 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
         return rto;
     }
 
-    public static MultiPolygonList2d intersectionOfLeftSideOfMultipleCuts(MultiPolygonList2d polygons, Point2d... lines) {
+    public static MultiPolygonList2d intersectionOfLeftSideOfMultipleCuts(MultiPolygonList2d polygons, Vector2dc... lines) {
         return PolygonSplitHelper.intersectionOfLeftSideOfMultipleCuts(polygons,
-                PolygonSplitHelper.polygonalChaniToLineArray(lines));
+                PolygonSplitHelper.polygonalChainToLineArray(lines));
     }
 
     /**
@@ -231,13 +222,13 @@ public class RoofType4v2 extends RectangleRoofTypeBuilder {
      *            the bottom plane
      * @return the height
      */
-    private static double calcHeight(Point2d point, LinePoints2d mLine, LinePoints2d bLine, LinePoints2d tLine,
+    private static double calcHeight(Vector2dc point, LinePoints2d mLine, LinePoints2d bLine, LinePoints2d tLine,
             LinePoints2d lLine, LinePoints2d rLine, LinePoints2d lbLine, LinePoints2d ltLine, LinePoints2d rtLine,
             LinePoints2d rbLine, Plane3d planeTop, Plane3d planeMiddleTop, Plane3d planeMiddleBottom, Plane3d planeBottom,
             Plane3d planeLeft, Plane3d planeMiddleLeft, Plane3d planeRight, Plane3d planeMiddleRight) {
 
-        double x = point.x;
-        double z = -point.y;
+        double x = point.x();
+        double z = -point.y();
 
         if (lbLine.inFront(point) && ltLine.inFront(point)) {
             if (lLine.inFront(point)) {

@@ -9,8 +9,6 @@ package kendzi.josm.kendzi3d.jogl.model.ground;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import javax.vecmath.Point3d;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES3;
@@ -23,6 +21,7 @@ import kendzi.josm.kendzi3d.data.perspective.Perspective3D;
 import kendzi.josm.kendzi3d.data.perspective.Perspective3dProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.EastNorth;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -86,14 +85,14 @@ public class StyledTitleGroundDrawer extends GroundDrawer {
     }
 
     @Override
-    public void draw(GL2 gl, Point3d cameraPosition) {
+    public void draw(GL2 gl, Vector3dc cameraPosition) {
 
         Perspective3D perspective = perspective3dProvider.getPerspective3d();
         if (perspective == null) {
             return;
         }
 
-        EastNorth en = perspective.toEastNorth(cameraPosition.x, -cameraPosition.z);
+        EastNorth en = perspective.toEastNorth(cameraPosition.x(), -cameraPosition.z());
 
         double east = en.east();
         double north = en.north();

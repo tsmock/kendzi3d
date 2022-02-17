@@ -2,10 +2,9 @@ package kendzi.buildings.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.vecmath.Point2d;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -25,7 +24,6 @@ import kendzi.kendzi3d.buildings.model.BuildingPart;
 import kendzi.kendzi3d.buildings.model.Wall;
 import kendzi.kendzi3d.buildings.model.WallNode;
 import kendzi.kendzi3d.buildings.model.WallPart;
-import kendzi.kendzi3d.buildings.model.element.BuildingNodeElement;
 import kendzi.kendzi3d.buildings.model.element.EntranceBuildingElement;
 import kendzi.kendzi3d.buildings.model.element.WindowBuildingElement;
 import kendzi.kendzi3d.buildings.model.roof.shape.DormerRoofModel;
@@ -33,6 +31,7 @@ import kendzi.kendzi3d.buildings.model.roof.shape.RoofTypeAliasEnum;
 import kendzi.kendzi3d.buildings.output.BuildingOutput;
 import kendzi.kendzi3d.resource.inter.LocalResourceReciver;
 import kendzi.kendzi3d.resource.inter.ResourceService;
+import org.joml.Vector2d;
 
 public class ExampleBuildingBuilderFrame extends BaseJoglFrame {
 
@@ -96,13 +95,13 @@ public class ExampleBuildingBuilderFrame extends BaseJoglFrame {
 
         double height = 8;
 
-        List<WallNode> nodes = new ArrayList<WallNode>();
-        nodes.add(new WallNode(new Point2d(10, 0), null));
-        nodes.add(new WallNode(new Point2d(15, 0), Arrays.asList((BuildingNodeElement) new EntranceBuildingElement())));
-        nodes.add(new WallNode(new Point2d(18, 0), Arrays.asList((BuildingNodeElement) new WindowBuildingElement())));
-        nodes.add(new WallNode(new Point2d(20, 0), null));
-        nodes.add(new WallNode(new Point2d(20, 5), null));
-        nodes.add(new WallNode(new Point2d(10, 5), null));
+        List<WallNode> nodes = new ArrayList<>();
+        nodes.add(new WallNode(new Vector2d(10, 0), null));
+        nodes.add(new WallNode(new Vector2d(15, 0), Collections.singletonList(new EntranceBuildingElement())));
+        nodes.add(new WallNode(new Vector2d(18, 0), Collections.singletonList(new WindowBuildingElement())));
+        nodes.add(new WallNode(new Vector2d(20, 0), null));
+        nodes.add(new WallNode(new Vector2d(20, 5), null));
+        nodes.add(new WallNode(new Vector2d(10, 5), null));
         nodes.add(nodes.get(0));
 
         WallPart wp = new WallPart();

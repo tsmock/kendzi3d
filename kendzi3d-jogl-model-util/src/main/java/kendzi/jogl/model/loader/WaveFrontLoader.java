@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.vecmath.Point3d;
-import javax.vecmath.Tuple3d;
-import javax.vecmath.Vector3d;
-
 import kendzi.jogl.model.factory.BoundsFactory;
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
 import kendzi.jogl.model.geometry.Bounds;
@@ -32,6 +28,8 @@ import kendzi.jogl.model.geometry.material.OtherComponent;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  *
@@ -66,7 +64,7 @@ public class WaveFrontLoader implements iLoader {
     /** Bounds of the model. */
     // private Bounds bounds = new Bounds();
     /** Center of the model. */
-    // private Point3d center = new Point3d(0.0f, 0.0f, 0.0f);
+    // private Vector3dc center = new Vector3dc(0.0f, 0.0f, 0.0f);
     private String baseDir = null;
 
     /**
@@ -99,11 +97,11 @@ public class WaveFrontLoader implements iLoader {
     private String lastLineToProcess;
     private BoundsFactory boundsFactory;
 
-    private List<Point3d> vertexList = new ArrayList<Point3d>();
+    private List<Vector3dc> vertexList = new ArrayList<>();
 
-    private List<TextCoord> texCoordsList = new ArrayList<TextCoord>();
+    private List<TextCoord> texCoordsList = new ArrayList<>();
 
-    private List<Vector3d> vectorList = new ArrayList<Vector3d>();
+    private List<Vector3dc> vectorList = new ArrayList<>();
 
     private String replaceTextureMaterialName;
 
@@ -176,7 +174,7 @@ public class WaveFrontLoader implements iLoader {
                     }
 
                     this.vertexList.addAll(getPoints1(line, br));
-                    // mesh.vertices = (Point3d[]) getPoints(VERTEX_DATA, line, br);
+                    // mesh.vertices = (Vector3dc[]) getPoints(VERTEX_DATA, line, br);
                     // mesh.numOfVerts = mesh.vertices.length;
                 }
 
@@ -241,9 +239,9 @@ public class WaveFrontLoader implements iLoader {
 
         mesh = null;
 
-        Point3d[] vertexArray = this.vertexList.toArray(new Point3d[0]);
+        Vector3dc[] vertexArray = this.vertexList.toArray(new Vector3dc[0]);
         TextCoord[] texCoordsArray = this.texCoordsList.toArray(new TextCoord[0]);
-        Vector3d[] vectorArray = this.vectorList.toArray(new Vector3d[0]);
+        Vector3dc[] vectorArray = this.vectorList.toArray(new Vector3dc[0]);
 
         for (Mesh m : this.model.mesh) {
             m.vertices = vertexArray;
@@ -320,8 +318,8 @@ public class WaveFrontLoader implements iLoader {
         return line.startsWith(type);
     }
 
-    private List<Point3d> getPoints1(String currLine, BufferedReader br) throws IOException {
-        List<Point3d> points = new ArrayList<Point3d>();
+    private List<Vector3dc> getPoints1(String currLine, BufferedReader br) throws IOException {
+        List<Vector3dc> points = new ArrayList<>();
 
         String prefix = VERTEX_DATA;
 
@@ -338,7 +336,7 @@ public class WaveFrontLoader implements iLoader {
                 break;
             }
 
-            Point3d point = parsePoint(line);
+            Vector3dc point = parsePoint(line);
             // Calculate the bounds for the entire model
             this.boundsFactory.addPoint(point);
             points.add(point);
@@ -362,7 +360,7 @@ public class WaveFrontLoader implements iLoader {
 
         String prefix = NORMAL_DATA;
 
-        List<Vector3d> points = new ArrayList<Vector3d>();
+        List<Vector3d> points = new ArrayList<>();
 
         // we've already read in the first line (currLine)
         // so go ahead and parse it
@@ -395,8 +393,8 @@ public class WaveFrontLoader implements iLoader {
 
     }
 
-    private Tuple3d[] getPoints(String prefix, String currLine, BufferedReader br) throws IOException {
-        Vector<Tuple3d> points = new Vector<Tuple3d>();
+    private Vector3dc[] getPoints(String prefix, String currLine, BufferedReader br) throws IOException {
+        Vector<Vector3dc> points = new Vector<>();
         boolean isVertices = prefix.equals(VERTEX_DATA);
 
         // we've already read in the first line (currLine)
@@ -416,7 +414,7 @@ public class WaveFrontLoader implements iLoader {
             }
 
             if (isVertices) {
-                Point3d point = parsePoint(line);
+                Vector3dc point = parsePoint(line);
                 // Calculate the bounds for the entire model
                 this.boundsFactory.addPoint(point);
                 points.add(point);
@@ -434,14 +432,8 @@ public class WaveFrontLoader implements iLoader {
         // }
 
         // return the points
-        if (isVertices) {
-            Point3d[] values = new Point3d[points.size()];
-            return points.toArray(values);
-        } else {
-            Vector3d[] values = new Vector3d[points.size()];
-            return points.toArray(values);
-
-        }
+        Vector3dc[] values = new Vector3dc[points.size()];
+        return points.toArray(values);
     }
 
     private void setLineToProcess(String line) {
@@ -449,7 +441,7 @@ public class WaveFrontLoader implements iLoader {
     }
 
     private TextCoord[] getTexCoords(String prefix, String currLine, BufferedReader br) throws IOException {
-        Vector<TextCoord> texCoords = new Vector<TextCoord>();
+        Vector<TextCoord> texCoords = new Vector<>();
 
         String[] s = currLine.split("\\s+");
         TextCoord texCoord = new TextCoord();
@@ -483,7 +475,7 @@ public class WaveFrontLoader implements iLoader {
     private List<TextCoord> getTexCoords1(String currLine, BufferedReader br) throws IOException {
 
         String prefix = TEXTURE_DATA;
-        List<TextCoord> texCoords = new ArrayList<TextCoord>();
+        List<TextCoord> texCoords = new ArrayList<>();
 
         String[] s = currLine.split("\\s+");
         TextCoord texCoord = new TextCoord();
@@ -518,9 +510,9 @@ public class WaveFrontLoader implements iLoader {
     // }
 
     private Face[] getFaces(String currLine, Mesh mesh, BufferedReader br) throws IOException {
-        Vector<Face> faces = new Vector<Face>();
+        Vector<Face> faces = new Vector<>();
 
-        Set<Face> smoothingGroup = new HashSet<Face>();
+        Set<Face> smoothingGroup = new HashSet<>();
         boolean smoothing = false;
 
         faces.add(parseFace(currLine));
@@ -655,16 +647,8 @@ public class WaveFrontLoader implements iLoader {
         return face;
     }
 
-    private Point3d parsePoint(String line) {
-        Point3d point = new Point3d();
-
-        final String[] s = line.split("\\s+");
-
-        point.x = Float.parseFloat(s[1]);
-        point.y = Float.parseFloat(s[2]);
-        point.z = Float.parseFloat(s[3]);
-
-        return point;
+    private Vector3d parsePoint(String line) {
+        return parseVector(line);
     }
 
     private Vector3d parseVector(String line) {

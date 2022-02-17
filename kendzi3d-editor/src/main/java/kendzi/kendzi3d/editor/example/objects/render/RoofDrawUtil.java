@@ -1,10 +1,9 @@
 package kendzi.kendzi3d.editor.example.objects.render;
 
-import javax.vecmath.Point3d;
-
 import com.jogamp.opengl.GL2;
 import kendzi.jogl.util.DrawUtil;
 import kendzi.kendzi3d.editor.example.objects.Roof;
+import org.joml.Vector3d;
 
 /**
  * Util to draw roof.
@@ -25,16 +24,16 @@ public final class RoofDrawUtil {
      */
     public static void draw(Roof roof, GL2 gl) {
 
-        double height = roof.getHeigth();
+        double height = roof.getHeight();
         double width = roof.getWidth();
-        double roofHeigth = roof.getRoofHeigth();
+        double roofHeigth = roof.getRoofHeight();
 
-        Point3d max = new Point3d(roof.getPosition());
+        Vector3d max = new Vector3d(roof.getPosition());
         max.x += width;
         max.y += height - roofHeigth;
         max.z += width;
 
-        Point3d min = new Point3d(roof.getPosition());
+        Vector3d min = new Vector3d(roof.getPosition());
         min.x -= width;
         min.y -= 0;
         min.z -= width;

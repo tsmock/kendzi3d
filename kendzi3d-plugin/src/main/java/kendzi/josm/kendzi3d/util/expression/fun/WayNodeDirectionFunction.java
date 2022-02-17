@@ -9,12 +9,11 @@
 
 package kendzi.josm.kendzi3d.util.expression.fun;
 
-import javax.vecmath.Vector2d;
-
 import kendzi.josm.kendzi3d.util.expression.CompileContext;
 import kendzi.josm.kendzi3d.util.expression.Context;
 import kendzi.math.geometry.AngleUtil;
 import kendzi.math.geometry.point.Vector2dUtil;
+import org.joml.Vector2d;
 
 public class WayNodeDirectionFunction extends AbstractSimpleFunction<Double> {
 

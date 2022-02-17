@@ -11,13 +11,14 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>${log4j.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.jogamp.gluegen</groupId>
       <artifactId>gluegen-rt-main</artifactId>
-      <version>${gluegen.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.joml</groupId>
+      <artifactId>joml</artifactId>
     </dependency>
     <dependency>
       <groupId>org.jogamp.jogl</groupId>

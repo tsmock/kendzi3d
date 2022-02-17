@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import com.jogamp.opengl.GL2;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.MaterialFactory;
@@ -38,6 +34,9 @@ import kendzi.math.geometry.polygon.PolygonWithHolesList2d;
 import kendzi.math.geometry.triangulate.Poly2TriSimpleUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
@@ -111,9 +110,9 @@ public class Water extends AbstractModel {
     }
 
     List<PolygonWithHolesList2d> getMultiPolygonWithHolesWay(Way way, Perspective perspective) {
-        List<PolygonWithHolesList2d> ret = new ArrayList<PolygonWithHolesList2d>();
+        List<PolygonWithHolesList2d> ret = new ArrayList<>();
 
-        List<Point2d> poly = new ArrayList<Point2d>();
+        List<Vector2dc> poly = new ArrayList<>();
 
         int size = way.getNodesCount();
         if (size > 0) {
@@ -121,7 +120,7 @@ public class Water extends AbstractModel {
                 size--;
             }
             for (int i = 0; i < size; i++) {
-                Point2d p = perspective.calcPoint(way.getNode(i));
+                Vector2dc p = perspective.calcPoint(way.getNode(i));
                 poly.add(p);
             }
             ret.add(new PolygonWithHolesList2d(new PolygonList2d(poly), null));
@@ -151,7 +150,7 @@ public class Water extends AbstractModel {
 
         Vector3d nt = new Vector3d(0, 1, 0);
 
-        Point3d planeRightTopPoint = new Point3d(0, 0.05, 0);
+        Vector3dc planeRightTopPoint = new Vector3d(0, 0.05, 0);
 
         List<PolygonWithHolesList2d> polyList = getMultiPolygonWithHoles();
 
@@ -199,7 +198,7 @@ public class Water extends AbstractModel {
         }
 
         return Collections
-                .singletonList(new ExportItem(model, new Point3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
+                .singletonList(new ExportItem(model, new Vector3d(getGlobalX(), 0, -getGlobalY()), new Vector3d(1, 1, 1)));
     }
 
     @Override
@@ -215,7 +214,7 @@ public class Water extends AbstractModel {
     }
 
     @Override
-    public Point3d getPosition() {
+    public Vector3dc getPosition() {
         return getPoint();
     }
 

@@ -1,14 +1,16 @@
 package kendzi.jogl.model.render;
 
-import javax.vecmath.Point3d;
-
 import com.jogamp.opengl.GL2;
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
 import kendzi.jogl.model.geometry.Face;
 import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
+import org.joml.Vector3dc;
 
 public class DebugModelRendererUtil {
+    private DebugModelRendererUtil() {
+        // Hide constructor
+    }
 
     /**
      * Draws normals.
@@ -41,12 +43,13 @@ public class DebugModelRendererUtil {
                         if (mesh.normals.length > normalIndex) {
 
                             int vetexIndex = face.vertIndex[i];
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                    mesh.vertices[vetexIndex].z());
 
                             double normScale = 0.5;
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x + normScale * mesh.normals[normalIndex].x,
-                                    mesh.vertices[vetexIndex].y + normScale * mesh.normals[normalIndex].y,
-                                    mesh.vertices[vetexIndex].z + normScale * mesh.normals[normalIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x() + normScale * mesh.normals[normalIndex].x(),
+                                    mesh.vertices[vetexIndex].y() + normScale * mesh.normals[normalIndex].y(),
+                                    mesh.vertices[vetexIndex].z() + normScale * mesh.normals[normalIndex].z());
                         }
 
                     }
@@ -83,7 +86,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                        pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                mesh.vertices[vetexIndex].z());
                     }
                     pGl.glEnd();
                     if (face.vertIndex.length > 2) {
@@ -91,14 +95,16 @@ public class DebugModelRendererUtil {
                         for (int i = 0; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                    mesh.vertices[vetexIndex].z());
                         }
                         pGl.glEnd();
                         pGl.glBegin(GL2.GL_LINE_STRIP);
                         for (int i = 1; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                    mesh.vertices[vetexIndex].z());
                         }
                         pGl.glEnd();
                     }
@@ -110,7 +116,8 @@ public class DebugModelRendererUtil {
                         while (i + triangleCount < vertLength && triangleCount < 3) {
 
                             int vetexIndex = face.vertIndex[i + triangleCount];
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                    mesh.vertices[vetexIndex].z());
                             triangleCount++;
                         }
                         i = i + 3;
@@ -121,21 +128,22 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                        pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                mesh.vertices[vetexIndex].z());
                     }
                     pGl.glEnd();
 
                     if (vertLength > 1) {
 
-                        Point3d begin = mesh.vertices[face.vertIndex[0]];
+                        Vector3dc begin = mesh.vertices[face.vertIndex[0]];
 
                         pGl.glBegin(GL2.GL_LINES);
                         for (int i = 2; i < vertLength; i++) {
 
-                            pGl.glVertex3d(begin.x, begin.y, begin.z);
+                            pGl.glVertex3d(begin.x(), begin.y(), begin.z());
 
                             int endIndex = face.vertIndex[i];
-                            pGl.glVertex3d(mesh.vertices[endIndex].x, mesh.vertices[endIndex].y, mesh.vertices[endIndex].z);
+                            pGl.glVertex3d(mesh.vertices[endIndex].x(), mesh.vertices[endIndex].y(), mesh.vertices[endIndex].z());
                         }
                         pGl.glEnd();
                     }
@@ -150,7 +158,8 @@ public class DebugModelRendererUtil {
                             // for (int i = 0; i < 4; i++) {
 
                             int vetexIndex = face.vertIndex[i + q];
-                            pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                            pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                    mesh.vertices[vetexIndex].z());
 
                             i++;
                         }
@@ -162,7 +171,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                        pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                mesh.vertices[vetexIndex].z());
                     }
                     pGl.glEnd();
 
@@ -170,7 +180,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];
-                        pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                        pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                mesh.vertices[vetexIndex].z());
                     }
                     pGl.glEnd();
 
@@ -178,7 +189,8 @@ public class DebugModelRendererUtil {
                     for (int i = 1; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];
-                        pGl.glVertex3d(mesh.vertices[vetexIndex].x, mesh.vertices[vetexIndex].y, mesh.vertices[vetexIndex].z);
+                        pGl.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
+                                mesh.vertices[vetexIndex].z());
                     }
                     pGl.glEnd();
                 }

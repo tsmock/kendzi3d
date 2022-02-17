@@ -20,16 +20,14 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
+import com.jogamp.opengl.util.Animator;
 import kendzi.jogl.camera.CameraMoveListener;
 import kendzi.jogl.camera.SimpleMoveAnimator;
 import kendzi.jogl.drawer.AxisLabels;
 import kendzi.jogl.drawer.TilesSurface;
 import kendzi.math.geometry.point.PointUtil;
-
-import com.jogamp.opengl.util.Animator;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 /**
  * Base for test jogl applications.
@@ -80,16 +78,12 @@ public class BaseJoglFrame implements GLEventListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 /*
-                 * Run this on another thread than the AWT event queue to make
-                 * sure the call to Animator.stop() completes before exiting.
+                 * Run this on another thread than the AWT event queue to make sure the call to
+                 * Animator.stop() completes before exiting.
                  */
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        animator.stop();
-                        System.exit(0);
-                    }
+                new Thread(() -> {
+                    animator.stop();
+                    System.exit(0);
                 }).start();
             }
         });
@@ -230,16 +224,16 @@ public class BaseJoglFrame implements GLEventListener {
      */
     private void setCamera(GLU pGlu) {
 
-        Point3d pos = this.simpleMoveAnimator.getPoint();
+        Vector3dc pos = this.simpleMoveAnimator.getPoint();
         Vector3d posLookAt = new Vector3d(100, 0, 0);
-        Vector3d rotate = this.simpleMoveAnimator.getAngle();
+        Vector3dc rotate = this.simpleMoveAnimator.getAngle();
 
-        posLookAt = PointUtil.rotateZ3d(posLookAt, rotate.z);
-        posLookAt = PointUtil.rotateY3d(posLookAt, rotate.y);
+        posLookAt = PointUtil.rotateZ3d(posLookAt, rotate.z());
+        posLookAt = PointUtil.rotateY3d(posLookAt, rotate.y());
 
         posLookAt.add(pos);
 
-        pGlu.gluLookAt(pos.x, pos.y, pos.z, posLookAt.x, posLookAt.y, posLookAt.z, 0, 1, 0);
+        pGlu.gluLookAt(pos.x(), pos.y(), pos.z(), posLookAt.x, posLookAt.y, posLookAt.z, 0, 1, 0);
     }
 
     @Override
@@ -250,8 +244,7 @@ public class BaseJoglFrame implements GLEventListener {
     }
 
     /**
-     * Set up a point source with ambient, diffuse, and specular color.
-     * components
+     * Set up a point source with ambient, diffuse, and specular color. components
      */
     private void addLight(GL2 gl) {
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);

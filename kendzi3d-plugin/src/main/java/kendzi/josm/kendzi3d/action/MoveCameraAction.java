@@ -6,7 +6,7 @@
 
 package kendzi.josm.kendzi3d.action;
 
-import static org.openstreetmap.josm.tools.I18n.*;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
 
@@ -55,10 +55,7 @@ public class MoveCameraAction extends JosmAction {
 
         double x = perspective.calcX(mapCenter.getX());
         double y = perspective.calcY(mapCenter.getY());
-
-        simpleMoveAnimator.getPoint().x = x;
-        simpleMoveAnimator.getPoint().y = Camera.CAM_HEIGHT;
-        simpleMoveAnimator.getPoint().z = -y;
+        simpleMoveAnimator.setPoint(x, Camera.CAM_HEIGHT, -y);
     }
 
 }

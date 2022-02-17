@@ -1,15 +1,13 @@
 package kendzi.josm.kendzi3d.jogl.layer.models;
 
-import javax.vecmath.Vector3d;
-
 import generated.NodeModel;
 import generated.WayNodeModel;
-import kendzi.kendzi3d.expressions.Context;
 import kendzi.kendzi3d.expressions.ExpressiongBuilder;
-import kendzi.kendzi3d.expressions.expression.Expression;
+import kendzi.kendzi3d.expressions.exeption.ExpressionExeption;
 import kendzi.kendzi3d.resource.inter.ResourceService;
 import kendzi.kendzi3d.resource.inter.ResourceUtil;
 import kendzi.util.StringUtil;
+import org.joml.Vector3d;
 import org.openstreetmap.josm.data.osm.search.SearchCompiler;
 import org.openstreetmap.josm.data.osm.search.SearchCompiler.Match;
 
@@ -24,13 +22,8 @@ public class ModelsConvertUtil {
 
         if (nodeModel.getTranslateX() != null && nodeModel.getTranslateY() != null && nodeModel.getTranslateZ() != null) {
 
-            pm.setTranslate(new Expression() {
-                @Override
-                public Object evaluate(Context context) {
-
-                    return new Vector3d(nodeModel.getTranslateX(), nodeModel.getTranslateY(), nodeModel.getTranslateZ());
-                }
-            });
+            pm.setTranslate(
+                    context -> new Vector3d(nodeModel.getTranslateX(), nodeModel.getTranslateY(), nodeModel.getTranslateZ()));
         } else {
             pm.setTranslate(ExpressiongBuilder.build(nodeModel.getTranslate()));
         }
@@ -44,7 +37,7 @@ public class ModelsConvertUtil {
         return pm;
     }
 
-    public static WayNodeModelConf convert(WayNodeModel wayNodeModel) throws Exception {
+    public static WayNodeModelConf convert(WayNodeModel wayNodeModel) throws IllegalArgumentException, ExpressionExeption {
 
         WayNodeModelConf pm = new WayNodeModelConf();
 
@@ -64,11 +57,11 @@ public class ModelsConvertUtil {
         return pm;
     }
 
-    private static Match compileMatch(String match) throws Exception {
+    private static Match compileMatch(String match) throws IllegalArgumentException {
         try {
             return SearchCompiler.compile(match);
         } catch (Exception e) {
-            throw new Exception("can't compile expression for: " + match, e);
+            throw new IllegalArgumentException("can't compile expression for: " + match, e);
         }
     }
 

@@ -29,11 +29,6 @@
       <artifactId>javax.inject</artifactId>
       <version>${inject.version}</version>
     </dependency>
-    <dependency>
-      <groupId>java3d</groupId>
-      <artifactId>vecmath</artifactId>
-      <version>${vecmath.version}</version>
-    </dependency>
   </dependencies>
   <parent>
     <groupId>kendzi.kendzi3d</groupId>

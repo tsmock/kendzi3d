@@ -9,6 +9,11 @@
       <version>${log4j.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.lwjglx</groupId>
+      <artifactId>lwjgl3-awt</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>kendzi.kendzi3d</groupId>
       <artifactId>kendzi3d-jogl-model-render</artifactId>
       <version>1.0.206-SNAPSHOT</version>

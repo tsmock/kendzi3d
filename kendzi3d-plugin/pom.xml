@@ -11,12 +11,14 @@
     <dependency>
       <groupId>org.openstreetmap.josm.plugins</groupId>
       <artifactId>ejml</artifactId>
-      <version>SNAPSHOT</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.openstreetmap.josm.plugins</groupId>
       <artifactId>lwjgl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openstreetmap.josm.plugins</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
@@ -24,13 +26,8 @@
       <version>${guice.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-      <version>${inject.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>kendzi.kendzi3d</groupId>
-      <artifactId>josm-jogl</artifactId>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
     </dependency>
     <dependency>
       <groupId>kendzi.kendzi3d</groupId>
@@ -120,11 +117,6 @@
       <groupId>kendzi.kendzi3d</groupId>
       <artifactId>kendzi3d-light</artifactId>
       <version>1.0.206-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <!-- Connect sl4j logging to JOSM -->
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
     </dependency>
   </dependencies>
   <parent>

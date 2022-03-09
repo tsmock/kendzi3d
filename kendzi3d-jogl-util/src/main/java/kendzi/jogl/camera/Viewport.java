@@ -62,7 +62,7 @@ public class Viewport implements ViewportPicker {
     /**
      * Look direction.
      */
-    private transient Vector3dc view;
+    private transient Vector3dc view = new Vector3d();
 
     private transient Vector3d screenHorizontally = new Vector3d();
 

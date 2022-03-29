@@ -72,8 +72,8 @@ public final class ValidationUtil {
         for (mi = 0; mi < pModel.mesh.length; mi++) {
             Mesh mesh = pModel.mesh[mi];
 
-            for (fi = 0; fi < mesh.face.length; fi++) {
-                Face face = mesh.face[fi];
+            for (fi = 0; fi < mesh.getFaces().length; fi++) {
+                Face face = mesh.getFaces()[fi];
 
                 if (face.vertIndex == null) {
                     ret.add(faceDescription("has null vertex index array", pModel, mi, fi));
@@ -98,13 +98,13 @@ public final class ValidationUtil {
 
                 }
 
-                if (mesh.hasTexture) {
+                if (mesh.hasTexture()) {
 
-                    if (mesh.texCoords == null) {
-                        ret.add(faceDescription("mesh hasTexture is on, but ther is no texture coords", pModel, mi, fi));
+                    if (mesh.getTexCoords() == null) {
+                        ret.add(faceDescription("mesh.hasTexture() is on, but ther is no texture coords", pModel, mi, fi));
                         if (pRepair) {
                             ret.add(faceDescription("turning off hasTexture", pModel, mi, fi));
-                            mesh.hasTexture = false;
+                            mesh.setHasTexture(false);
                         } else {
                             continue;
                         }
@@ -114,7 +114,7 @@ public final class ValidationUtil {
                         // mi, fi));
                         // if (pRepair) {
                         // ret.add(faceDescription("urning off hasTexture", pModel, mi, fi));
-                        // mesh.hasTexture = false;
+                        // mesh.hasTexture() = false;
                         // } else {
                         // continue;
                         // }
@@ -123,10 +123,10 @@ public final class ValidationUtil {
 
                 for (int vi = 0; vi < face.vertIndex.length; vi++) {
                     int vetexIndex = face.vertIndex[vi];
-                    if (mesh.vertices.length < vetexIndex) {
+                    if (mesh.getVertices().length < vetexIndex) {
                         ret.add(faceVertexDescription(
-                                "vertex index biger then size of vertex array in model: " + mesh.vertices.length, pModel, mi, fi,
-                                vi));
+                                "vertex index biger then size of vertex array in model: " + mesh.getVertices().length, pModel, mi,
+                                fi, vi));
                         if (pRepair) {
                             ret.add(faceVertexDescription("turning off face vertexs indexes", pModel, mi, fi, vi));
                             face.vertIndex = new int[0];
@@ -138,13 +138,13 @@ public final class ValidationUtil {
 
                     if (face.normalIndex != null) {
                         int normalIndex = face.normalIndex[vi];
-                        if (mesh.normals.length < normalIndex) {
+                        if (mesh.getNormals().length < normalIndex) {
                             ret.add(faceVertexDescription(
-                                    "normal index biger then size of normals array in model: " + mesh.normals.length, pModel, mi,
-                                    fi, vi));
+                                    "normal index biger then size of normals array in model: " + mesh.getNormals().length, pModel,
+                                    mi, fi, vi));
                             if (pRepair) {
                                 ret.add(faceVertexDescription("trim normal index to normals array size", pModel, mi, fi, vi));
-                                face.normalIndex[vi] = normalIndex % mesh.normals.length;
+                                face.normalIndex[vi] = normalIndex % mesh.getNormals().length;
                                 break;
                             } else {
                                 continue;
@@ -152,7 +152,7 @@ public final class ValidationUtil {
                         }
                     }
 
-                    if (mesh.hasTexture) {
+                    if (mesh.hasTexture()) {
                         // int textureIndex = face.coordIndex[vi];
                         // if (mesh.texCoords.length < textureIndex) {
                         // ret.add(faceVertexDescription(
@@ -160,7 +160,7 @@ public final class ValidationUtil {
                         // + mesh.texCoords.length, pModel, mi, fi, vi));
                         // if (pRepair) {
                         // ret.add(faceVertexDescription("urning off hasTexture", pModel, mi, fi, vi));
-                        // mesh.hasTexture = false;
+                        // mesh.hasTexture() = false;
                         // } else {
                         // continue;
                         // }
@@ -185,7 +185,7 @@ public final class ValidationUtil {
      * @return error message
      */
     private static String faceDescription(String pErrorMsg, Model pModel, int pMi, int pFi) {
-        return "model: " + pModel.getSource() + " mesh: " + pMi + ", " + pModel.mesh[pMi].name + " face: " + pFi + ", "
+        return "model: " + pModel.getSource() + " mesh: " + pMi + ", " + pModel.mesh[pMi].getName() + " face: " + pFi + ", "
                 + pErrorMsg;
     }
 
@@ -203,7 +203,7 @@ public final class ValidationUtil {
      * @return error message
      */
     private static String faceVertexDescription(String pErrorMsg, Model pModel, int pMi, int pFi, int pVi) {
-        return "model: " + pModel.getSource() + " mesh: " + pMi + ", " + pModel.mesh[pMi].name + " face: " + pFi
+        return "model: " + pModel.getSource() + " mesh: " + pMi + ", " + pModel.mesh[pMi].getName() + " face: " + pFi
                 + ", vertex index: " + pVi + ", " + pErrorMsg;
     }
 }

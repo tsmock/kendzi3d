@@ -6,8 +6,11 @@
 
 package kendzi.jogl.util;
 
+import java.util.stream.IntStream;
+
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15C;
 
 public class DrawUtil {
 
@@ -166,52 +169,77 @@ public class DrawUtil {
         GL11.glPopMatrix();
     }
 
-    public static void drawBox(double size) {
+    /**
+     * Create a box of the specified size (note: you must call the
+     * {@link VertexArrayObject#draw()} command to do the actual drawing).
+     * 
+     * @param size
+     *            The size of the box
+     * @return The generated box
+     */
+    public static VertexArrayObject drawBox(double size) {
+        // Note: With OpenGL 3.0, we can use indices to reuse vertexes. Unfortunately,
+        // we are currently targeting OpenGL 2.0 (preferring core)
+        final double[] vertices = {
+                // right triangle 1 (p1, p2, p3)
+                1, 1, 1, 1, -1, 1, 1, -1, -1,
+                // right triangle 2 (p3, p4, p1)
+                1, -1, -1, 1, 1, -1, 1, 1, 1,
+                // back triangle 1 (p1, p2, p3)
+                1, 1, -1, 1, -1, -1, -1, -1, -1,
+                // back triangle 2 (p3, p4, p1)
+                -1, -1, -1, -1, 1, -1, 1, 1, -1,
+                // left triangle 1 (p1, p2, p3)
+                -1, 1, -1, -1, -1, -1, -1, -1, 1,
+                // left triangle 1 (p3, p4, p1)
+                -1, -1, 1, -1, 1, 1, -1, 1, -1,
+                // front triangle 1 (p1, p2, p3)
+                -1, 1, 1, -1, -1, 1, 1, -1, 1,
+                // front triangle 2 (p3, p4, p1)
+                1, -1, 1, 1, 1, 1, -1, 1, 1,
+                // top triangle 1 (p1, p2, p3)
+                1, 1, 1, 1, 1, -1, -1, 1, -1,
+                // top triangle 2 (p3, p4, p1)
+                -1, 1, -1, -1, 1, 1, 1, 1, 1,
+                // bottom triangle 1 (p1, p2, p3)
+                -1, -1, 1, -1, -1, -1, 1, -1, -1,
+                // bottom triangle 2 (p3, p4, p1)
+                1, -1, -1, 1, -1, 1, -1, -1, 1 };
+        for (int i = 0; i < vertices.length; i++) {
+            vertices[i] = size * vertices[i];
+        }
 
-        // right
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glNormal3d(1d, 0, 0);
-        GL11.glVertex3d(size, size, size);
-        GL11.glVertex3d(size, -size, size);
-        GL11.glVertex3d(size, -size, -size);
-        GL11.glVertex3d(size, size, -size);
+        final double[] normals = {
+                // right
+                1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0,
+                // back
+                0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d,
+                // left
+                -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0,
+                // front
+                0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d,
+                // top
+                0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0,
+                // bottom
+                0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0 };
+        final VertexArrayObject vao = new VertexArrayObject();
+        vao.bind();
+        final BufferObject indices = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, vertices.length / 3,
+                type -> GL15C.glBufferData(type, IntStream.range(0, vertices.length / 3).toArray(), GL15C.GL_STATIC_DRAW));
+        indices.bindBuffer();
+        final BufferObject vertexBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, vertices.length,
+                type -> GL15C.glBufferData(type, vertices, GL15C.GL_STATIC_DRAW));
+        vertexBuffer.bindBuffer();
+        final BufferObject normalBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, normals.length,
+                type -> GL15C.glBufferData(type, normals, GL15C.GL_STATIC_DRAW));
+        normalBuffer.bindBuffer();
+        vao.add(indices);
+        vao.add(vertexBuffer);
+        vao.add(normalBuffer);
 
-        // back
-        GL11.glNormal3d(0, 0, -1d);
-        GL11.glVertex3d(size, size, -size);
-        GL11.glVertex3d(size, -size, -size);
-        GL11.glVertex3d(-size, -size, -size);
-        GL11.glVertex3d(-size, size, -size);
+        vao.unbind();
 
-        // left
-        GL11.glNormal3d(-1d, 0, 0);
-        GL11.glVertex3d(-size, size, -size);
-        GL11.glVertex3d(-size, -size, -size);
-        GL11.glVertex3d(-size, -size, size);
-        GL11.glVertex3d(-size, size, size);
-
-        // front
-        GL11.glNormal3d(0, 0, 1d);
-        GL11.glVertex3d(-size, size, size);
-        GL11.glVertex3d(-size, -size, size);
-        GL11.glVertex3d(size, -size, size);
-        GL11.glVertex3d(size, size, size);
-
-        // top
-        GL11.glNormal3d(0, 1d, 0);
-        GL11.glVertex3d(size, size, size);
-        GL11.glVertex3d(size, size, -size);
-        GL11.glVertex3d(-size, size, -size);
-        GL11.glVertex3d(-size, size, size);
-
-        // bottom
-        GL11.glNormal3d(0, -1d, 0);
-        GL11.glVertex3d(-size, -size, size);
-        GL11.glVertex3d(-size, -size, -size);
-        GL11.glVertex3d(size, -size, -size);
-        GL11.glVertex3d(size, -size, size);
-
-        GL11.glEnd();
+        return vao;
     }
 
     public static void drawFullBox(Vector3dc max, Vector3dc min) {

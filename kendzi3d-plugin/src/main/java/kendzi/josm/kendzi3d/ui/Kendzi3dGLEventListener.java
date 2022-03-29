@@ -84,6 +84,7 @@ public class Kendzi3dGLEventListener extends BaseEditorGLEventListener {
         axisLabels.init();
         compass.init();
         lightRender.init();
+        this.modelRender.init();
     }
 
     @Override

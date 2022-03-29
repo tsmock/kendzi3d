@@ -29,8 +29,8 @@ public class MeshTriangleUtil {
 
         List<Vector3dc> points = new ArrayList<>();
 
-        Vector3dc[] vertices = mesh.vertices;
-        for (Face f : mesh.face) {
+        Vector3dc[] vertices = mesh.getVertices();
+        for (Face f : mesh.getFaces()) {
             List<Integer> ti = convertToTriangles(f.vertIndex, f.type);
 
             for (Integer i : ti) {

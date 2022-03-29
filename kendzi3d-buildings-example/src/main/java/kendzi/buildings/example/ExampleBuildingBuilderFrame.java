@@ -72,6 +72,7 @@ public class ExampleBuildingBuilderFrame extends BaseJoglFrame {
 
         // Set up of my model renderer to display my model
         modelRender = new ModelRender();
+        modelRender.init();
 
         // Manual injection of dependencies.
         modelRender.setTextureCacheService(textureCacheService);

@@ -5,13 +5,14 @@ import java.awt.Color;
 import kendzi.jogl.glu.GLU;
 import kendzi.jogl.util.ColorUtil;
 import kendzi.jogl.util.DrawUtil;
+import kendzi.jogl.util.VertexArrayObject;
 import kendzi.kendzi3d.editor.selection.editor.EditorType;
 import org.lwjgl.opengl.GL11;
 
 /**
  * Util for drawing editor active spots.
  */
-public class ActiveSpotDrawer {
+public class ActiveSpotDrawer implements AutoCloseable {
 
     private static final int NUMBER_OF_SECTIONS = 16;
 
@@ -74,6 +75,11 @@ public class ActiveSpotDrawer {
 
     }
 
+    @Override
+    public void close() {
+        // Close cached items
+    }
+
     private void drawHighlightEditor(EditorType type, double editorRadius, float[] fillColor) {
         GL11.glColor3fv(highlightOutlineColor);
 
@@ -90,7 +96,6 @@ public class ActiveSpotDrawer {
     }
 
     private void drawEditor(double editorRadius, EditorType type) {
-
         switch (type) {
         case ARROW:
             drawArrow(editorRadius);
@@ -102,10 +107,14 @@ public class ActiveSpotDrawer {
             drawSphere(editorRadius);
             break;
         case BOX:
-            DrawUtil.drawBox(editorRadius);
+            try (VertexArrayObject vao = DrawUtil.drawBox(editorRadius)) {
+                vao.draw();
+            }
             break;
         case BOX_SMALL:
-            DrawUtil.drawBox(editorRadius / 2d);
+            try (VertexArrayObject vao = DrawUtil.drawBox(editorRadius / 2)) {
+                vao.draw();
+            }
             break;
 
         default:

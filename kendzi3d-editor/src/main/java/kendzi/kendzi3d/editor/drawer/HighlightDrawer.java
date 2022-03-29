@@ -1,6 +1,6 @@
 package kendzi.kendzi3d.editor.drawer;
 
-import java.awt.*;
+import java.awt.Color;
 
 import kendzi.jogl.Gl2Draw;
 import kendzi.jogl.util.ColorUtil;

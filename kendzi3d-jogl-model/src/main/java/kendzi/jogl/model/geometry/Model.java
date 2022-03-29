@@ -12,9 +12,10 @@ package kendzi.jogl.model.geometry;
 import java.util.ArrayList;
 import java.util.List;
 
-import kendzi.jogl.model.geometry.material.Material;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
+
+import kendzi.jogl.model.geometry.material.Material;
 
 public class Model {
 

@@ -110,13 +110,13 @@ public class ColladaExport extends TextExport {
                 mats.put(mat, materialId);
             }
 
-            for (int f = 0; f < mesh.face.length; f++) {
+            for (int f = 0; f < mesh.getFaces().length; f++) {
                 Geometry geometry = new Geometry();
                 geometry.setId(getId("geom"));
-                geometry.setName(name(mesh.name));
+                geometry.setName(name(mesh.getName()));
 
-                Face face = mesh.face[f];
-                Material faceMaterial = m.getMaterial(mesh.materialID);
+                Face face = mesh.getFaces()[f];
+                Material faceMaterial = m.getMaterial(mesh.getMaterialID());
 
                 addFace(m, node, mesh, geometry, mats, face, faceMaterial);
 
@@ -160,11 +160,12 @@ public class ColladaExport extends TextExport {
     public void addFace(Model m, Node node, Mesh mesh, Geometry geometry, Map<Material, String> mats, Face face,
             Material faceMaterial) {
 
-        SimplifyIndexArray<Vector3dc> simpVertex = SimplifyIndexArray.simple(mesh.vertices, face.vertIndex, Vector3dc.class);
+        SimplifyIndexArray<Vector3dc> simpVertex = SimplifyIndexArray.simple(mesh.getVertices(), face.vertIndex, Vector3dc.class);
 
-        SimplifyIndexArray<Vector3dc> simpNormal = SimplifyIndexArray.simple(mesh.normals, face.normalIndex, Vector3dc.class);
+        SimplifyIndexArray<Vector3dc> simpNormal = SimplifyIndexArray.simple(mesh.getNormals(), face.normalIndex,
+                Vector3dc.class);
 
-        SimplifyIndexArray<TextCoord> simpTex0 = SimplifyIndexArray.simple(mesh.texCoords, face.coordIndexLayers[0],
+        SimplifyIndexArray<TextCoord> simpTex0 = SimplifyIndexArray.simple(mesh.getTexCoords(), face.coordIndexLayers[0],
                 TextCoord.class);
 
         Source vertexSource = createVertexSource(simpVertex.getSdata());
@@ -196,7 +197,7 @@ public class ColladaExport extends TextExport {
 
         for (int l = 1; l < numOfLayers; l++) {
 
-            SimplifyIndexArray<TextCoord> simpTexN = SimplifyIndexArray.simple(mesh.texCoords, face.coordIndexLayers[l],
+            SimplifyIndexArray<TextCoord> simpTexN = SimplifyIndexArray.simple(mesh.getTexCoords(), face.coordIndexLayers[l],
                     TextCoord.class);
 
             Source layerUVSource = createTexSource(simpTexN.getSdata());

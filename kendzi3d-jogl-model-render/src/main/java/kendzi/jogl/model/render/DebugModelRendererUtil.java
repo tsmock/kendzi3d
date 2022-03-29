@@ -28,23 +28,23 @@ public class DebugModelRendererUtil {
 
             GL11.glBegin(GL11.GL_LINES);
 
-            for (Face face : mesh.face) {
+            for (Face face : mesh.getFaces()) {
                 int vertLength = face.vertIndex.length;
 
                 if (face.normalIndex != null && face.normalIndex.length > 0) {
                     for (int i = 0; i < vertLength; i++) {
 
                         int normalIndex = face.normalIndex[i];
-                        if (mesh.normals.length > normalIndex) {
+                        if (mesh.getNormals().length > normalIndex) {
 
                             int vetexIndex = face.vertIndex[i];
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                    mesh.vertices[vetexIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
 
                             double normScale = 0.5;
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x() + normScale * mesh.normals[normalIndex].x(),
-                                    mesh.vertices[vetexIndex].y() + normScale * mesh.normals[normalIndex].y(),
-                                    mesh.vertices[vetexIndex].z() + normScale * mesh.normals[normalIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x() + normScale * mesh.getNormals()[normalIndex].x(),
+                                    mesh.getVertices()[vetexIndex].y() + normScale * mesh.getNormals()[normalIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z() + normScale * mesh.getNormals()[normalIndex].z());
                         }
 
                     }
@@ -71,7 +71,7 @@ public class DebugModelRendererUtil {
             // Repeat count, repeat pattern
             GL11.glLineStipple(1, (short) 0xf0f0);
 
-            for (Face face : mesh.face) {
+            for (Face face : mesh.getFaces()) {
                 int vertLength = face.vertIndex.length;
 
                 if (face.type == FaceType.TRIANGLE_STRIP.getType()) {
@@ -79,8 +79,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                mesh.vertices[vetexIndex].z());
+                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                mesh.getVertices()[vetexIndex].z());
                     }
                     GL11.glEnd();
                     if (face.vertIndex.length > 2) {
@@ -88,16 +88,16 @@ public class DebugModelRendererUtil {
                         for (int i = 0; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                    mesh.vertices[vetexIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
                         }
                         GL11.glEnd();
                         GL11.glBegin(GL11.GL_LINE_STRIP);
                         for (int i = 1; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                    mesh.vertices[vetexIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
                         }
                         GL11.glEnd();
                     }
@@ -109,8 +109,8 @@ public class DebugModelRendererUtil {
                         while (i + triangleCount < vertLength && triangleCount < 3) {
 
                             int vetexIndex = face.vertIndex[i + triangleCount];
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                    mesh.vertices[vetexIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
                             triangleCount++;
                         }
                         i = i + 3;
@@ -121,14 +121,14 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                mesh.vertices[vetexIndex].z());
+                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                mesh.getVertices()[vetexIndex].z());
                     }
                     GL11.glEnd();
 
                     if (vertLength > 1) {
 
-                        Vector3dc begin = mesh.vertices[face.vertIndex[0]];
+                        Vector3dc begin = mesh.getVertices()[face.vertIndex[0]];
 
                         GL11.glBegin(GL11.GL_LINES);
                         for (int i = 2; i < vertLength; i++) {
@@ -136,8 +136,8 @@ public class DebugModelRendererUtil {
                             GL11.glVertex3d(begin.x(), begin.y(), begin.z());
 
                             int endIndex = face.vertIndex[i];
-                            GL11.glVertex3d(mesh.vertices[endIndex].x(), mesh.vertices[endIndex].y(),
-                                    mesh.vertices[endIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[endIndex].x(), mesh.getVertices()[endIndex].y(),
+                                    mesh.getVertices()[endIndex].z());
                         }
                         GL11.glEnd();
                     }
@@ -152,8 +152,8 @@ public class DebugModelRendererUtil {
                             // for (int i = 0; i < 4; i++) {
 
                             int vetexIndex = face.vertIndex[i + q];
-                            GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                    mesh.vertices[vetexIndex].z());
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
 
                             i++;
                         }
@@ -165,8 +165,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
-                        GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                mesh.vertices[vetexIndex].z());
+                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                mesh.getVertices()[vetexIndex].z());
                     }
                     GL11.glEnd();
 
@@ -174,8 +174,8 @@ public class DebugModelRendererUtil {
                     for (int i = 0; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];
-                        GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                mesh.vertices[vetexIndex].z());
+                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                mesh.getVertices()[vetexIndex].z());
                     }
                     GL11.glEnd();
 
@@ -183,8 +183,8 @@ public class DebugModelRendererUtil {
                     for (int i = 1; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];
-                        GL11.glVertex3d(mesh.vertices[vetexIndex].x(), mesh.vertices[vetexIndex].y(),
-                                mesh.vertices[vetexIndex].z());
+                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                mesh.getVertices()[vetexIndex].z());
                     }
                     GL11.glEnd();
                 }

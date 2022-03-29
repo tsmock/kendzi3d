@@ -19,7 +19,7 @@
     </repository>
   </distributionManagement>
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>8</java.version>
     <ejml.version>0.41</ejml.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jaxb.version>2.3.1</jaxb.version>
@@ -200,10 +200,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.10.1</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <release>${java.version}</release>
         </configuration>
       </plugin>
       <plugin>

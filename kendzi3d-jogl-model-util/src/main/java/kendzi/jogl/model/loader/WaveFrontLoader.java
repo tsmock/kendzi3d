@@ -161,7 +161,7 @@ public class WaveFrontLoader implements iLoader {
                         mesh = new Mesh();
                     }
 
-                    mesh.name = parseName(line);
+                    mesh.setName(parseName(line));
                 }
 
                 if (lineIs(OBJECT, line)) {
@@ -185,7 +185,7 @@ public class WaveFrontLoader implements iLoader {
 
                     this.texCoordsList.addAll(getTexCoords1(line, br));
                     // mesh.texCoords = getTexCoords(TEXTURE_DATA, line, br);
-                    mesh.hasTexture = true;
+                    mesh.setHasTexture(true);
                     // mesh.numTexCoords = mesh.texCoords.length;
                 }
 
@@ -207,11 +207,11 @@ public class WaveFrontLoader implements iLoader {
                         mesh = new Mesh();
                     }
 
-                    mesh.face = getFaces(line, mesh, br);
+                    mesh.setFaces(getFaces(line, mesh, br));
                     // mesh.numOfFaces = mesh.face.length;
 
-                    if (mesh.face != null && mesh.face.length > 0 && mesh.face[0].coordIndexLayers.length > 0) {
-                        mesh.hasTexture = true;
+                    if (mesh.getFaces() != null && mesh.getFaces().length > 0 && mesh.getFaces()[0].coordIndexLayers.length > 0) {
+                        mesh.setHasTexture(true);
                     }
 
                 }
@@ -232,7 +232,7 @@ public class WaveFrontLoader implements iLoader {
         }
 
         // FIXME
-        if (mesh.vertices != null) {
+        if (mesh.getVertices() != null) {
             addMesh(mesh);
         }
         // model.addMesh(mesh);
@@ -244,11 +244,11 @@ public class WaveFrontLoader implements iLoader {
         Vector3dc[] vectorArray = this.vectorList.toArray(new Vector3dc[0]);
 
         for (Mesh m : this.model.mesh) {
-            m.vertices = vertexArray;
+            m.setVertices(vertexArray);
+            m.setTexCoords(texCoordsArray);
+            m.setNormals(vectorArray);
             // m.numOfVerts = vertexArray.length;
-            m.texCoords = texCoordsArray;
             // m.numOfTextCord = texCoordsArray.length;
-            m.normals = vectorArray;
             // m.numOf= vertexArray.length;
         }
 
@@ -731,7 +731,7 @@ public class WaveFrontLoader implements iLoader {
         }
 
         if (materialID != -1) {
-            mesh.materialID = materialID;
+            mesh.setMaterialID(materialID);
         }
     }
 

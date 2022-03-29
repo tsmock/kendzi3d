@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
@@ -354,11 +355,7 @@ public class BuildingBuilderTest {
     }
 
     private Set<String> colectNames(BuildingOutput model) {
-        Set<String> ret = new HashSet<>();
-        for (Mesh mesh : model.getModel().mesh) {
-            ret.add(mesh.name);
-        }
-        return ret;
+        return Arrays.stream(model.getModel().mesh).map(Mesh::getName).collect(Collectors.toSet());
     }
 
     private double sumAreaForName(BuildingOutput model, String name) {
@@ -379,7 +376,7 @@ public class BuildingBuilderTest {
         List<Triangle3d> ret = new ArrayList<>();
         for (Mesh mesh : model.mesh) {
 
-            if (!name.equals(mesh.name)) {
+            if (!name.equals(mesh.getName())) {
                 continue;
             }
 

@@ -18,9 +18,9 @@ public class ObjLoader {
         for (int m = 0; m < model.mesh.length; m++) {
             Mesh mesh = model.mesh[m];
 
-            if (mesh.face != null && mesh.face.length > 0) {
+            if (mesh.getFaces() != null && mesh.getFaces().length > 0) {
 
-                mesh.normals = addMissingNormals(mesh.normals, mesh.vertices, mesh.face);
+                mesh.setNormals(addMissingNormals(mesh.getNormals(), mesh.getVertices(), mesh.getFaces()));
 
             }
 

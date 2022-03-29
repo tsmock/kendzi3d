@@ -43,9 +43,11 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.function.Consumer;
 
 import org.lwjgl.opengl.ARBImaging;
 import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * GLU.java
@@ -217,5 +219,12 @@ public class GLU {
 
     public static void gluSphere(float radius, int slices, int stacks) {
         SPHERE.draw(radius, slices, stacks);
+    }
+
+    public static void logError(Consumer<String> logger) {
+        final int errorCode = GL11C.glGetError();
+        if (errorCode != GL11C.GL_NO_ERROR) {
+            logger.accept(gluErrorString(errorCode));
+        }
     }
 }

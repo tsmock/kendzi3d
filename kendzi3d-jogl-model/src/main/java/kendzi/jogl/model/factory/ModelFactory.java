@@ -91,18 +91,18 @@ public class ModelFactory {
         for (MeshFactory mf : this.mashFactory) {
             Mesh mesh = new Mesh();
 
-            mesh.materialID = mf.materialID;
-            mesh.hasTexture = mf.hasTexture;
-            mesh.name = mf.name;
+            mesh.setMaterialID(mf.materialID);
+            mesh.setHasTexture(mf.hasTexture);
+            mesh.setName(mf.name);
 
-            mesh.vertices = mf.vertices.toArray(new Vector3dc[0]);
-            mesh.normals = mf.normals.toArray(new Vector3dc[0]);
-            mesh.texCoords = mf.textCoords.toArray(new TextCoord[0]);
+            mesh.setVertices(mf.vertices.toArray(new Vector3dc[0]));
+            mesh.setNormals(mf.normals.toArray(new Vector3dc[0]));
+            mesh.setTexCoords(mf.textCoords.toArray(new TextCoord[0]));
             // mesh.texture = mf.getTexture();
             // //XXX
             // mesh.hasTexture = mf.getTexture() != null;
 
-            for (Vector3dc v : mesh.vertices) {
+            for (Vector3dc v : mesh.getVertices()) {
                 bf.addPoint(v);
             }
 
@@ -154,7 +154,7 @@ public class ModelFactory {
                 j++;
             }
 
-            mesh.face = faces;
+            mesh.setFaces(faces);
 
             meshCount++;
         }

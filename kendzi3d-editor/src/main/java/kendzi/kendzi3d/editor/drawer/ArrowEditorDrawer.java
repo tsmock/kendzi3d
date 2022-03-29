@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Drawer for arrow editor.
  */
-public class ArrowEditorDrawer {
+public class ArrowEditorDrawer implements AutoCloseable {
 
     private static final int MEASURE_LINE_WIDTH = 2;
     private static final double MEASURE_HORIZONTAL_DISTANCE = 1d;
@@ -68,6 +68,11 @@ public class ArrowEditorDrawer {
         }
 
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+    }
+
+    @Override
+    public void close() {
+        this.activeSpotDrawer.close();
     }
 
     private double distanceRatio(ArrowEditor ae, Viewport viewport) {

@@ -42,6 +42,10 @@ public class BufferObject implements AutoCloseable {
         return this.id;
     }
 
+    public int getType() {
+        return this.type;
+    }
+
     public int count() {
         return this.count;
     }

@@ -3,8 +3,11 @@ package kendzi.jogl;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.swing.SwingUtilities;

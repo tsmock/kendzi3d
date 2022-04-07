@@ -2,6 +2,7 @@ package kendzi.kendzi3d.editor.drawer;
 
 import java.awt.Color;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Viewport;
 import kendzi.jogl.util.ColorUtil;
 import kendzi.jogl.util.LineDrawUtil;
@@ -11,6 +12,7 @@ import kendzi.kendzi3d.editor.selection.editor.Editor;
 import kendzi.kendzi3d.editor.selection.editor.EditorType;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Drawer for arrow editor.
@@ -101,8 +103,8 @@ public class ArrowEditorDrawer implements AutoCloseable {
     }
 
     private void drawActiveSpot(Vector3dc activeSpot, boolean isHighlightedEditor, EditorType editorType, double distanceRatio) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(activeSpot.x(), activeSpot.y(), activeSpot.z());
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(activeSpot.x(), activeSpot.y(), activeSpot.z());
 
         EditorMode highlight = EditorMode.HIGHLIGHT_2;
         if (isHighlightedEditor) {
@@ -112,13 +114,13 @@ public class ArrowEditorDrawer implements AutoCloseable {
         double camDistanceRatio = distanceRatio * Editor.SELECTION_ETITOR_CAMERA_RATIO;
 
         activeSpotDrawer.drawEditor(camDistanceRatio, editorType, highlight);
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
     }
 
     private void drawDottedLine(ArrowEditor ae) {
         GL11.glColor3fv(arrowEditorDottedLines);
 
-        GL11.glLineWidth(DOTTED_LINE_WIDTH);
+        GL11C.glLineWidth(DOTTED_LINE_WIDTH);
         Vector3dc editorOrigin = ae.getEditorOrigin();
         Vector3dc arrowEnd = ae.arrowEnd();
         LineDrawUtil.drawDottedLine(editorOrigin, arrowEnd, DOTTED_LINE_SEGMENT_LENGTH);

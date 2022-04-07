@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kendzi.jogl.glu.GLU;
 import kendzi.jogl.model.geometry.Face;
 import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
@@ -17,6 +18,7 @@ import kendzi.jogl.model.geometry.material.AmbientDiffuseComponent;
 import kendzi.jogl.model.geometry.material.Material;
 import kendzi.jogl.model.geometry.material.OtherComponent;
 import kendzi.jogl.texture.TextureCacheService;
+import kendzi.jogl.util.VertexArrayObject;
 import kendzi.jogl.util.shaders.ShaderProgram;
 import kendzi.jogl.util.shaders.ShaderUtils;
 import kendzi.jogl.util.texture.Texture;

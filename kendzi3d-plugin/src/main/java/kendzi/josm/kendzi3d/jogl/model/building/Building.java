@@ -13,17 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.joml.Vector2dc;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL11C;
-import org.lwjgl.opengl.GL15C;
-import org.openstreetmap.josm.data.osm.Node;
-import org.openstreetmap.josm.data.osm.OsmPrimitive;
-import org.openstreetmap.josm.data.osm.PrimitiveId;
-import org.openstreetmap.josm.data.osm.Way;
-
 import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.BoundsFactory;
@@ -61,6 +50,16 @@ import kendzi.kendzi3d.editor.selection.editor.EditorType;
 import kendzi.kendzi3d.josm.model.perspective.Perspective;
 import kendzi.math.geometry.bbox.Bbox2d;
 import kendzi.math.geometry.line.LineSegment3d;
+import org.joml.Vector2dc;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL15C;
+import org.openstreetmap.josm.data.osm.Node;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.PrimitiveId;
+import org.openstreetmap.josm.data.osm.Way;
 
 /**
  * Representing building model.

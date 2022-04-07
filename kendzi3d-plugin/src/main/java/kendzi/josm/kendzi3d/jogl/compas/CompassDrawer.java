@@ -93,15 +93,15 @@ public class CompassDrawer {
         double arrowRadius = 0.2d * camDistanceRatio;
 
         GL11.glColor3fv(Y_AXIS_COLOR_ARRAY);
-        ArrowDrawUtil.drawArrow(null, lenght, arrowLenght, baseRadius, arrowRadius, section);
+        ArrowDrawUtil.drawArrow(lenght, arrowLenght, baseRadius, arrowRadius, section);
 
         GL11.glRotated(-90d, 0d, 0d, 1d);
         GL11.glColor3fv(X_AXIS_COLOR_ARRAY);
-        ArrowDrawUtil.drawArrow(null, lenght, arrowLenght, baseRadius, arrowRadius, section);
+        ArrowDrawUtil.drawArrow(lenght, arrowLenght, baseRadius, arrowRadius, section);
 
         GL11.glRotated(90d, 1d, 0d, 0d);
         GL11.glColor3fv(Z_AXIS_COLOR_ARRAY);
-        ArrowDrawUtil.drawArrow(null, lenght, arrowLenght, baseRadius, arrowRadius, section);
+        ArrowDrawUtil.drawArrow(lenght, arrowLenght, baseRadius, arrowRadius, section);
 
         GL11.glPopMatrix();
     }

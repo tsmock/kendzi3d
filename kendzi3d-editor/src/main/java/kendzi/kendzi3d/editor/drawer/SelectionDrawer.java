@@ -6,7 +6,7 @@ import kendzi.jogl.camera.Viewport;
 import kendzi.kendzi3d.editor.selection.Selection;
 import kendzi.kendzi3d.editor.selection.editor.ArrowEditor;
 import kendzi.kendzi3d.editor.selection.editor.Editor;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class SelectionDrawer {
 
@@ -32,8 +32,8 @@ public class SelectionDrawer {
             return;
         }
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11C.glDisable(GL11C.GL_TEXTURE_2D);
+        GL11C.glDisable(GL11C.GL_DEPTH_TEST);
 
         for (Editor editor : editors) {
             boolean isActiveEditor = editor.equals(activeEditor);
@@ -44,7 +44,7 @@ public class SelectionDrawer {
                 arrowEditorDrawer.draw(ae, isActiveEditor, isHighlightedEditor, viewport);
             }
         }
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11C.GL_DEPTH_TEST);
     }
 
     public void draw(Selection lastSelection, Editor lastActiveEditor, Editor lastHighlightedEditor, Viewport viewport) {

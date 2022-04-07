@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15C;
 
 public class DrawUtil {
 
@@ -222,24 +221,8 @@ public class DrawUtil {
                 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0, 0, 1d, 0,
                 // bottom
                 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0, 0, -1d, 0 };
-        final VertexArrayObject vao = new VertexArrayObject();
-        vao.bind();
-        final BufferObject indices = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, vertices.length / 3,
-                type -> GL15C.glBufferData(type, IntStream.range(0, vertices.length / 3).toArray(), GL15C.GL_STATIC_DRAW));
-        indices.bindBuffer();
-        final BufferObject vertexBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, vertices.length,
-                type -> GL15C.glBufferData(type, vertices, GL15C.GL_STATIC_DRAW));
-        vertexBuffer.bindBuffer();
-        final BufferObject normalBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, normals.length,
-                type -> GL15C.glBufferData(type, normals, GL15C.GL_STATIC_DRAW));
-        normalBuffer.bindBuffer();
-        vao.add(indices);
-        vao.add(vertexBuffer);
-        vao.add(normalBuffer);
-
-        vao.unbind();
-
-        return vao;
+        return VertexArrayObject.createVertexArrayObject(IntStream.range(0, vertices.length / 3).toArray(), vertices, normals,
+                null, null);
     }
 
     public static void drawFullBox(Vector3dc max, Vector3dc min) {

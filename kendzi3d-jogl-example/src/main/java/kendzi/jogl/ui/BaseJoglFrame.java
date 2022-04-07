@@ -102,6 +102,7 @@ public class BaseJoglFrame implements GLEventListener {
         // configure context
         GLData glData = new GLData();
         glData.majorVersion = 2;
+        glData.minorVersion = 1;
 
         // setup z-buffer
         glData.depthSize = 16;

@@ -154,6 +154,7 @@ public abstract class BaseEditorFrame extends Frame {
         final GLData glData = new GLData();
         // configure context
         glData.majorVersion = 2;
+        glData.minorVersion = 1;
         // We currently use deprecated functionality from OpenGL 1.1
         glData.forwardCompatible = false;
 

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.BoundsFactory;
 import kendzi.jogl.model.geometry.Bounds;
@@ -20,6 +21,7 @@ import kendzi.jogl.model.geometry.Model;
 import kendzi.jogl.model.render.ModelRender;
 import kendzi.jogl.texture.library.BuildingElementsTextureManager;
 import kendzi.jogl.texture.library.TextureLibraryStorageService;
+import kendzi.jogl.util.BufferObject;
 import kendzi.jogl.util.ColorUtil;
 import kendzi.josm.kendzi3d.data.OsmPrimitiveWorldObject;
 import kendzi.josm.kendzi3d.data.RebuildableWorldObject;
@@ -52,6 +54,8 @@ import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL15C;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.PrimitiveId;
@@ -396,11 +400,11 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
     @Override
     public void draw(Camera pCamera, boolean selected) {
         // XXX move draw debug do new method
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
         Vector3dc position = getPosition();
 
-        GL11.glTranslated(position.x(), position.y(), position.z());
+        MatrixMath.glTranslated(position.x(), position.y(), position.z());
 
         modelRender.render(model);
 
@@ -408,28 +412,29 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
             drawEdges(debug.getEdges());
         }
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
     }
 
     private void drawEdges(List<LineSegment3d> edges) {
 
         // Lift up a little to avoid z-buffer problems
-        GL11.glTranslated(0, 0.1, 0);
+        MatrixMath.glTranslated(0, 0.1, 0);
 
-        GL11.glLineWidth(6);
+        GL11C.glLineWidth(6);
         GL11.glColor3fv(ROOF_EDGES_COLOR);
 
         for (LineSegment3d line : edges) {
 
-            GL11.glBegin(GL11.GL_LINES);
-
             Vector3dc begin = line.getBegin();
             Vector3dc end = line.getEnd();
-
-            GL11.glVertex3d(begin.x(), begin.y(), begin.z());
-            GL11.glVertex3d(end.x(), end.y(), end.z());
-
-            GL11.glEnd();
+            try (BufferObject lineBo = new BufferObject(GL15C.GL_ARRAY_BUFFER, 1, type -> {
+                double[] data = new double[] { begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z() };
+                GL15C.glBufferData(type, data, GL15C.GL_STATIC_DRAW);
+            })) {
+                lineBo.bindBuffer();
+                GL11C.glDrawElements(GL11C.GL_LINE, lineBo.count(), GL11C.GL_DOUBLE, 0);
+                lineBo.unbindBuffer();
+            }
         }
     }
 

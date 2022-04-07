@@ -2,6 +2,7 @@ package kendzi.kendzi3d.editor.drawer;
 
 import java.awt.Color;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.glu.GLU;
 import kendzi.jogl.util.ColorUtil;
 import kendzi.jogl.util.DrawUtil;
@@ -131,11 +132,11 @@ public class ActiveSpotDrawer implements AutoCloseable {
 
         double length = 2d * editorRadius;
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, -editorRadius, 0);
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(0, -editorRadius, 0);
 
         ArrowDrawUtil.drawArrowheadSimple(length, editorRadius, NUMBER_OF_SECTIONS);
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
     }
 
     private static void drawArrow(double editorRadius) {
@@ -146,9 +147,9 @@ public class ActiveSpotDrawer implements AutoCloseable {
         double baseRadius = 0.1d * editorRadius;
         double arrowheadRadius = 0.6d * editorRadius;
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, -length / 2d, 0);
-        ArrowDrawUtil.drawArrow(null, length, arrowheadLength, baseRadius, arrowheadRadius, NUMBER_OF_SECTIONS);
-        GL11.glPopMatrix();
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(0, -length / 2d, 0);
+        ArrowDrawUtil.drawArrow(length, arrowheadLength, baseRadius, arrowheadRadius, NUMBER_OF_SECTIONS);
+        MatrixMath.glPopMatrix();
     }
 }

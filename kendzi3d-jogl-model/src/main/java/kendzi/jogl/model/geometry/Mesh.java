@@ -9,17 +9,15 @@
 
 package kendzi.jogl.model.geometry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
-import kendzi.jogl.util.BufferObject;
 import kendzi.jogl.util.VertexArrayObject;
 import org.joml.Vector3dc;
-import org.lwjgl.opengl.GL11C;
-import org.lwjgl.opengl.GL15C;
-import org.lwjgl.opengl.GL20C;
 
 public class Mesh implements AutoCloseable {
-    private VertexArrayObject bufferObject;
+    private List<VertexArrayObject> bufferObject;
 
     private Face[] face;
 
@@ -37,7 +35,7 @@ public class Mesh implements AutoCloseable {
 
     private boolean hasTexture;
 
-    public VertexArrayObject getArrayObject() {
+    public List<VertexArrayObject> getArrayObject() {
         if (this.bufferObject != null) {
             return this.bufferObject;
         }
@@ -49,30 +47,13 @@ public class Mesh implements AutoCloseable {
         if (this.bufferObject != null) {
             return;
         }
-        VertexArrayObject newBufferObject = new VertexArrayObject();
-        newBufferObject.bind();
+        List<VertexArrayObject> newBufferObject = new ArrayList<>(this.face.length);
         for (Face currentFace : this.face) {
-            BufferObject indices = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, currentFace.vertIndex.length / 3, type -> GL15C
-                    .glBufferData(type, IntStream.of(0, currentFace.vertIndex.length).toArray(), GL15C.GL_STATIC_DRAW));
-            indices.bindBuffer();
-
-            BufferObject vertexBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, currentFace.vertIndex.length,
-                    type -> GL15C.glBufferData(type, currentFace.vertIndex, GL15C.GL_STATIC_DRAW));
-            vertexBuffer.bindBuffer();
-            GL20C.glVertexAttribPointer(0, 3, GL11C.GL_INT, false, 0, 0);
-
-            BufferObject normalBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, currentFace.normalIndex.length,
-                    type -> GL15C.glBufferData(type, currentFace.normalIndex, GL15C.GL_STATIC_DRAW));
-            normalBuffer.bindBuffer();
-            GL20C.glVertexAttribPointer(1, 3, GL11C.GL_INT, false, 0, 0);
-            normalBuffer.unbindBuffer();
-
-            newBufferObject.add(indices);
-            newBufferObject.add(vertexBuffer);
-            newBufferObject.add(normalBuffer);
-            newBufferObject.enableAll();
+            VertexArrayObject vao = VertexArrayObject.createVertexArrayObject(
+                    IntStream.of(0, currentFace.vertIndex.length / 3).toArray(), currentFace.vertIndex, currentFace.normalIndex,
+                    null, null);
+            newBufferObject.add(vao);
         }
-        newBufferObject.unbind();
         this.bufferObject = newBufferObject;
     }
 
@@ -138,7 +119,7 @@ public class Mesh implements AutoCloseable {
 
     private synchronized void resetBufferObject() {
         if (this.bufferObject != null) {
-            this.bufferObject.close();
+            this.bufferObject.forEach(VertexArrayObject::close);
             this.bufferObject = null;
         }
     }

@@ -27,6 +27,30 @@
       <version>1.0.206-SNAPSHOT</version>
     </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <josm.user.dir>${user.home}/Library/JOSM/plugins</josm.user.dir>
+      </properties>
+    </profile>
+    <profile>
+      <id>linux</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <josm.user.dir>${user.home}/.local/share/JOSM/plugins/</josm.user.dir>
+      </properties>
+    </profile>
+  </profiles>
   <parent>
     <groupId>kendzi.kendzi3d</groupId>
     <artifactId>kendzi3d-parent</artifactId>
@@ -114,7 +138,7 @@
               <overWrite>true</overWrite>
             </artifactItem>
           </artifactItems>
-          <outputDirectory>${user.home}/Library/JOSM/plugins</outputDirectory>
+          <outputDirectory>${josm.user.dir}</outputDirectory>
         </configuration>
       </plugin>
     </plugins>

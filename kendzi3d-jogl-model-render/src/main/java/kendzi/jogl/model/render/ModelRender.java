@@ -17,6 +17,7 @@ import kendzi.jogl.model.geometry.material.AmbientDiffuseComponent;
 import kendzi.jogl.model.geometry.material.Material;
 import kendzi.jogl.model.geometry.material.OtherComponent;
 import kendzi.jogl.texture.TextureCacheService;
+import kendzi.jogl.util.VertexArrayObject;
 import kendzi.jogl.util.shaders.ShaderProgram;
 import kendzi.jogl.util.shaders.ShaderUtils;
 import kendzi.jogl.util.texture.Texture;
@@ -158,39 +159,48 @@ public class ModelRender {
                 }
 
                 faceCount += mesh.getFaces().length;
-                // mesh.getArrayObject().draw();
+                final boolean useVAO = false;
+                if (mesh.getFaces().length != 0 && useVAO) {
+                    mesh.getArrayObject().forEach(VertexArrayObject::draw);
+                    GLU.logError(i -> {
+                        throw new RuntimeException(i);
+                    });
+                }
 
-                for (fi = 0; fi < mesh.getFaces().length; fi++) {
-                    Face face = mesh.getFaces()[fi];
+                if (!useVAO) {
 
-                    int numOfTextureLayers = Math.min(MAX_TEXTURES_LAYERS, face.coordIndexLayers.length);
-                    if (!drawTextures || !mesh.hasTexture()) {
-                        numOfTextureLayers = 0;
-                    }
+                    for (fi = 0; fi < mesh.getFaces().length; fi++) {
+                        Face face = mesh.getFaces()[fi];
 
-                    GL11.glBegin(face.type);
-
-                    for (int i = 0; i < face.vertIndex.length; i++) {
-                        int vetexIndex = face.vertIndex[i];
-                        // if (face.normalIndex != null &&
-                        // face.normalIndex.length > i) {
-                        int normalIndex = face.normalIndex[i];
-
-                        GL11.glNormal3d(mesh.getNormals()[normalIndex].x(), mesh.getNormals()[normalIndex].y(),
-                                mesh.getNormals()[normalIndex].z());
-                        // }
-
-                        for (int tl = 0; tl < numOfTextureLayers; tl++) {
-                            int textureIndex = face.coordIndexLayers[tl][i];
-                            GL13.glMultiTexCoord2d(GL_TEXTURE[tl], mesh.getTexCoords()[textureIndex].u,
-                                    mesh.getTexCoords()[textureIndex].v);
+                        int numOfTextureLayers = Math.min(MAX_TEXTURES_LAYERS, face.coordIndexLayers.length);
+                        if (!drawTextures || !mesh.hasTexture()) {
+                            numOfTextureLayers = 0;
                         }
 
-                        GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
-                                mesh.getVertices()[vetexIndex].z());
-                    }
+                        GL11.glBegin(face.type);
 
-                    GL11.glEnd();
+                        for (int i = 0; i < face.vertIndex.length; i++) {
+                            int vetexIndex = face.vertIndex[i];
+                            // if (face.normalIndex != null &&
+                            // face.normalIndex.length > i) {
+                            int normalIndex = face.normalIndex[i];
+
+                            GL11.glNormal3d(mesh.getNormals()[normalIndex].x(), mesh.getNormals()[normalIndex].y(),
+                                    mesh.getNormals()[normalIndex].z());
+                            // }
+
+                            for (int tl = 0; tl < numOfTextureLayers; tl++) {
+                                int textureIndex = face.coordIndexLayers[tl][i];
+                                GL13.glMultiTexCoord2d(GL_TEXTURE[tl], mesh.getTexCoords()[textureIndex].u,
+                                        mesh.getTexCoords()[textureIndex].v);
+                            }
+
+                            GL11.glVertex3d(mesh.getVertices()[vetexIndex].x(), mesh.getVertices()[vetexIndex].y(),
+                                    mesh.getVertices()[vetexIndex].z());
+                        }
+
+                        GL11.glEnd();
+                    }
                 }
 
                 if (drawTextures) {

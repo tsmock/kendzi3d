@@ -1,12 +1,14 @@
 package kendzi.josm.kendzi3d.jogl.skybox;
 
 import com.google.inject.Inject;
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.texture.TextureCacheService;
 import kendzi.jogl.util.texture.Texture;
 import kendzi.jogl.util.texture.TextureCoords;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Drawer for skybox.
@@ -53,21 +55,21 @@ public class SkyBoxDrawer {
             return;
         }
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11C.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11C.GL_TEXTURE_2D);
+        GL11C.glDisable(GL11.GL_LIGHTING);
 
         // Set white color for texture
         GL11.glColor4f(1f, 1f, 1f, 1f);
 
         // Mix transparency color with texture
-        GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_REPLACE);
+        GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11C.GL_REPLACE);
 
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
-        GL11.glTranslated(cameraLocation.x(), cameraLocation.y(), cameraLocation.z());
+        MatrixMath.glTranslated(cameraLocation.x(), cameraLocation.y(), cameraLocation.z());
 
-        GL11.glRotated(180d, 0, 1, 0);
+        MatrixMath.glRotated(180d, 0, 1, 0);
 
         drawPolygon(configuration.getFrontTexture(), leftBottomBack, rightBottomBack, rightTopBack, leftTopBack);
 
@@ -79,11 +81,11 @@ public class SkyBoxDrawer {
 
         drawPolygon(configuration.getTopTexture(), leftTopBack, rightTopBack, rightTopFront, leftTopFront);
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
 
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11C.GL_TEXTURE_2D);
+        GL11C.glEnable(GL11C.GL_DEPTH_TEST);
 
     }
 

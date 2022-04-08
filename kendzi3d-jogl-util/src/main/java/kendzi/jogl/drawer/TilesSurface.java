@@ -11,6 +11,7 @@ import java.awt.*;
 import kendzi.jogl.Gl2Draw;
 import kendzi.jogl.util.DrawUtil;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Draws tiles surface in two colors.
@@ -66,7 +67,7 @@ public class TilesSurface implements Gl2Draw {
     @Override
     public void draw() {
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
 
         // GL11.glColor3f(0.0f, 0.1f, 0.4f);
         GL11.glColor3fv(firstColor);
@@ -75,6 +76,6 @@ public class TilesSurface implements Gl2Draw {
         GL11.glColor3fv(secondColor);
         DrawUtil.drawTiles(50, false);
 
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
     }
 }

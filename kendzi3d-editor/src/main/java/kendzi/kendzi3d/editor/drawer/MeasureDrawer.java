@@ -8,6 +8,7 @@ import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Drawer for measure tap.
@@ -37,7 +38,7 @@ public class MeasureDrawer {
     public void drawYMeasureWithArrows(Vector3dc begin, Vector3dc end, double value, Viewport viewport, double horizontalDistance,
             double arrowHeight, double arrowWidth, float lineWidth) {
 
-        GL11.glLineWidth(lineWidth);
+        GL11C.glLineWidth(lineWidth);
 
         Vector3d screenHorizontally = new Vector3d(viewport.getScreenHorizontally()).normalize();
 
@@ -80,7 +81,7 @@ public class MeasureDrawer {
     }
 
     private void drawFlatArrowhead(Vector3dc arrowheadPoint, Vector3dc arrowheadVector, Vector3dc arrowheadWidthVector) {
-        GL11.glBegin(GL11.GL_TRIANGLES);
+        GL11.glBegin(GL11C.GL_TRIANGLES);
 
         GL11.glVertex3d(arrowheadPoint.x(), arrowheadPoint.y(), arrowheadPoint.z());
         GL11.glVertex3d(//
@@ -97,7 +98,7 @@ public class MeasureDrawer {
 
     private void drawLine(double beginX, double beginY, double beginZ, double endX, double endY, double endZ) {
 
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11C.GL_LINES);
         GL11.glVertex3d(beginX, beginY, beginZ);
         GL11.glVertex3d(endX, endY, endZ);
         GL11.glEnd();
@@ -105,7 +106,7 @@ public class MeasureDrawer {
 
     private void drawLine(Vector3dc begin, Vector3dc end) {
 
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11C.GL_LINES);
         GL11.glVertex3d(begin.x(), begin.y(), begin.z());
         GL11.glVertex3d(end.x(), end.y(), end.z());
         GL11.glEnd();
@@ -113,7 +114,7 @@ public class MeasureDrawer {
 
     private void drawNumberBox(Vector3dc point, Double value, Viewport viewport) {
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
         String msg = String.format("%.2f m", value);
 
         Vector2dc p = viewport.project(point);
@@ -130,7 +131,7 @@ public class MeasureDrawer {
 
         // Draw a background rectangle
         GL11.glColor4f(1f, 1f, 1f, 0.6f);
-        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11C.GL_QUADS);
         int border = 7;
         GL11.glVertex3i(x - border, y + border, 0);
         GL11.glVertex3i(x + msgWidth + border, y + border, 0);
@@ -144,6 +145,6 @@ public class MeasureDrawer {
         GLUT.glutBitmapString(GLUT.BITMAP_HELVETICA_18, msg);
         // Switch back to 3D viewing
         DrawUtil.end2D();
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
     }
 }

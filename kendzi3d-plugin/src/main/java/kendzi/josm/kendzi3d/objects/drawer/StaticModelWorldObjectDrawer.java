@@ -3,12 +3,14 @@ package kendzi.josm.kendzi3d.objects.drawer;
 import javax.inject.Inject;
 
 import kendzi.jogl.Gl2Draw;
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.model.geometry.Model;
 import kendzi.jogl.model.render.ModelRender;
 import kendzi.kendzi3d.editor.drawer.HighlightDrawer;
 import kendzi.kendzi3d.world.StaticModelWorldObject;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class StaticModelWorldObjectDrawer {
 
@@ -19,23 +21,23 @@ public class StaticModelWorldObjectDrawer {
 
     public void draw(StaticModelWorldObject modelObject, boolean selected) {
 
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
         // global position
         Vector3dc position = modelObject.getPosition();
         Model model = modelObject.getModel();
 
         // move to global space
-        GL11.glTranslated(position.x(), position.y(), position.z());
+        MatrixMath.glTranslated(position.x(), position.y(), position.z());
 
         if (selected) {
             modelGl2Draw.setModel(model);
             modelGl2Draw.setModelRender(modelRender);
 
             modelRender.resetMaterials();
-            // GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            // GL11C.glColor4f(0.8f, 0.8f, 0.8f, 1);
+            GL11C.glEnable(GL11.GL_LIGHTING);
+            GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
             HighlightDrawer.drawHighlight(modelGl2Draw);
 
@@ -43,7 +45,7 @@ public class StaticModelWorldObjectDrawer {
             modelRender.render(model);
         }
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
     }
 
     private static class ColoredModelGl2Draw implements Gl2Draw {

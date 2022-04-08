@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.SimpleMoveAnimator;
 import kendzi.jogl.camera.Viewport;
 import kendzi.jogl.camera.ViewportUtil;
@@ -21,6 +22,7 @@ import kendzi.kendzi3d.editor.selection.ViewportProvider;
 import kendzi.kendzi3d.editor.ui.event.CloseWindowListener;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GLCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,29 +64,29 @@ public class BaseEditorGLEventListener implements GLEventListener, ViewportProvi
         // gl.setSwapInterval(1);
 
         // Clear z-buffer.
-        GL11.glClearDepth(1.0);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11C.glClearDepth(1.0);
+        GL11C.glClear(GL11C.GL_COLOR_BUFFER_BIT | GL11C.GL_DEPTH_BUFFER_BIT);
 
         // Enable z-buffer.
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11C.GL_DEPTH_TEST);
 
         // Background color.
-        GL11.glClearColor(0.17f, 0.65f, 0.92f, 0.0f);
+        GL11C.glClearColor(0.17f, 0.65f, 0.92f, 0.0f);
 
         // Smooth shade model.
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
         // Enable Antialiasing for lines.
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11C.glEnable(GL11C.GL_LINE_SMOOTH);
 
         // Set Line Antialiasing.
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11C.glHint(GL11C.GL_LINE_SMOOTH_HINT, GL11C.GL_NICEST);
 
         // Enable Blending.
-        GL11.glEnable(GL11.GL_BLEND);
+        GL11C.glEnable(GL11C.GL_BLEND);
 
         // Type Of Blending.
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11C.glBlendFunc(GL11C.GL_SRC_ALPHA, GL11C.GL_ONE_MINUS_SRC_ALPHA);
 
         // Adds light for screen.
         addLight();
@@ -100,13 +102,13 @@ public class BaseEditorGLEventListener implements GLEventListener, ViewportProvi
     private void addLight() {
 
         // Put light in model view.
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
 
         // Enable lighting.
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
 
         // Enable a single light source.
-        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11C.glEnable(GL11.GL_LIGHT0);
 
         // Weak gray ambient.
         float[] grayLight = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -150,7 +152,7 @@ public class BaseEditorGLEventListener implements GLEventListener, ViewportProvi
         viewport.updateViewport(camera);
 
         // Clear color and depth buffers.
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11C.glClear(GL11C.GL_COLOR_BUFFER_BIT | GL11C.GL_DEPTH_BUFFER_BIT);
 
         // Draw before camera is set.
         drawBeforeSetCamera(viewport);
@@ -171,7 +173,7 @@ public class BaseEditorGLEventListener implements GLEventListener, ViewportProvi
         }
         drawSelection();
 
-        GL11.glFlush();
+        GL11C.glFlush();
     }
 
     protected void drawBeforeSetCamera(Viewport viewport) {

@@ -8,8 +8,10 @@ package kendzi.jogl.util;
 
 import java.util.stream.IntStream;
 
+import kendzi.jogl.MatrixMath;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class DrawUtil {
 
@@ -46,7 +48,7 @@ public class DrawUtil {
 
         double angle = 2 * Math.PI / numberOfPoints;
 
-        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glBegin(GL11C.GL_LINE_LOOP);
         for (int i = 0; i < numberOfPoints; i++) {
 
             double cosA = Math.cos(angle);
@@ -65,7 +67,7 @@ public class DrawUtil {
     }
 
     public static void drawLine(double x1, double y1, double z1, double x2, double y2, double z2) {
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11C.GL_LINES);
         GL11.glVertex3d(x1, y1, z1);
         GL11.glVertex3d(x2, y2, z2);
         GL11.glEnd();
@@ -81,7 +83,7 @@ public class DrawUtil {
      */
     public static void drawTiles(int size, boolean odd) {
 
-        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11C.GL_QUADS);
         boolean aBlueTile;
         for (int z = -size / 2; z <= size / 2 - 1; z++) {
             // set color type for new
@@ -134,12 +136,12 @@ public class DrawUtil {
      *            height
      */
     public static void begin2D(double panelWidth, double panelHeight) {
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        MatrixMath.glMatrixMode(GL11.GL_PROJECTION);
         // save projection settings
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
+        MatrixMath.glPushMatrix();
+        MatrixMath.glLoadIdentity();
 
-        GL11.glOrtho(0.0f, panelWidth, panelHeight, 0.0f, -1.0f, 1.0f);
+        MatrixMath.glOrtho(0.0f, panelWidth, panelHeight, 0.0f, -1.0f, 1.0f);
         // left, right, bottom, top, near, far
 
         /*
@@ -147,11 +149,11 @@ public class DrawUtil {
          * This is reversed back to the more familiar top-left, downwards, by switching
          * the the top and bottom values in glOrtho().
          */
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
         // save model view settings
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        // GL11.glDisable(GL11.GL_DEPTH_TEST);
+        MatrixMath.glPushMatrix();
+        MatrixMath.glLoadIdentity();
+        // GL11C.glDisable(GL11C.GL_DEPTH_TEST);
     }
 
     /**
@@ -159,13 +161,13 @@ public class DrawUtil {
      *
      */
     public static void end2D() {
-        // GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        // GL11C.glEnable(GL11C.GL_DEPTH_TEST);
+        MatrixMath.glMatrixMode(GL11.GL_PROJECTION);
         // restore previous projection settings
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glPopMatrix();
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
         // restore previous model view settings
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
     }
 
     /**
@@ -228,7 +230,7 @@ public class DrawUtil {
     public static void drawFullBox(Vector3dc max, Vector3dc min) {
 
         // right
-        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11C.GL_QUADS);
         GL11.glNormal3d(1d, 0, 0);
         GL11.glVertex3d(max.x(), max.y(), max.z());
         GL11.glVertex3d(max.x(), min.y(), max.z());
@@ -275,7 +277,7 @@ public class DrawUtil {
 
     public static void drawBox(Vector3dc max, Vector3dc min) {
 
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glBegin(GL11C.GL_LINES);
 
         GL11.glVertex3d(max.x(), max.y(), min.z());
         GL11.glVertex3d(min.x(), max.y(), min.z());
@@ -288,7 +290,7 @@ public class DrawUtil {
 
         GL11.glEnd();
 
-        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glBegin(GL11C.GL_LINE_LOOP);
 
         GL11.glVertex3d(max.x(), max.y(), max.z());
         GL11.glVertex3d(max.x(), min.y(), max.z());
@@ -309,7 +311,7 @@ public class DrawUtil {
 
         double lenghtBase = lenght - lenghtArrow;
 
-        GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+        GL11.glBegin(GL11C.GL_TRIANGLE_FAN);
         GL11.glVertex3d(lenght, 0, 0);
         GL11.glVertex3d(lenghtBase, 0, -widthArrow);
         GL11.glVertex3d(lenghtBase, 0, -widthBase);

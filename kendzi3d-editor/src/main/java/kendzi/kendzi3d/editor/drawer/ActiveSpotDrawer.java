@@ -9,6 +9,7 @@ import kendzi.jogl.util.DrawUtil;
 import kendzi.jogl.util.VertexArrayObject;
 import kendzi.kendzi3d.editor.selection.editor.EditorType;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Util for drawing editor active spots.
@@ -72,7 +73,7 @@ public class ActiveSpotDrawer implements AutoCloseable {
         default:
             throw new IllegalArgumentException("Unknown editor mode: " + mode);
         }
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
 
     }
 
@@ -91,7 +92,7 @@ public class ActiveSpotDrawer implements AutoCloseable {
         drawEditor(editorRadius, type);
         SimpleOutlineDrawUtil.endSimpleOutline();
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
         GL11.glColor3fv(fillColor);
         drawEditor(editorRadius, type);
     }

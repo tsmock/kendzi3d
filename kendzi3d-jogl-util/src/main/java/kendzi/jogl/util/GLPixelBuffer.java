@@ -33,10 +33,11 @@ import java.nio.ByteBuffer;
 import kendzi.jogl.glu.GLException;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL41;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL12C;
+import org.lwjgl.opengl.GL13C;
+import org.lwjgl.opengl.GL20C;
+import org.lwjgl.opengl.GL41C;
 import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengles.GLES;
 
@@ -70,55 +71,55 @@ public class GLPixelBuffer {
             PixelFormat pixFmt = null;
 
             switch (glFormat) {
-            case GL11.GL_ALPHA:
+            case GL11C.GL_ALPHA:
             case GL11.GL_LUMINANCE:
-            case GL12.GL_RED:
+            case GL12C.GL_RED:
                 pixFmt = PixelFormat.LUMINANCE;
                 break;
-            case GL11.GL_RGB:
+            case GL11C.GL_RGB:
                 switch (glDataType) {
-                case GL41.GL_UNSIGNED_SHORT_5_6_5_REV:
+                case GL41C.GL_UNSIGNED_SHORT_5_6_5_REV:
                     pixFmt = PixelFormat.RGB565;
                     break;
-                case GL41.GL_UNSIGNED_SHORT_5_6_5:
+                case GL41C.GL_UNSIGNED_SHORT_5_6_5:
                     pixFmt = PixelFormat.BGR565;
                     break;
-                case GL11.GL_UNSIGNED_BYTE:
+                case GL11C.GL_UNSIGNED_BYTE:
                     pixFmt = PixelFormat.RGB888;
                     break;
                 }
                 break;
-            case GL11.GL_RGBA:
+            case GL11C.GL_RGBA:
                 switch (glDataType) {
-                case GL41.GL_UNSIGNED_SHORT_1_5_5_5_REV:
+                case GL41C.GL_UNSIGNED_SHORT_1_5_5_5_REV:
                     pixFmt = PixelFormat.RGBA5551;
                     break;
-                case GL41.GL_UNSIGNED_SHORT_5_5_5_1:
+                case GL41C.GL_UNSIGNED_SHORT_5_5_5_1:
                     pixFmt = PixelFormat.ABGR1555;
                     break;
-                case GL41.GL_UNSIGNED_INT_8_8_8_8_REV:
+                case GL41C.GL_UNSIGNED_INT_8_8_8_8_REV:
                     // fall through intended
-                case GL11.GL_UNSIGNED_BYTE:
+                case GL11C.GL_UNSIGNED_BYTE:
                     pixFmt = PixelFormat.RGBA8888;
                     break;
-                case GL41.GL_UNSIGNED_INT_8_8_8_8:
+                case GL41C.GL_UNSIGNED_INT_8_8_8_8:
                     pixFmt = PixelFormat.ABGR8888;
                     break;
                 }
                 break;
-            case GL41.GL_BGR:
-                if (GL11.GL_UNSIGNED_BYTE == glDataType) {
+            case GL41C.GL_BGR:
+                if (GL11C.GL_UNSIGNED_BYTE == glDataType) {
                     pixFmt = PixelFormat.BGR888;
                 }
                 break;
-            case GL41.GL_BGRA:
+            case GL41C.GL_BGRA:
                 switch (glDataType) {
-                case GL41.GL_UNSIGNED_INT_8_8_8_8:
+                case GL41C.GL_UNSIGNED_INT_8_8_8_8:
                     pixFmt = PixelFormat.ARGB8888;
                     break;
-                case GL41.GL_UNSIGNED_INT_8_8_8_8_REV:
+                case GL41C.GL_UNSIGNED_INT_8_8_8_8_REV:
                     // fall through intended
-                case GL11.GL_UNSIGNED_BYTE:
+                case GL11C.GL_UNSIGNED_BYTE:
                     pixFmt = PixelFormat.BGRA8888;
                     break;
                 }
@@ -131,14 +132,14 @@ public class GLPixelBuffer {
             final GLCapabilities cap = GL.getCapabilities();
             final boolean glesReadMode = pack && GLES.getCapabilities().GLES20;
             int df = 0; // format
-            int dt = GL11.GL_UNSIGNED_BYTE; // data type
+            int dt = GL11C.GL_UNSIGNED_BYTE; // data type
             switch (pixFmt) {
             case LUMINANCE:
                 if (!glesReadMode) {
                     if (cap.OpenGL30) {
                         // RED is supported on ES3 and >= GL3 [core]; ALPHA/LUMINANCE is deprecated on
                         // core
-                        df = GL20.GL_RED;
+                        df = GL20C.GL_RED;
                     } else {
                         // ALPHA/LUMINANCE is supported on ES2 and GL2, i.e. <= GL3 [core] or
                         // compatibility
@@ -148,58 +149,58 @@ public class GLPixelBuffer {
                 break;
             case RGB565:
                 if (cap.OpenGL20) {
-                    df = GL11.GL_RGB;
-                    dt = GL12.GL_UNSIGNED_SHORT_5_6_5_REV;
+                    df = GL11C.GL_RGB;
+                    dt = GL12C.GL_UNSIGNED_SHORT_5_6_5_REV;
                 }
                 break;
             case BGR565:
                 if (cap.OpenGL20) {
-                    df = GL11.GL_RGB;
-                    dt = GL12.GL_UNSIGNED_SHORT_5_6_5;
+                    df = GL11C.GL_RGB;
+                    dt = GL12C.GL_UNSIGNED_SHORT_5_6_5;
                 }
                 break;
             case RGBA5551:
                 if (cap.OpenGL20) {
-                    df = GL11.GL_RGBA;
-                    dt = GL12.GL_UNSIGNED_SHORT_1_5_5_5_REV;
+                    df = GL11C.GL_RGBA;
+                    dt = GL12C.GL_UNSIGNED_SHORT_1_5_5_5_REV;
                 }
                 break;
             case ABGR1555:
                 if (cap.OpenGL20) {
-                    df = GL11.GL_RGBA;
-                    dt = GL12.GL_UNSIGNED_SHORT_5_5_5_1;
+                    df = GL11C.GL_RGBA;
+                    dt = GL12C.GL_UNSIGNED_SHORT_5_5_5_1;
                 }
                 break;
             case RGB888:
                 if (!glesReadMode) {
-                    df = GL11.GL_RGB;
+                    df = GL11C.GL_RGB;
                 }
                 break;
             case BGR888:
                 if (cap.OpenGL20) {
-                    df = GL13.GL_BGR;
+                    df = GL13C.GL_BGR;
                 }
                 break;
             case RGBx8888:
             case RGBA8888:
-                df = GL13.GL_RGBA;
+                df = GL13C.GL_RGBA;
                 break;
             case ABGR8888:
                 if (cap.OpenGL20) {
-                    df = GL11.GL_RGBA;
-                    dt = GL13.GL_UNSIGNED_INT_8_8_8_8;
+                    df = GL11C.GL_RGBA;
+                    dt = GL13C.GL_UNSIGNED_INT_8_8_8_8;
                 }
                 break;
             case ARGB8888:
                 if (cap.OpenGL20) {
-                    df = GL13.GL_BGRA;
-                    dt = GL13.GL_UNSIGNED_INT_8_8_8_8;
+                    df = GL13C.GL_BGRA;
+                    dt = GL13C.GL_UNSIGNED_INT_8_8_8_8;
                 }
                 break;
             case BGRx8888:
             case BGRA8888:
                 if (cap.OpenGL20) { // FIXME: or if( !glesReadMode ) ? BGRA n/a on GLES
-                    df = GL13.GL_BGRA;
+                    df = GL13C.GL_BGRA;
                 }
                 break;
             }

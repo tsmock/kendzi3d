@@ -44,12 +44,14 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.glu.GLException;
 import kendzi.jogl.glu.GLU;
 import kendzi.jogl.util.texture.Texture;
 import kendzi.jogl.util.texture.TextureIO;
 import kendzi.jogl.util.texture.awt.AWTTextureData;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Provides the ability to render into an OpenGL
@@ -190,28 +192,28 @@ public class TextureRenderer {
     //
 
     private void beginRendering(final boolean ortho, final int width, final int height, final boolean disableDepthTestForOrtho) {
-        final int attribBits = GL11.GL_ENABLE_BIT | GL11.GL_TEXTURE_BIT | GL11.GL_COLOR_BUFFER_BIT
-                | (ortho ? (GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_TRANSFORM_BIT) : 0);
+        final int attribBits = GL11.GL_ENABLE_BIT | GL11.GL_TEXTURE_BIT | GL11C.GL_COLOR_BUFFER_BIT
+                | (ortho ? (GL11C.GL_DEPTH_BUFFER_BIT | GL11.GL_TRANSFORM_BIT) : 0);
         GL11.glPushAttrib(attribBits);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
         if (ortho) {
             if (disableDepthTestForOrtho) {
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
+                GL11C.glDisable(GL11C.GL_DEPTH_TEST);
             }
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GL11.glPushMatrix();
-            GL11.glLoadIdentity();
+            GL11C.glDisable(GL11C.GL_CULL_FACE);
+            MatrixMath.glMatrixMode(GL11.GL_PROJECTION);
+            MatrixMath.glPushMatrix();
+            MatrixMath.glLoadIdentity();
             GLU.gluOrtho2D(0, width, 0, height);
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GL11.glPushMatrix();
-            GL11.glLoadIdentity();
-            GL11.glMatrixMode(GL11.GL_TEXTURE);
-            GL11.glPushMatrix();
-            GL11.glLoadIdentity();
+            MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
+            MatrixMath.glPushMatrix();
+            MatrixMath.glLoadIdentity();
+            MatrixMath.glMatrixMode(GL11C.GL_TEXTURE);
+            MatrixMath.glPushMatrix();
+            MatrixMath.glLoadIdentity();
         }
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11C.glEnable(GL11C.GL_BLEND);
+        GL11C.glBlendFunc(GL11C.GL_ONE, GL11C.GL_ONE_MINUS_SRC_ALPHA);
         final Texture texture = getTexture();
         texture.enable();
         texture.bind();
@@ -221,15 +223,15 @@ public class TextureRenderer {
         if (smoothingChanged) {
             smoothingChanged = false;
             if (smoothing) {
-                texture.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+                texture.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
                 if (mipmap) {
-                    texture.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+                    texture.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR_MIPMAP_LINEAR);
                 } else {
-                    texture.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+                    texture.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR);
                 }
             } else {
-                texture.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                texture.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+                texture.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_NEAREST);
+                texture.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_NEAREST);
             }
         }
     }
@@ -312,8 +314,8 @@ public class TextureRenderer {
 
             if (!smoothing) {
                 // The TextureIO classes default to GL_LINEAR filtering
-                texture.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                texture.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+                texture.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_NEAREST);
+                texture.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_NEAREST);
             }
             return true;
         }

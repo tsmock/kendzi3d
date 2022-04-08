@@ -22,7 +22,7 @@ import kendzi.jogl.texture.builder.TextureBuilder;
 import kendzi.jogl.util.texture.Texture;
 import kendzi.jogl.util.texture.TextureIO;
 import kendzi.kendzi3d.resource.inter.ResourceService;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -214,16 +214,16 @@ public class TextureCacheServiceImpl implements kendzi.jogl.texture.TextureCache
     public void setupFilter(Texture texture) {
         if (filter) {
             // GL_LINEAR / GL_LINEAR_MIPMAP_LINEAR
-            // tex.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            // tex.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+            // tex.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_NEAREST);
+            // tex.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_NEAREST);
 
-            // tex.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            // tex.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER,
-            // GL11.GL_LINEAR_MIPMAP_LINEAR);
+            // tex.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
+            // tex.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER,
+            // GL11C.GL_LINEAR_MIPMAP_LINEAR);
 
         } else {
-            texture.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            texture.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+            texture.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
+            texture.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR);
         }
     }
 
@@ -242,8 +242,8 @@ public class TextureCacheServiceImpl implements kendzi.jogl.texture.TextureCache
                     try {
                         texture = tb.buildTexture(pName);
                     } catch (Exception e) {
-                        // GL11.getGL4().glGetErrorString
-                        int errorCode = GL11.glGetError();
+                        // GL11C.getGL4().glGetErrorString
+                        int errorCode = GL11C.glGetError();
                         String errorStr = "";
                         errorStr = GLU.gluErrorString(errorCode);
                         System.err.println(errorStr);
@@ -312,8 +312,8 @@ public class TextureCacheServiceImpl implements kendzi.jogl.texture.TextureCache
             if (filter) {
 
             } else {
-                tex.setTexParameteri(GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-                tex.setTexParameteri(GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+                tex.setTexParameteri(GL11C.GL_TEXTURE_MAG_FILTER, GL11C.GL_LINEAR);
+                tex.setTexParameteri(GL11C.GL_TEXTURE_MIN_FILTER, GL11C.GL_LINEAR);
             }
 
         }

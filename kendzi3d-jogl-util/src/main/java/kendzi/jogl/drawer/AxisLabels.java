@@ -14,6 +14,7 @@ import java.util.List;
 import kendzi.jogl.Gl2Draw;
 import kendzi.jogl.util.texture.awt.TextRenderer;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Draws axis labels.
@@ -99,7 +100,7 @@ public class AxisLabels implements Gl2Draw {
     @Override
     public void draw() {
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
 
         if (textToRender == null) {
             textToRender = createLabels();
@@ -107,7 +108,7 @@ public class AxisLabels implements Gl2Draw {
 
         drawAxisText(textToRender);
 
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
     }
 
     /**

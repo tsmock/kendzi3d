@@ -19,7 +19,9 @@
     </repository>
   </distributionManagement>
   <properties>
-    <java.version>8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <!--<maven.compiler.release>8</maven.compiler.release>-->
     <ejml.version>0.41</ejml.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jaxb.version>2.3.1</jaxb.version>
@@ -86,22 +88,19 @@
         <groupId>org.ejml</groupId>
         <artifactId>ejml-simple</artifactId>
         <version>${ejml.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.ejml</groupId>
-        <artifactId>ejml-simple</artifactId>
-        <version>${ejml.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.lwjgl</groupId>
         <artifactId>lwjgl-opengl</artifactId>
         <version>${lwjgl.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.lwjglx</groupId>
         <artifactId>lwjgl3-awt</artifactId>
         <version>${lwjgl3-awt.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.joml</groupId>
@@ -196,15 +195,16 @@
         <version>3.1.0</version>
       </extension>
     </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.10.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
-        <configuration>
-          <release>${java.version}</release>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>

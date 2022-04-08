@@ -43,6 +43,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Subset of the routines provided by the GLUT interface. Note the signatures of
@@ -220,33 +221,33 @@ public class GLUT {
 
     private static void beginBitmap(final int[] swapbytes, final int[] lsbfirst, final int[] rowlength, final int[] skiprows,
             final int[] skippixels, final int[] alignment) {
-        GL11.glGetIntegerv(GL11.GL_UNPACK_SWAP_BYTES, swapbytes);
-        GL11.glGetIntegerv(GL11.GL_UNPACK_LSB_FIRST, lsbfirst);
-        GL11.glGetIntegerv(GL11.GL_UNPACK_ROW_LENGTH, rowlength);
-        GL11.glGetIntegerv(GL11.GL_UNPACK_SKIP_ROWS, skiprows);
-        GL11.glGetIntegerv(GL11.GL_UNPACK_SKIP_PIXELS, skippixels);
-        GL11.glGetIntegerv(GL11.GL_UNPACK_ALIGNMENT, alignment);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_SWAP_BYTES, swapbytes);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_LSB_FIRST, lsbfirst);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_ROW_LENGTH, rowlength);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_SKIP_ROWS, skiprows);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_SKIP_PIXELS, skippixels);
+        GL11C.glGetIntegerv(GL11C.GL_UNPACK_ALIGNMENT, alignment);
         /*
          * Little endian machines (DEC Alpha for example) could benefit from setting
          * GL_UNPACK_LSB_FIRST to GL_TRUE instead of GL_FALSE, but this would require
          * changing the generated bitmaps too.
          */
-        GL11.glPixelStorei(GL11.GL_UNPACK_SWAP_BYTES, GL11.GL_FALSE);
-        GL11.glPixelStorei(GL11.GL_UNPACK_LSB_FIRST, GL11.GL_FALSE);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ROW_LENGTH, 0);
-        GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_ROWS, 0);
-        GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_PIXELS, 0);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SWAP_BYTES, GL11C.GL_FALSE);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_LSB_FIRST, GL11C.GL_FALSE);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_ROW_LENGTH, 0);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_ROWS, 0);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_PIXELS, 0);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_ALIGNMENT, 1);
     }
 
     private static void endBitmap(final int[] swapbytes, final int[] lsbfirst, final int[] rowlength, final int[] skiprows,
             final int[] skippixels, final int[] alignment) {
         /* Restore saved modes. */
-        GL11.glPixelStorei(GL11.GL_UNPACK_SWAP_BYTES, swapbytes[0]);
-        GL11.glPixelStorei(GL11.GL_UNPACK_LSB_FIRST, lsbfirst[0]);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ROW_LENGTH, rowlength[0]);
-        GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_ROWS, skiprows[0]);
-        GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_PIXELS, skippixels[0]);
-        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, alignment[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SWAP_BYTES, swapbytes[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_LSB_FIRST, lsbfirst[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_ROW_LENGTH, rowlength[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_ROWS, skiprows[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_PIXELS, skippixels[0]);
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_ALIGNMENT, alignment[0]);
     }
 }

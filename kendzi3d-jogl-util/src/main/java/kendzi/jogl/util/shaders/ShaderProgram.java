@@ -1,19 +1,19 @@
 package kendzi.jogl.util.shaders;
 
 import kendzi.jogl.glu.GLException;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GL20C;
 
 public class ShaderProgram implements AutoCloseable {
     private final int id;
 
-    ShaderProgram(Shader... shaders) {
+    ShaderProgram(final Shader... shaders) {
         this.id = GL20C.glCreateProgram();
         for (Shader shader : shaders) {
             GL20C.glAttachShader(this.id, shader.getId());
         }
         GL20C.glLinkProgram(this.id);
-        if (GL11.GL_FALSE == GL20C.glGetProgrami(this.id, GL20C.GL_LINK_STATUS)) {
+        if (GL11C.GL_FALSE == GL20C.glGetProgrami(this.id, GL20C.GL_LINK_STATUS)) {
             throw new GLException("Shader Program Linking failed:\n" + GL20C.glGetProgramInfoLog(this.id));
         }
         for (Shader shader : shaders) {

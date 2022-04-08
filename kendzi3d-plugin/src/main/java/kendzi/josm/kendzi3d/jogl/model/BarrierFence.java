@@ -9,6 +9,7 @@ package kendzi.josm.kendzi3d.jogl.model;
 import java.util.Collections;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.MeshFactory;
 import kendzi.jogl.model.factory.ModelFactory;
@@ -143,23 +144,21 @@ public class BarrierFence extends AbstractWayModel {
         // GL11.GL_REPLACE);
         GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(getGlobalX(), 0, -getGlobalY());
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(getGlobalX(), 0, -getGlobalY());
 
         modelRender.render(model);
 
         for (RelationCloneHeight cloner : heightClone) {
             for (Double height : cloner) {
 
-                GL11.glPushMatrix();
-                GL11.glTranslated(0, height, 0);
+                MatrixMath.glPushMatrix();
+                MatrixMath.glTranslated(0, height, 0);
                 modelRender.render(model);
-                GL11.glPopMatrix();
+                MatrixMath.glPopMatrix();
             }
         }
-
-        GL11.glPopMatrix();
-
+        MatrixMath.glPopMatrix();
     }
 
     @Override

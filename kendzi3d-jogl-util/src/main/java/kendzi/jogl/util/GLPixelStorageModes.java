@@ -30,7 +30,8 @@ package kendzi.jogl.util;
 
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL12C;
 import org.lwjgl.opengl.GLCapabilities;
 
 /**
@@ -80,17 +81,17 @@ public class GLPixelStorageModes {
     public final void resetPack() {
         // Compared w/ ES2, ES3 and GL3-core spec
         final GLCapabilities cap = GL.getCapabilities();
-        GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 4); // es2, es3, gl3
+        GL11C.glPixelStorei(GL11C.GL_PACK_ALIGNMENT, 4); // es2, es3, gl3
         if (cap.OpenGL20) {
-            GL11.glPixelStorei(GL11.GL_PACK_ROW_LENGTH, 0); // es3, gl3
-            GL11.glPixelStorei(GL11.GL_PACK_SKIP_ROWS, 0); // es3, gl3
-            GL11.glPixelStorei(GL11.GL_PACK_SKIP_PIXELS, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_PACK_ROW_LENGTH, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_PACK_SKIP_ROWS, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_PACK_SKIP_PIXELS, 0); // es3, gl3
             if (cap.OpenGL20 && cap.forwardCompatible) {
-                GL11.glPixelStorei(GL11.GL_PACK_SWAP_BYTES, GL11.GL_FALSE); // gl3
-                GL11.glPixelStorei(GL11.GL_PACK_LSB_FIRST, GL11.GL_FALSE); // gl3
+                GL11C.glPixelStorei(GL11C.GL_PACK_SWAP_BYTES, GL11C.GL_FALSE); // gl3
+                GL11C.glPixelStorei(GL11C.GL_PACK_LSB_FIRST, GL11C.GL_FALSE); // gl3
                 if (cap.OpenGL12) {
-                    GL11.glPixelStorei(GL12.GL_PACK_IMAGE_HEIGHT, 0); // gl3, GL_VERSION_1_2
-                    GL11.glPixelStorei(GL12.GL_PACK_SKIP_IMAGES, 0); // gl3, GL_VERSION_1_2
+                    GL11C.glPixelStorei(GL12C.GL_PACK_IMAGE_HEIGHT, 0); // gl3, GL_VERSION_1_2
+                    GL11C.glPixelStorei(GL12C.GL_PACK_SKIP_IMAGES, 0); // gl3, GL_VERSION_1_2
                 }
             }
         }
@@ -111,20 +112,20 @@ public class GLPixelStorageModes {
         }
         final GLCapabilities cap = GL.getCapabilities();
         if (cap.OpenGL12) {
-            // See GLStateTracker.pushAttrib(GL11.GL_CLIENT_PIXEL_STORE_BIT)
+            // See GLStateTracker.pushAttrib(GL11C.GL_CLIENT_PIXEL_STORE_BIT)
             GL11.glPushClientAttrib(GL11.GL_CLIENT_PIXEL_STORE_BIT);
         } else {
             // ES1 or ES2 deals with pack/unpack alignment only
-            cachePack[0] = GL11.glGetInteger(GL11.GL_PACK_ALIGNMENT);
+            cachePack[0] = GL11C.glGetInteger(GL11C.GL_PACK_ALIGNMENT);
             if (cap.OpenGL20) {
-                cachePack[1] = GL11.glGetInteger(GL11.GL_PACK_ROW_LENGTH);
-                cachePack[2] = GL11.glGetInteger(GL11.GL_PACK_SKIP_ROWS);
-                cachePack[3] = GL11.glGetInteger(GL11.GL_PACK_SKIP_PIXELS);
+                cachePack[1] = GL11C.glGetInteger(GL11C.GL_PACK_ROW_LENGTH);
+                cachePack[2] = GL11C.glGetInteger(GL11C.GL_PACK_SKIP_ROWS);
+                cachePack[3] = GL11C.glGetInteger(GL11C.GL_PACK_SKIP_PIXELS);
                 if (cap.forwardCompatible) {
-                    cachePack[4] = GL11.glGetInteger(GL11.GL_PACK_SWAP_BYTES);
-                    cachePack[5] = GL11.glGetInteger(GL11.GL_PACK_LSB_FIRST);
-                    cachePack[6] = GL11.glGetInteger(GL12.GL_PACK_IMAGE_HEIGHT);
-                    cachePack[7] = GL11.glGetInteger(GL12.GL_PACK_SKIP_IMAGES);
+                    cachePack[4] = GL11C.glGetInteger(GL11C.GL_PACK_SWAP_BYTES);
+                    cachePack[5] = GL11C.glGetInteger(GL11C.GL_PACK_LSB_FIRST);
+                    cachePack[6] = GL11C.glGetInteger(GL12C.GL_PACK_IMAGE_HEIGHT);
+                    cachePack[7] = GL11C.glGetInteger(GL12C.GL_PACK_SKIP_IMAGES);
                 }
             }
         }
@@ -137,16 +138,16 @@ public class GLPixelStorageModes {
         if (cap.OpenGL12) {
             GL11.glPopClientAttrib();
         } else {
-            GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, cachePack[0]);
+            GL11C.glPixelStorei(GL11C.GL_PACK_ALIGNMENT, cachePack[0]);
             if (cap.OpenGL20) {
-                GL11.glPixelStorei(GL11.GL_PACK_ROW_LENGTH, cachePack[1]);
-                GL11.glPixelStorei(GL11.GL_PACK_SKIP_ROWS, cachePack[2]);
-                GL11.glPixelStorei(GL11.GL_PACK_SKIP_PIXELS, cachePack[3]);
+                GL11C.glPixelStorei(GL11C.GL_PACK_ROW_LENGTH, cachePack[1]);
+                GL11C.glPixelStorei(GL11C.GL_PACK_SKIP_ROWS, cachePack[2]);
+                GL11C.glPixelStorei(GL11C.GL_PACK_SKIP_PIXELS, cachePack[3]);
                 if (cap.forwardCompatible) {
-                    GL11.glPixelStorei(GL11.GL_PACK_SWAP_BYTES, cachePack[4]);
-                    GL11.glPixelStorei(GL11.GL_PACK_LSB_FIRST, cachePack[5]);
-                    GL11.glPixelStorei(GL12.GL_PACK_IMAGE_HEIGHT, cachePack[6]);
-                    GL11.glPixelStorei(GL12.GL_PACK_SKIP_IMAGES, cachePack[7]);
+                    GL11C.glPixelStorei(GL11C.GL_PACK_SWAP_BYTES, cachePack[4]);
+                    GL11C.glPixelStorei(GL11C.GL_PACK_LSB_FIRST, cachePack[5]);
+                    GL11C.glPixelStorei(GL12C.GL_PACK_IMAGE_HEIGHT, cachePack[6]);
+                    GL11C.glPixelStorei(GL12C.GL_PACK_SKIP_IMAGES, cachePack[7]);
                 }
             }
         }
@@ -158,21 +159,21 @@ public class GLPixelStorageModes {
     public final void resetUnpack() {
         // Compared w/ ES2, ES3 and GL3-core spec
         final GLCapabilities cap = GL.getCapabilities();
-        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 4); // es2, es3, gl3
+        GL11C.glPixelStorei(GL11C.GL_UNPACK_ALIGNMENT, 4); // es2, es3, gl3
         if (cap.OpenGL20) {
-            GL11.glPixelStorei(GL11.GL_UNPACK_ROW_LENGTH, 0); // es3, gl3
-            GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_ROWS, 0); // es3, gl3
-            GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_PIXELS, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_UNPACK_ROW_LENGTH, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_ROWS, 0); // es3, gl3
+            GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_PIXELS, 0); // es3, gl3
             if (cap.forwardCompatible) {
                 if (cap.OpenGL12) {
-                    GL11.glPixelStorei(GL12.GL_UNPACK_IMAGE_HEIGHT, 0); // es3, gl3, GL_VERSION_1_2
-                    GL11.glPixelStorei(GL12.GL_UNPACK_SKIP_IMAGES, 0); // es3, gl3, GL_VERSION_1_2
+                    GL11C.glPixelStorei(GL12C.GL_UNPACK_IMAGE_HEIGHT, 0); // es3, gl3, GL_VERSION_1_2
+                    GL11C.glPixelStorei(GL12C.GL_UNPACK_SKIP_IMAGES, 0); // es3, gl3, GL_VERSION_1_2
                 }
-                GL11.glPixelStorei(GL11.GL_UNPACK_SWAP_BYTES, GL11.GL_FALSE); // gl3
-                GL11.glPixelStorei(GL11.GL_UNPACK_LSB_FIRST, GL11.GL_FALSE); // gl3
+                GL11C.glPixelStorei(GL11C.GL_UNPACK_SWAP_BYTES, GL11C.GL_FALSE); // gl3
+                GL11C.glPixelStorei(GL11C.GL_UNPACK_LSB_FIRST, GL11C.GL_FALSE); // gl3
             } else {
-                GL11.glPixelStorei(GL12.GL_UNPACK_IMAGE_HEIGHT, 0); // es3, gl3, GL_VERSION_1_2
-                GL11.glPixelStorei(GL12.GL_UNPACK_SKIP_IMAGES, 0); // es3, gl3, GL_VERSION_1_2
+                GL11C.glPixelStorei(GL12C.GL_UNPACK_IMAGE_HEIGHT, 0); // es3, gl3, GL_VERSION_1_2
+                GL11C.glPixelStorei(GL12C.GL_UNPACK_SKIP_IMAGES, 0); // es3, gl3, GL_VERSION_1_2
             }
         }
     }
@@ -192,20 +193,20 @@ public class GLPixelStorageModes {
         }
         final GLCapabilities cap = GL.getCapabilities();
         if (cap.OpenGL12) {
-            // See GLStateTracker.pushAttrib(GL11.GL_CLIENT_PIXEL_STORE_BIT)
+            // See GLStateTracker.pushAttrib(GL11C.GL_CLIENT_PIXEL_STORE_BIT)
             GL11.glPushClientAttrib(GL11.GL_CLIENT_PIXEL_STORE_BIT);
         } else {
             // ES1 or ES2 deals with pack/unpack alignment only
-            cacheUnpack[0] = GL11.glGetInteger(GL11.GL_UNPACK_ALIGNMENT);
+            cacheUnpack[0] = GL11C.glGetInteger(GL11C.GL_UNPACK_ALIGNMENT);
             if (cap.OpenGL20) {
-                cacheUnpack[1] = GL11.glGetInteger(GL11.GL_UNPACK_ROW_LENGTH);
-                cacheUnpack[2] = GL11.glGetInteger(GL11.GL_UNPACK_SKIP_ROWS);
-                cacheUnpack[3] = GL11.glGetInteger(GL11.GL_UNPACK_SKIP_PIXELS);
-                cacheUnpack[4] = GL11.glGetInteger(GL12.GL_UNPACK_IMAGE_HEIGHT);
-                cacheUnpack[5] = GL11.glGetInteger(GL12.GL_UNPACK_SKIP_IMAGES);
+                cacheUnpack[1] = GL11C.glGetInteger(GL11C.GL_UNPACK_ROW_LENGTH);
+                cacheUnpack[2] = GL11C.glGetInteger(GL11C.GL_UNPACK_SKIP_ROWS);
+                cacheUnpack[3] = GL11C.glGetInteger(GL11C.GL_UNPACK_SKIP_PIXELS);
+                cacheUnpack[4] = GL11C.glGetInteger(GL12C.GL_UNPACK_IMAGE_HEIGHT);
+                cacheUnpack[5] = GL11C.glGetInteger(GL12C.GL_UNPACK_SKIP_IMAGES);
                 if (cap.forwardCompatible) {
-                    cacheUnpack[6] = GL11.glGetInteger(GL11.GL_UNPACK_SWAP_BYTES);
-                    cacheUnpack[7] = GL11.glGetInteger(GL11.GL_UNPACK_LSB_FIRST);
+                    cacheUnpack[6] = GL11C.glGetInteger(GL11C.GL_UNPACK_SWAP_BYTES);
+                    cacheUnpack[7] = GL11C.glGetInteger(GL11C.GL_UNPACK_LSB_FIRST);
                 }
             }
         }
@@ -218,16 +219,16 @@ public class GLPixelStorageModes {
         if (cap.OpenGL12) {
             GL11.glPopClientAttrib();
         } else {
-            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, cacheUnpack[0]);
+            GL11C.glPixelStorei(GL11C.GL_UNPACK_ALIGNMENT, cacheUnpack[0]);
             if (cap.OpenGL20) {
-                GL11.glPixelStorei(GL11.GL_UNPACK_ROW_LENGTH, cacheUnpack[1]);
-                GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_ROWS, cacheUnpack[2]);
-                GL11.glPixelStorei(GL11.GL_UNPACK_SKIP_PIXELS, cacheUnpack[3]);
-                GL11.glPixelStorei(GL12.GL_UNPACK_IMAGE_HEIGHT, cacheUnpack[4]);
-                GL11.glPixelStorei(GL12.GL_UNPACK_SKIP_IMAGES, cacheUnpack[5]);
+                GL11C.glPixelStorei(GL11C.GL_UNPACK_ROW_LENGTH, cacheUnpack[1]);
+                GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_ROWS, cacheUnpack[2]);
+                GL11C.glPixelStorei(GL11C.GL_UNPACK_SKIP_PIXELS, cacheUnpack[3]);
+                GL11C.glPixelStorei(GL12C.GL_UNPACK_IMAGE_HEIGHT, cacheUnpack[4]);
+                GL11C.glPixelStorei(GL12C.GL_UNPACK_SKIP_IMAGES, cacheUnpack[5]);
                 if (cap.forwardCompatible) {
-                    GL11.glPixelStorei(GL11.GL_UNPACK_SWAP_BYTES, cacheUnpack[6]);
-                    GL11.glPixelStorei(GL11.GL_UNPACK_LSB_FIRST, cacheUnpack[7]);
+                    GL11C.glPixelStorei(GL11C.GL_UNPACK_SWAP_BYTES, cacheUnpack[6]);
+                    GL11C.glPixelStorei(GL11C.GL_UNPACK_LSB_FIRST, cacheUnpack[7]);
                 }
             }
         }

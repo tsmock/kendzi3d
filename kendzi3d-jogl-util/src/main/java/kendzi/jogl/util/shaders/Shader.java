@@ -20,7 +20,8 @@ public class Shader implements AutoCloseable {
         GL20C.glShaderSource(this.shaderId, charSequence);
         GL20C.glCompileShader(this.shaderId);
         if (GL20C.glGetShaderi(this.shaderId, GL20C.GL_COMPILE_STATUS) == GL11C.GL_FALSE) {
-            throw new GLException("Could not compile shader:\n" + GL20C.glGetShaderInfoLog(this.shaderId));
+            throw new GLException("Could not compile shader:\n" + GL20C.glGetShaderInfoLog(this.shaderId) + '\n'
+                    + new String(bytes, StandardCharsets.UTF_8));
         }
     }
 

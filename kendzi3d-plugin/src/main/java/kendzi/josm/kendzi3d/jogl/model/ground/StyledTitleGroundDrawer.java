@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.EastNorth;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -173,13 +174,13 @@ public class StyledTitleGroundDrawer extends GroundDrawer {
             texture = textureCacheService.getTexture(textName);
         }
 
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11C.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
         texture.enable();
         texture.bind();
 
-        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glBegin(GL11C.GL_QUADS);
         GL11.glNormal3d(0d, 1d, 0d);
 
         double h = -0.1d;

@@ -64,8 +64,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTABGR;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL12C;
+import org.lwjgl.opengl.GL13C;
 
 @Deprecated
 public class AWTTextureData extends TextureData {
@@ -108,7 +109,7 @@ public class AWTTextureData extends TextureData {
     public AWTTextureData(final int internalFormat, final int pixelFormat, final boolean mipmap, final BufferedImage image) {
         super();
         if (internalFormat == 0) {
-            this.internalFormat = image.getColorModel().hasAlpha() ? GL11.GL_RGBA : GL11.GL_RGB;
+            this.internalFormat = image.getColorModel().hasAlpha() ? GL11C.GL_RGBA : GL11C.GL_RGB;
         } else {
             this.internalFormat = internalFormat;
         }
@@ -185,21 +186,21 @@ public class AWTTextureData extends TextureData {
         if (!GL.getCapabilities().forwardCompatible) {
             switch (image.getType()) {
             case BufferedImage.TYPE_INT_RGB:
-                pixelAttributes = new GLPixelAttributes(GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV);
+                pixelAttributes = new GLPixelAttributes(GL12C.GL_BGRA, GL12C.GL_UNSIGNED_INT_8_8_8_8_REV);
                 rowLength = scanlineStride;
                 alignment = 4;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_INT_ARGB_PRE:
-                pixelAttributes = new GLPixelAttributes(GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV);
+                pixelAttributes = new GLPixelAttributes(GL12C.GL_BGRA, GL12C.GL_UNSIGNED_INT_8_8_8_8_REV);
                 rowLength = scanlineStride;
                 alignment = 4;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_INT_BGR:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV);
+                pixelAttributes = new GLPixelAttributes(GL11C.GL_RGBA, GL12C.GL_UNSIGNED_INT_8_8_8_8_REV);
                 rowLength = scanlineStride;
                 alignment = 4;
                 expectingGL12 = true;
@@ -209,7 +210,7 @@ public class AWTTextureData extends TextureData {
                 // we can pass the image data directly to OpenGL only if
                 // we have an integral number of pixels in each scanline
                 if ((scanlineStride % 3) == 0) {
-                    pixelAttributes = new GLPixelAttributes(GL12.GL_BGR, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(GL12C.GL_BGR, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 3;
                     alignment = 1;
                 } else {
@@ -228,7 +229,7 @@ public class AWTTextureData extends TextureData {
                 // the necessary byte swapping (FIXME: needs more
                 // investigation)
                 if ((scanlineStride % 4) == 0 && GL.getCapabilities().OpenGL20 && false) {
-                    pixelAttributes = new GLPixelAttributes(EXTABGR.GL_ABGR_EXT, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(EXTABGR.GL_ABGR_EXT, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 4;
                     alignment = 4;
 
@@ -244,26 +245,26 @@ public class AWTTextureData extends TextureData {
                 }
             }
             case BufferedImage.TYPE_USHORT_565_RGB:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_RGB, GL13.GL_UNSIGNED_SHORT_5_6_5);
+                pixelAttributes = new GLPixelAttributes(GL11C.GL_RGB, GL13C.GL_UNSIGNED_SHORT_5_6_5);
                 rowLength = scanlineStride;
                 alignment = 2;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_USHORT_555_RGB:
-                pixelAttributes = new GLPixelBuffer.GLPixelAttributes(GL13.GL_BGRA, GL13.GL_UNSIGNED_SHORT_1_5_5_5_REV);
+                pixelAttributes = new GLPixelBuffer.GLPixelAttributes(GL13C.GL_BGRA, GL13C.GL_UNSIGNED_SHORT_1_5_5_5_REV);
                 rowLength = scanlineStride;
                 alignment = 2;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_BYTE_GRAY:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11.GL_UNSIGNED_BYTE);
+                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11C.GL_UNSIGNED_BYTE);
                 rowLength = scanlineStride;
                 alignment = 1;
                 break;
             case BufferedImage.TYPE_USHORT_GRAY:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11.GL_UNSIGNED_SHORT);
+                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11C.GL_UNSIGNED_SHORT);
                 rowLength = scanlineStride;
                 alignment = 2;
                 break;
@@ -278,11 +279,11 @@ public class AWTTextureData extends TextureData {
             default:
                 final java.awt.image.ColorModel cm = image.getColorModel();
                 if (cm.equals(rgbColorModel)) {
-                    pixelAttributes = new GLPixelAttributes(GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(GL11C.GL_RGB, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 3;
                     alignment = 1;
                 } else if (cm.equals(rgbaColorModel)) {
-                    pixelAttributes = new GLPixelAttributes(GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(GL11C.GL_RGBA, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 4; // FIXME: correct?
                     alignment = 4;
                 } else {
@@ -294,7 +295,7 @@ public class AWTTextureData extends TextureData {
         } else {
             switch (image.getType()) {
             case BufferedImage.TYPE_INT_RGB:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE);
+                pixelAttributes = new GLPixelAttributes(GL11C.GL_RGB, GL11C.GL_UNSIGNED_BYTE);
                 rowLength = scanlineStride;
                 alignment = 3;
                 expectingGL12 = true;
@@ -307,21 +308,21 @@ public class AWTTextureData extends TextureData {
             case BufferedImage.TYPE_4BYTE_ABGR_PRE:
                 throw new GLException("INT_BGR n.a.");
             case BufferedImage.TYPE_USHORT_565_RGB:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_RGB, GL13.GL_UNSIGNED_SHORT_5_6_5);
+                pixelAttributes = new GLPixelAttributes(GL11C.GL_RGB, GL13C.GL_UNSIGNED_SHORT_5_6_5);
                 rowLength = scanlineStride;
                 alignment = 2;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_USHORT_555_RGB:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_RGBA, GL13.GL_UNSIGNED_SHORT_5_5_5_1);
+                pixelAttributes = new GLPixelAttributes(GL11C.GL_RGBA, GL13C.GL_UNSIGNED_SHORT_5_5_5_1);
                 rowLength = scanlineStride;
                 alignment = 2;
                 expectingGL12 = true;
                 setupLazyCustomConversion(image);
                 break;
             case BufferedImage.TYPE_BYTE_GRAY:
-                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11.GL_UNSIGNED_BYTE);
+                pixelAttributes = new GLPixelAttributes(GL11.GL_LUMINANCE, GL11C.GL_UNSIGNED_BYTE);
                 rowLength = scanlineStride;
                 alignment = 1;
                 break;
@@ -338,11 +339,11 @@ public class AWTTextureData extends TextureData {
             default:
                 final java.awt.image.ColorModel cm = image.getColorModel();
                 if (cm.equals(rgbColorModel)) {
-                    pixelAttributes = new GLPixelAttributes(GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(GL11C.GL_RGB, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 3;
                     alignment = 1;
                 } else if (cm.equals(rgbaColorModel)) {
-                    pixelAttributes = new GLPixelAttributes(GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE);
+                    pixelAttributes = new GLPixelAttributes(GL11C.GL_RGBA, GL11C.GL_UNSIGNED_BYTE);
                     rowLength = scanlineStride / 4; // FIXME: correct?
                     alignment = 4;
                 } else {
@@ -362,7 +363,7 @@ public class AWTTextureData extends TextureData {
         int pixelFormat = pixelAttributes.format;
         int pixelType = pixelAttributes.type;
         if (pixelFormat == 0) {
-            pixelFormat = hasAlpha ? GL11.GL_RGBA : GL11.GL_RGB;
+            pixelFormat = hasAlpha ? GL11C.GL_RGBA : GL11C.GL_RGB;
         }
         alignment = 1; // FIXME: do we need better?
         rowLength = width; // FIXME: correct in all cases?
@@ -373,22 +374,22 @@ public class AWTTextureData extends TextureData {
         if (data instanceof DataBufferByte || isPackedInt(image)) {
             // Don't use GL_UNSIGNED_INT for BufferedImage packed int images
             if (pixelType == 0)
-                pixelType = GL11.GL_UNSIGNED_BYTE;
+                pixelType = GL11C.GL_UNSIGNED_BYTE;
         } else if (data instanceof DataBufferDouble) {
             throw new RuntimeException("DataBufferDouble rasters not supported by OpenGL");
         } else if (data instanceof DataBufferFloat) {
             if (pixelType == 0)
-                pixelType = GL11.GL_FLOAT;
+                pixelType = GL11C.GL_FLOAT;
         } else if (data instanceof DataBufferInt) {
             // FIXME: should we support signed ints?
             if (pixelType == 0)
-                pixelType = GL11.GL_UNSIGNED_INT;
+                pixelType = GL11C.GL_UNSIGNED_INT;
         } else if (data instanceof DataBufferShort) {
             if (pixelType == 0)
-                pixelType = GL11.GL_SHORT;
+                pixelType = GL11C.GL_SHORT;
         } else if (data instanceof DataBufferUShort) {
             if (pixelType == 0)
-                pixelType = GL11.GL_UNSIGNED_SHORT;
+                pixelType = GL11C.GL_UNSIGNED_SHORT;
         } else {
             throw new RuntimeException("Unexpected DataBuffer type?");
         }

@@ -15,6 +15,7 @@ import kendzi.jogl.util.texture.Texture;
 import kendzi.jogl.util.texture.TextureCoords;
 import kendzi.kendzi3d.editor.selection.ViewportProvider;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Displays given icon.
@@ -86,9 +87,9 @@ public class SquareIcon implements Gl2Draw {
         texture.enable();
         texture.bind();
 
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11C.glDisable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11C.GL_BLEND);
+        GL11C.glBlendFunc(GL11C.GL_SRC_ALPHA, GL11C.GL_ONE_MINUS_SRC_ALPHA);
 
         // Set transparency for texture
         GL11.glColor4f(1f, 1f, 1f, 0.8f);
@@ -97,7 +98,7 @@ public class SquareIcon implements Gl2Draw {
         GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
         // No depth.
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11C.glDisable(GL11C.GL_DEPTH_TEST);
 
         // Draw icon in 2d mode.
         DrawUtil.begin2D(width, height);
@@ -117,12 +118,12 @@ public class SquareIcon implements Gl2Draw {
 
         GL11.glEnd();
 
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHTING);
 
         texture.disable();
 
         DrawUtil.end2D();
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11C.GL_DEPTH_TEST);
     }
 }

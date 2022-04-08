@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.model.geometry.Face;
 import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
@@ -22,7 +23,9 @@ import kendzi.jogl.util.shaders.ShaderProgram;
 import kendzi.jogl.util.shaders.ShaderUtils;
 import kendzi.jogl.util.texture.Texture;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL13C;
 import org.lwjgl.opengl.GL20C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +38,8 @@ public class ModelRender {
     /** Log. */
     private static final Logger log = LoggerFactory.getLogger(ModelRender.class);
 
-    private static final int[] GL_TEXTURE = { GL13.GL_TEXTURE0, GL13.GL_TEXTURE1, GL13.GL_TEXTURE2, GL13.GL_TEXTURE3 };
+    // Note: GL_TEXTURE goes to 31 with GL13C.
+    private static final int[] GL_TEXTURE = { GL13C.GL_TEXTURE0, GL13C.GL_TEXTURE1, GL13C.GL_TEXTURE2, GL13C.GL_TEXTURE3 };
 
     private static final int MAX_TEXTURES_LAYERS = GL_TEXTURE.length;
 
@@ -107,16 +111,16 @@ public class ModelRender {
     public void render(Model model) {
 
         if (model.useLight) {
-            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11C.glEnable(GL11.GL_LIGHTING);
         }
 
         draw(model);
 
         if (model.useLight) {
-            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11C.glDisable(GL11.GL_LIGHTING);
         }
 
-        // GL11.glDisable(GL11.GL_CULL_FACE);
+        // GL11C.glDisable(GL11C.GL_CULL_FACE);
 
         if (drawEdges || model.drawEdges) {
             DebugModelRendererUtil.drawEdges(model);
@@ -140,16 +144,16 @@ public class ModelRender {
         try {
 
             if (model.useCullFaces) {
-                GL11.glEnable(GL11.GL_CULL_FACE);
+                GL11C.glEnable(GL11C.GL_CULL_FACE);
             }
 
-            GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, model.useTwoSided || drawTwoSided ? GL11.GL_TRUE : GL11.GL_FALSE);
+            GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, model.useTwoSided || drawTwoSided ? GL11C.GL_TRUE : GL11C.GL_FALSE);
 
             for (mi = 0; mi < model.mesh.length; mi++) {
                 Mesh mesh = model.mesh[mi];
                 Material material = model.getMaterial(mesh.getMaterialID());
 
-                setupMaterial2(material, model.useTwoSided || drawTwoSided ? GL11.GL_FRONT_AND_BACK : GL11.GL_FRONT);
+                setupMaterial2(material, model.useTwoSided || drawTwoSided ? GL11C.GL_FRONT_AND_BACK : GL11C.GL_FRONT);
 
                 if (drawTextures) {
                     if (model.useTextureAlpha) {
@@ -162,9 +166,6 @@ public class ModelRender {
                 final boolean useVAO = false;
                 if (mesh.getFaces().length != 0 && useVAO) {
                     mesh.getArrayObject().forEach(VertexArrayObject::draw);
-                    GLU.logError(i -> {
-                        throw new RuntimeException(i);
-                    });
                 }
 
                 if (!useVAO) {
@@ -218,9 +219,9 @@ public class ModelRender {
                     + (model.mesh[mi] != null ? model.mesh[mi].getName() : "") + ")" + " face: " + fi, e);
         } finally {
 
-            GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
+            GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11C.GL_FALSE);
 
-            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11C.glDisable(GL11C.GL_CULL_FACE);
         }
 
     }
@@ -233,21 +234,21 @@ public class ModelRender {
         int curLayer = texturesComponent.size();
 
         if (colored && 0 < curLayer && curLayer < MAX_TEXTURES_LAYERS) {
-            GL13.glActiveTexture(GL_TEXTURE[curLayer]);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
+            GL11C.glEnable(GL11C.GL_TEXTURE_2D);
             unbindTexture();
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11C.glDisable(GL11C.GL_TEXTURE_2D);
         }
 
         curLayer = useTextures ? curLayer : 0;
 
         while (curLayer > 0) {
             curLayer--;
-            GL13.glActiveTexture(GL_TEXTURE[curLayer]);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
+            GL11C.glEnable(GL11C.GL_TEXTURE_2D);
             unbindTexture();
             // disableTransparentText(gl);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11C.glDisable(GL11C.GL_TEXTURE_2D);
             if (curLayer == 0) {
                 if (colored) {
                     GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
@@ -265,15 +266,15 @@ public class ModelRender {
 
         while (curLayer > 0) {
             curLayer--;
-            GL13.glActiveTexture(GL_TEXTURE[curLayer]);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
+            GL11C.glDisable(GL11C.GL_TEXTURE_2D);
         }
 
         curLayer = useTextures ? 0 : texturesComponent.size();
 
         for (; curLayer < MAX_TEXTURES_LAYERS && curLayer < texturesComponent.size(); curLayer++) {
-            GL13.glActiveTexture(GL_TEXTURE[curLayer]);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
+            GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
             if (colored) {
                 this.shaderProgram.use();
@@ -303,14 +304,14 @@ public class ModelRender {
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL13.GL_COMBINE);
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_COMBINE_RGB, GL13.GL_INTERPOLATE);
 
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_RGB, GL11.GL_TEXTURE);
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND0_RGB, GL11.GL_SRC_COLOR);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_RGB, GL11C.GL_TEXTURE);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND0_RGB, GL11C.GL_SRC_COLOR);
 
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_RGB, GL13.GL_PREVIOUS);
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_RGB, GL11.GL_SRC_COLOR);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_RGB, GL11C.GL_SRC_COLOR);
 
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE2_RGB, GL11.GL_TEXTURE);
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND2_RGB, GL11.GL_SRC_ALPHA);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE2_RGB, GL11C.GL_TEXTURE);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND2_RGB, GL11C.GL_SRC_ALPHA);
 
                 /*
                  * The final alpha should be 1. Sum both alpha channels from previous texture
@@ -318,9 +319,9 @@ public class ModelRender {
                  */
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_COMBINE_ALPHA, GL11.GL_ADD);
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND0_ALPHA, GL13.GL_PREVIOUS);
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_ALPHA, GL11.GL_SRC_ALPHA);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_OPERAND1_ALPHA, GL11C.GL_SRC_ALPHA);
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_ALPHA, GL13.GL_PREVIOUS);
-                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_ALPHA, GL11.GL_TEXTURE);
+                GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_ALPHA, GL11C.GL_TEXTURE);
             }
             if (colored) {
                 this.shaderProgram.stopUsing();
@@ -328,8 +329,8 @@ public class ModelRender {
         }
 
         if (colored && 0 < curLayer && curLayer < MAX_TEXTURES_LAYERS) {
-            GL13.glActiveTexture(GL_TEXTURE[curLayer]);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
+            GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
             this.shaderProgram.use();
             Texture texture = getTexture(texturesComponent.get(curLayer - 1));
@@ -344,12 +345,11 @@ public class ModelRender {
      *
      */
     public void unbindTexture() {
+        MatrixMath.glMatrixMode(GL11C.GL_TEXTURE);
+        MatrixMath.glPopMatrix();
 
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPopMatrix();
-
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPopMatrix();
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glPopMatrix();
     }
 
     /**
@@ -360,22 +360,22 @@ public class ModelRender {
      */
     public void bindTexture(Texture texture) {
         // switch to texture mode and push a new matrix on the stack
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPushMatrix();
+        MatrixMath.glMatrixMode(GL11C.GL_TEXTURE);
+        MatrixMath.glPushMatrix();
 
         // check to see if the texture needs flipping
         if (texture.getMustFlipVertically()) {
-            GL11.glScaled(1, -1, 1);
-            GL11.glTranslated(0, -1, 0);
+            MatrixMath.glScaled(1, -1, 1);
+            MatrixMath.glTranslated(0, -1, 0);
         }
 
         // switch to modelview matrix and push a new matrix on the stack
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glPushMatrix();
 
         // This is required to repeat textures
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+        GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_S, GL11C.GL_REPEAT);
+        GL11C.glTexParameteri(GL11C.GL_TEXTURE_2D, GL11C.GL_TEXTURE_WRAP_T, GL11C.GL_REPEAT);
 
         // enable, bind
         texture.enable();
@@ -386,20 +386,20 @@ public class ModelRender {
      */
     public static void enableTransparentText() {
         // do not draw the transparent parts of the texture
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11C.glEnable(GL11C.GL_BLEND);
+        GL11C.glBlendFunc(GL11C.GL_SRC_ALPHA, GL11C.GL_ONE_MINUS_SRC_ALPHA);
         // don't show source alpha parts in the destination
 
         // determine which areas of the polygon are to be rendered
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glAlphaFunc(GL11.GL_GREATER, 0); // only render if alpha > 0
+        GL11C.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glAlphaFunc(GL11C.GL_GREATER, 0); // only render if alpha > 0
     }
 
     /**
      */
     public static void disableTransparentText() {
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11C.glDisable(GL11.GL_ALPHA_TEST);
+        GL11C.glDisable(GL11C.GL_BLEND);
 
     }
 
@@ -442,7 +442,7 @@ public class ModelRender {
      *
      */
     public void setupDefaultMaterial() {
-        setupMaterial2(defaultMaterial, drawTwoSided ? GL11.GL_FRONT_AND_BACK : GL11.GL_FRONT);
+        setupMaterial2(defaultMaterial, drawTwoSided ? GL11C.GL_FRONT_AND_BACK : GL11C.GL_FRONT);
     }
 
     private void setupMaterial2(Material material, int sides) {
@@ -459,7 +459,7 @@ public class ModelRender {
     }
 
     private boolean isSidesChanged(int sides) {
-        return lastSides == 0 || lastSides == GL11.GL_FRONT && sides == GL11.GL_FRONT_AND_BACK;
+        return lastSides == 0 || lastSides == GL11C.GL_FRONT && sides == GL11C.GL_FRONT_AND_BACK;
     }
 
     private boolean isOtherComponentChanged(OtherComponent other) {

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -31,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 
@@ -276,19 +278,19 @@ public class Tree extends AbstractPointModel implements DLODSuport {
         Model model2 = modelLod.get(pLod);
         if (model2 != null) {
 
-            GL11.glPushMatrix();
-            GL11.glTranslated(getGlobalX(), minHeight, -getGlobalY());
+            MatrixMath.glPushMatrix();
+            MatrixMath.glTranslated(getGlobalX(), minHeight, -getGlobalY());
 
-            GL11.glEnable(GL11.GL_NORMALIZE);
-            GL11.glScaled(scale.x, scale.y, scale.z);
+            GL11C.glEnable(GL11.GL_NORMALIZE);
+            MatrixMath.glScaled(scale.x, scale.y, scale.z);
 
             modelRender.render(model2);
 
-            GL11.glDisable(GL11.GL_NORMALIZE);
+            GL11C.glDisable(GL11.GL_NORMALIZE);
 
             // rotate in the opposite direction to the camera
 
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
 
         }
     }

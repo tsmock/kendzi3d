@@ -6,12 +6,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.util.DrawUtil;
 import kendzi.jogl.util.texture.awt.TextRenderer;
 import kendzi.kendzi3d.buildings.output.RoofDebugOutput;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * 
@@ -48,17 +50,17 @@ public class BuildingDebugDrawer {
      */
     public void drawDebugRoof() {
 
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11C.glDisable(GL11.GL_LIGHTING);
 
         // red
         GL11.glColor3f(1.0f, 0f, 0f);
 
         // Set line width to 4
-        GL11.glLineWidth(6);
+        GL11C.glLineWidth(6);
         // Repeat count, repeat pattern
         GL11.glLineStipple(1, (short) 0xf0f0);
 
-        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glBegin(GL11C.GL_LINE_LOOP);
 
         List<Vector3dc> rectangle = scaledBBox();
 
@@ -87,13 +89,13 @@ public class BuildingDebugDrawer {
             double z = this.debug.getStartPoint().z();
             double d = 0.25;
 
-            GL11.glPushMatrix();
+            MatrixMath.glPushMatrix();
 
-            GL11.glTranslated(x, y, z);
+            MatrixMath.glTranslated(x, y, z);
 
             DrawUtil.drawDotY(d, 12);
 
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
         }
 
     }

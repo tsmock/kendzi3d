@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.FaceFactory;
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
@@ -44,6 +45,7 @@ import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
 
@@ -621,12 +623,12 @@ public class Wall extends AbstractWayModel {
         // }
 
         // do not draw the transparent parts of the texture
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11C.glEnable(GL11C.GL_BLEND);
+        GL11C.glBlendFunc(GL11C.GL_SRC_ALPHA, GL11C.GL_ONE_MINUS_SRC_ALPHA);
         // don't show source alpha parts in the destination
 
         // determine which areas of the polygon are to be rendered
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11C.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glAlphaFunc(GL11.GL_GREATER, 0); // only render if alpha > 0
 
         // replace the quad colors with the texture
@@ -634,10 +636,10 @@ public class Wall extends AbstractWayModel {
         // GL11.GL_REPLACE);
         GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11C.glEnable(GL11C.GL_CULL_FACE);
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(getGlobalX(), 0, -getGlobalY());
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(getGlobalX(), 0, -getGlobalY());
 
         // GL11.glColor3f((float) 188 / 255, (float) 169 / 255, (float) 169 /
         // 255);
@@ -659,9 +661,9 @@ public class Wall extends AbstractWayModel {
 
         } finally {
 
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
 
-            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11C.glDisable(GL11C.GL_CULL_FACE);
         }
     }
 

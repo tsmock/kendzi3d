@@ -59,7 +59,7 @@ public class ArrowEditorDrawer implements AutoCloseable {
 
         double distanceRatio = distanceRatio(ae, viewport);
 
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11C.glEnable(GL11.GL_COLOR_MATERIAL);
 
         drawActiveSpot(activeSpot, isHighlightedEditor, ae.getEditorType(), distanceRatio);
 
@@ -69,7 +69,7 @@ public class ArrowEditorDrawer implements AutoCloseable {
             drawMeasure(ae, viewport, distanceRatio);
         }
 
-        GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+        GL11C.glDisable(GL11.GL_COLOR_MATERIAL);
     }
 
     @Override

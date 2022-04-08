@@ -6,6 +6,7 @@ import kendzi.kendzi3d.editor.example.objects.Box;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * Util to draw box.
@@ -46,15 +47,15 @@ public final class BoxDrawUtil {
 
     private static void drawSelectedFill(Vector3dc max, Vector3dc min) {
 
-        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+        GL11C.glPolygonMode(GL11C.GL_FRONT_AND_BACK, GL11C.GL_FILL);
 
-        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11C.glEnable(GL11C.GL_POLYGON_OFFSET_FILL);
         // offset polygons to front
-        GL11.glPolygonOffset(-2.0f, -2.0f);
+        GL11C.glPolygonOffset(-2.0f, -2.0f);
 
         DrawUtil.drawFullBox(max, min);
 
-        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11C.glDisable(GL11C.GL_POLYGON_OFFSET_FILL);
 
     }
 

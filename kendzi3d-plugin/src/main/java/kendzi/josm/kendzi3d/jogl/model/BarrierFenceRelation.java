@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.FaceFactory;
 import kendzi.jogl.model.factory.FaceFactory.FaceType;
@@ -378,15 +379,14 @@ public class BarrierFenceRelation extends AbstractRelationModel {
         // GL11.GL_REPLACE);
         GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(getGlobalX(), 0, -getGlobalY());
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(getGlobalX(), 0, -getGlobalY());
 
         try {
 
             modelRender.render(model);
         } finally {
-
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
         }
     }
 

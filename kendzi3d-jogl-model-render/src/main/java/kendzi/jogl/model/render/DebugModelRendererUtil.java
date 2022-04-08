@@ -6,6 +6,7 @@ import kendzi.jogl.model.geometry.Mesh;
 import kendzi.jogl.model.geometry.Model;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class DebugModelRendererUtil {
 
@@ -22,11 +23,11 @@ public class DebugModelRendererUtil {
             GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
             // Set line width
-            GL11.glLineWidth(2);
+            GL11C.glLineWidth(2);
             // Repeat count, repeat pattern
             GL11.glLineStipple(1, (short) 0xf0f0);
 
-            GL11.glBegin(GL11.GL_LINES);
+            GL11.glBegin(GL11C.GL_LINES);
 
             for (Face face : mesh.getFaces()) {
                 int vertLength = face.vertIndex.length;
@@ -67,7 +68,7 @@ public class DebugModelRendererUtil {
             GL11.glColor3f(0.5f, 1.0f, 0.5f);
 
             // Set line width
-            GL11.glLineWidth(4);
+            GL11C.glLineWidth(4);
             // Repeat count, repeat pattern
             GL11.glLineStipple(1, (short) 0xf0f0);
 
@@ -75,7 +76,7 @@ public class DebugModelRendererUtil {
                 int vertLength = face.vertIndex.length;
 
                 if (face.type == FaceType.TRIANGLE_STRIP.getType()) {
-                    GL11.glBegin(GL11.GL_LINE_STRIP);
+                    GL11.glBegin(GL11C.GL_LINE_STRIP);
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
@@ -84,7 +85,7 @@ public class DebugModelRendererUtil {
                     }
                     GL11.glEnd();
                     if (face.vertIndex.length > 2) {
-                        GL11.glBegin(GL11.GL_LINE_STRIP);
+                        GL11.glBegin(GL11C.GL_LINE_STRIP);
                         for (int i = 0; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
@@ -92,7 +93,7 @@ public class DebugModelRendererUtil {
                                     mesh.getVertices()[vetexIndex].z());
                         }
                         GL11.glEnd();
-                        GL11.glBegin(GL11.GL_LINE_STRIP);
+                        GL11.glBegin(GL11C.GL_LINE_STRIP);
                         for (int i = 1; i < vertLength; i = i + 2) {
 
                             int vetexIndex = face.vertIndex[i];
@@ -104,7 +105,7 @@ public class DebugModelRendererUtil {
                 } else if (face.type == FaceType.TRIANGLES.getType()) {
                     int i = 0;
                     while (i < vertLength) {
-                        GL11.glBegin(GL11.GL_LINE_LOOP);
+                        GL11.glBegin(GL11C.GL_LINE_LOOP);
                         int triangleCount = 0;
                         while (i + triangleCount < vertLength && triangleCount < 3) {
 
@@ -117,7 +118,7 @@ public class DebugModelRendererUtil {
                         GL11.glEnd();
                     }
                 } else if (face.type == FaceType.TRIANGLE_FAN.getType()) {
-                    GL11.glBegin(GL11.GL_LINE_LOOP);
+                    GL11.glBegin(GL11C.GL_LINE_LOOP);
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
@@ -130,7 +131,7 @@ public class DebugModelRendererUtil {
 
                         Vector3dc begin = mesh.getVertices()[face.vertIndex[0]];
 
-                        GL11.glBegin(GL11.GL_LINES);
+                        GL11.glBegin(GL11C.GL_LINES);
                         for (int i = 2; i < vertLength; i++) {
 
                             GL11.glVertex3d(begin.x(), begin.y(), begin.z());
@@ -146,7 +147,7 @@ public class DebugModelRendererUtil {
                     int q = 0;
 
                     while (q < vertLength) {
-                        GL11.glBegin(GL11.GL_LINE_LOOP);
+                        GL11.glBegin(GL11C.GL_LINE_LOOP);
                         int i = 0;
                         while (i < 4 && i + q < vertLength) {
                             // for (int i = 0; i < 4; i++) {
@@ -161,7 +162,7 @@ public class DebugModelRendererUtil {
                         GL11.glEnd();
                     }
                 } else if (face.type == FaceType.QUAD_STRIP.getType()) {
-                    GL11.glBegin(GL11.GL_LINES);
+                    GL11.glBegin(GL11C.GL_LINES);
                     for (int i = 0; i < vertLength; i++) {
 
                         int vetexIndex = face.vertIndex[i];
@@ -170,7 +171,7 @@ public class DebugModelRendererUtil {
                     }
                     GL11.glEnd();
 
-                    GL11.glBegin(GL11.GL_LINE_STRIP);
+                    GL11.glBegin(GL11C.GL_LINE_STRIP);
                     for (int i = 0; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];
@@ -179,7 +180,7 @@ public class DebugModelRendererUtil {
                     }
                     GL11.glEnd();
 
-                    GL11.glBegin(GL11.GL_LINE_STRIP);
+                    GL11.glBegin(GL11C.GL_LINE_STRIP);
                     for (int i = 1; i < vertLength; i = i + 2) {
 
                         int vetexIndex = face.vertIndex[i];

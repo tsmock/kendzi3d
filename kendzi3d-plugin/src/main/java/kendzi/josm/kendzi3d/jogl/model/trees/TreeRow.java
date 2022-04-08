@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -29,6 +30,7 @@ import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.osm.Way;
 
 /**
@@ -223,22 +225,22 @@ public class TreeRow extends AbstractWayModel implements DLODSuport, MultiPointW
         Model model2 = modelLod.get(pLod);
         if (model2 != null) {
 
-            GL11.glEnable(GL11.GL_NORMALIZE);
+            GL11C.glEnable(GL11.GL_NORMALIZE);
 
             for (Vector2dc hook : hookPoints) {
 
-                GL11.glPushMatrix();
+                MatrixMath.glPushMatrix();
 
-                GL11.glTranslated(getGlobalX() + hook.x(), 0, -(getGlobalY() + hook.y()));
+                MatrixMath.glTranslated(getGlobalX() + hook.x(), 0, -(getGlobalY() + hook.y()));
 
-                GL11.glScaled(scale.x(), scale.y(), scale.z());
+                MatrixMath.glScaled(scale.x(), scale.y(), scale.z());
 
                 modelRender.render(model2);
 
-                GL11.glPopMatrix();
+                MatrixMath.glPopMatrix();
             }
 
-            GL11.glDisable(GL11.GL_NORMALIZE);
+            GL11C.glDisable(GL11.GL_NORMALIZE);
         }
     }
 

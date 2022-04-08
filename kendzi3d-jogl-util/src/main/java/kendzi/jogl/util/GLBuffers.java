@@ -41,9 +41,10 @@ package kendzi.jogl.util;
 import kendzi.jogl.glu.GLException;
 import org.lwjgl.opengl.EXTABGR;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL41;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL20C;
+import org.lwjgl.opengl.GL30C;
+import org.lwjgl.opengl.GL41C;
 import org.lwjgl.opengl.NVTextureShader;
 import org.lwjgl.opengles.APPLERGB422;
 import org.lwjgl.opengles.OESTextureHalfFloat;
@@ -57,7 +58,7 @@ import org.lwjgl.opengles.OESTextureHalfFloat;
 public class GLBuffers extends Buffers {
 
     private static final int glGetInteger(final int pname, final int[] tmp) {
-        GL11.glGetIntegerv(pname, tmp);
+        GL11C.glGetIntegerv(pname, tmp);
         return tmp[0];
     }
 
@@ -134,44 +135,44 @@ public class GLBuffers extends Buffers {
 
         switch (type) /* 30 */ {
         case GL11.GL_BITMAP:
-            if (GL11.GL_COLOR_INDEX == format || GL11.GL_STENCIL_INDEX == format) {
+            if (GL11.GL_COLOR_INDEX == format || GL11C.GL_STENCIL_INDEX == format) {
                 compSize = 1;
             } else {
                 throw new GLException("BITMAP type only supported for format COLOR_INDEX and STENCIL_INDEX, not 0x"
                         + Integer.toHexString(format));
             }
             break;
-        case GL11.GL_BYTE:
-        case GL11.GL_UNSIGNED_BYTE:
+        case GL11C.GL_BYTE:
+        case GL11C.GL_UNSIGNED_BYTE:
             compSize = 1;
             break;
-        case GL11.GL_SHORT:
-        case GL11.GL_UNSIGNED_SHORT:
-        case GL41.GL_HALF_FLOAT:
+        case GL11C.GL_SHORT:
+        case GL11C.GL_UNSIGNED_SHORT:
+        case GL41C.GL_HALF_FLOAT:
         case OESTextureHalfFloat.GL_HALF_FLOAT_OES:
             compSize = 2;
             break;
-        case GL41.GL_FIXED:
-        case GL11.GL_INT:
-        case GL11.GL_UNSIGNED_INT:
-        case GL11.GL_FLOAT:
+        case GL41C.GL_FIXED:
+        case GL11C.GL_INT:
+        case GL11C.GL_UNSIGNED_INT:
+        case GL11C.GL_FLOAT:
             compSize = 4;
             break;
-        case GL11.GL_DOUBLE:
+        case GL11C.GL_DOUBLE:
             compSize = 8;
             break;
 
-        case GL41.GL_UNSIGNED_BYTE_3_3_2:
-        case GL41.GL_UNSIGNED_BYTE_2_3_3_REV:
+        case GL41C.GL_UNSIGNED_BYTE_3_3_2:
+        case GL41C.GL_UNSIGNED_BYTE_2_3_3_REV:
             compSize = 1;
             compCount = 1;
             break;
-        case GL41.GL_UNSIGNED_SHORT_5_6_5:
-        case GL41.GL_UNSIGNED_SHORT_5_6_5_REV:
-        case GL41.GL_UNSIGNED_SHORT_4_4_4_4:
-        case GL41.GL_UNSIGNED_SHORT_4_4_4_4_REV:
-        case GL41.GL_UNSIGNED_SHORT_5_5_5_1:
-        case GL41.GL_UNSIGNED_SHORT_1_5_5_5_REV:
+        case GL41C.GL_UNSIGNED_SHORT_5_6_5:
+        case GL41C.GL_UNSIGNED_SHORT_5_6_5_REV:
+        case GL41C.GL_UNSIGNED_SHORT_4_4_4_4:
+        case GL41C.GL_UNSIGNED_SHORT_4_4_4_4_REV:
+        case GL41C.GL_UNSIGNED_SHORT_5_5_5_1:
+        case GL41C.GL_UNSIGNED_SHORT_1_5_5_5_REV:
         case APPLERGB422.GL_UNSIGNED_SHORT_8_8_APPLE:
         case APPLERGB422.GL_UNSIGNED_SHORT_8_8_REV_APPLE:
             compSize = 2;
@@ -182,17 +183,17 @@ public class GLBuffers extends Buffers {
             compSize = 2;
             compCount = 2;
             break;
-        case GL41.GL_UNSIGNED_INT_8_8_8_8:
-        case GL41.GL_UNSIGNED_INT_8_8_8_8_REV:
-        case GL41.GL_UNSIGNED_INT_10_10_10_2:
-        case GL41.GL_UNSIGNED_INT_2_10_10_10_REV:
-        case GL41.GL_UNSIGNED_INT_24_8:
-        case GL41.GL_UNSIGNED_INT_10F_11F_11F_REV:
-        case GL41.GL_UNSIGNED_INT_5_9_9_9_REV:
+        case GL41C.GL_UNSIGNED_INT_8_8_8_8:
+        case GL41C.GL_UNSIGNED_INT_8_8_8_8_REV:
+        case GL41C.GL_UNSIGNED_INT_10_10_10_2:
+        case GL41C.GL_UNSIGNED_INT_2_10_10_10_REV:
+        case GL41C.GL_UNSIGNED_INT_24_8:
+        case GL41C.GL_UNSIGNED_INT_10F_11F_11F_REV:
+        case GL41C.GL_UNSIGNED_INT_5_9_9_9_REV:
             compSize = 4;
             compCount = 1;
             break;
-        case GL41.GL_FLOAT_32_UNSIGNED_INT_24_8_REV:
+        case GL41C.GL_FLOAT_32_UNSIGNED_INT_24_8_REV:
             compSize = 8;
             compCount = 1;
             break;
@@ -245,41 +246,41 @@ public class GLBuffers extends Buffers {
 
         switch (format) /* 26 */ {
         case GL11.GL_COLOR_INDEX:
-        case GL11.GL_STENCIL_INDEX:
-        case GL11.GL_DEPTH_COMPONENT:
-        case GL30.GL_DEPTH_STENCIL:
-        case GL11.GL_RED:
-        case GL30.GL_RED_INTEGER:
-        case GL11.GL_GREEN:
-        case GL30.GL_GREEN_INTEGER:
-        case GL11.GL_BLUE:
-        case GL30.GL_BLUE_INTEGER:
-        case GL11.GL_ALPHA:
+        case GL11C.GL_STENCIL_INDEX:
+        case GL11C.GL_DEPTH_COMPONENT:
+        case GL30C.GL_DEPTH_STENCIL:
+        case GL11C.GL_RED:
+        case GL30C.GL_RED_INTEGER:
+        case GL11C.GL_GREEN:
+        case GL30C.GL_GREEN_INTEGER:
+        case GL11C.GL_BLUE:
+        case GL30C.GL_BLUE_INTEGER:
+        case GL11C.GL_ALPHA:
         case GL11.GL_LUMINANCE:
             compCount = 1;
             break;
         case GL11.GL_LUMINANCE_ALPHA:
-        case GL30.GL_RG:
-        case GL30.GL_RG_INTEGER:
+        case GL30C.GL_RG:
+        case GL30C.GL_RG_INTEGER:
         case NVTextureShader.GL_HILO_NV:
         case NVTextureShader.GL_SIGNED_HILO_NV:
             compCount = 2;
             break;
-        case GL11.GL_RGB:
-        case GL30.GL_RGB_INTEGER:
-        case GL20.GL_BGR:
-        case GL30.GL_BGR_INTEGER:
+        case GL11C.GL_RGB:
+        case GL30C.GL_RGB_INTEGER:
+        case GL20C.GL_BGR:
+        case GL30C.GL_BGR_INTEGER:
             compCount = 3;
             break;
-        case GL11.GL_RGBA:
-        case GL41.GL_RGBA_INTEGER:
-        case GL41.GL_BGRA:
-        case GL41.GL_BGRA_INTEGER:
+        case GL11C.GL_RGBA:
+        case GL41C.GL_RGBA_INTEGER:
+        case GL41C.GL_BGRA:
+        case GL41C.GL_BGRA_INTEGER:
         case EXTABGR.GL_ABGR_EXT:
             compCount = 4;
             break;
         /*
-         * FIXME ?? case GL11.GL_HILO_NV: elements = 2; break;
+         * FIXME ?? case GL11C.GL_HILO_NV: elements = 2; break;
          */
         default:
             throw new GLException("format 0x" + Integer.toHexString(format)

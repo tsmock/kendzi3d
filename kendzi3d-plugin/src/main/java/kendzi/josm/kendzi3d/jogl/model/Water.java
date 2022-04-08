@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.factory.MaterialFactory;
 import kendzi.jogl.model.factory.MeshFactory;
@@ -36,7 +37,6 @@ import org.apache.logging.log4j.Logger;
 import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
-import org.lwjgl.opengl.GL11;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.Relation;
@@ -180,14 +180,14 @@ public class Water extends AbstractModel {
     @Override
     public void draw(Camera camera) {
 
-        GL11.glPushMatrix();
-        GL11.glTranslated(getGlobalX(), 0, -getGlobalY());
+        MatrixMath.glPushMatrix();
+        MatrixMath.glTranslated(getGlobalX(), 0, -getGlobalY());
 
         try {
             modelRender.render(model);
 
         } finally {
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
         }
     }
 

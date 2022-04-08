@@ -11,6 +11,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 /**
  * View port for opengl. Configuration of perspective to convert from 3d space
@@ -180,9 +181,9 @@ public class Viewport implements ViewportPicker {
         // modelview.clear();
         // projectionview.clear();
         // viewportview.clear();
-        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, modelview);
-        GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, projectionview);
-        GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewportview);
+        GL11C.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, modelview);
+        GL11C.glGetFloatv(GL11.GL_PROJECTION_MATRIX, projectionview);
+        GL11C.glGetIntegerv(GL11.GL_VIEWPORT, viewportview);
         GLU.gluProject((float) point.x(), (float) point.y(), (float) point.z(), modelview, projectionview, viewportview,
                 objectPos);
 

@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.glu.GLU;
 import kendzi.jogl.model.geometry.Model;
@@ -44,6 +45,7 @@ import org.apache.logging.log4j.Logger;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.osm.Node;
 
 /**
@@ -214,21 +216,21 @@ public class PointModel extends AbstractPointModel implements DLODSuport {
         //
         Model model2 = modelLod.get(pLod);
         if (model2 != null) {
-            GL11.glPushMatrix();
-            GL11.glTranslated(getGlobalX(), 0, -getGlobalY());
+            MatrixMath.glPushMatrix();
+            MatrixMath.glTranslated(getGlobalX(), 0, -getGlobalY());
             drawDebug(translate, 0);
 
-            GL11.glTranslated(translate.x(), translate.y(), translate.z());
+            MatrixMath.glTranslated(translate.x(), translate.y(), translate.z());
 
-            GL11.glEnable(GL11.GL_NORMALIZE); // XXX
-            GL11.glScaled(scale.x(), scale.y(), scale.z());
-            GL11.glRotated(rotateY, 0d, 1d, 0d);
+            GL11C.glEnable(GL11.GL_NORMALIZE); // XXX
+            MatrixMath.glScaled(scale.x(), scale.y(), scale.z());
+            MatrixMath.glRotated(rotateY, 0d, 1d, 0d);
 
             modelRenderer.render(model2);
 
-            GL11.glDisable(GL11.GL_NORMALIZE);
+            GL11C.glDisable(GL11.GL_NORMALIZE);
 
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
         }
     }
 
@@ -251,27 +253,27 @@ public class PointModel extends AbstractPointModel implements DLODSuport {
                 translate.x(), translate.y(), translate.z());
 
         // bottom Y
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
         GL11.glColor3fv(CompassDrawer.Y_AXIS_COLOR.getRGBComponents(colorArrays));
 
         DrawUtil.drawLine(translate.x(), 0, translate.z(), //
                 translate.x(), translate.y(), translate.z());
 
-        GL11.glTranslated(translate.x(), 0.15, translate.z());
+        MatrixMath.glTranslated(translate.x(), 0.15, translate.z());
 
         DrawUtil.drawDotY(0.3, 9);
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
 
         // back X
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
         GL11.glColor3fv(CompassDrawer.X_AXIS_COLOR.getRGBComponents(colorArrays));
 
         DrawUtil.drawLine(0, translate.y(), translate.z(), //
                 translate.x(), translate.y(), translate.z());
 
-        GL11.glTranslated(0, translate.y(), translate.z());
+        MatrixMath.glTranslated(0, translate.y(), translate.z());
 
         // GL11.glRotated(90, 0d, 0d, 1d);
 
@@ -279,29 +281,29 @@ public class PointModel extends AbstractPointModel implements DLODSuport {
 
         // XXX
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
 
         // right Z
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
         GL11.glColor3fv(CompassDrawer.Z_AXIS_COLOR.getRGBComponents(colorArrays));
 
         DrawUtil.drawLine(translate.x(), translate.y(), 0, //
                 translate.x(), translate.y(), translate.z());
 
-        GL11.glTranslated(translate.x(), translate.y(), 0);
+        MatrixMath.glTranslated(translate.x(), translate.y(), 0);
 
-        GL11.glRotated(90, 1d, 0d, 0d);
+        MatrixMath.glRotated(90, 1d, 0d, 0d);
 
         DrawUtil.drawDotY(0.3, 9);
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
 
         // model center
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
         GL11.glColor3fv(color.darker().getRGBComponents(colorArrays));
 
-        GL11.glTranslated(translate.x(), translate.y(), translate.z());
+        MatrixMath.glTranslated(translate.x(), translate.y(), translate.z());
 
         // GL11.glRotated(90, 0d, 1d, 0d);
 
@@ -309,12 +311,11 @@ public class PointModel extends AbstractPointModel implements DLODSuport {
         // drawYArrow
         double scale = 2;
 
-        GL11.glRotated(direction, 0d, 1d, 0d);
+        MatrixMath.glRotated(direction, 0d, 1d, 0d);
 
         DrawUtil.drawFlatArrowY(scale * 1.2, scale * 0.3, scale * 0.11, scale * 0.3);
 
-        GL11.glPopMatrix();
-
+        MatrixMath.glPopMatrix();
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class FaceFactory {
 
@@ -52,20 +53,20 @@ public class FaceFactory {
         /**
          * Single triangles.
          */
-        TRIANGLES(GL11.GL_TRIANGLES),
+        TRIANGLES(GL11C.GL_TRIANGLES),
         /**
          * Triangle fan. One comon point.
          */
-        TRIANGLE_FAN(GL11.GL_TRIANGLE_FAN),
+        TRIANGLE_FAN(GL11C.GL_TRIANGLE_FAN),
         /**
          * Strip of triangles.
          */
-        TRIANGLE_STRIP(GL11.GL_TRIANGLE_STRIP),
+        TRIANGLE_STRIP(GL11C.GL_TRIANGLE_STRIP),
 
         /**
          * QUADS.
          */
-        QUADS(GL11.GL_QUADS),
+        QUADS(GL11C.GL_QUADS),
 
         /**
          * QUAD_STRIP.

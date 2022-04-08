@@ -15,6 +15,7 @@ import java.util.List;
 
 import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
+import kendzi.jogl.glu.GLU;
 import kendzi.jogl.model.factory.BoundsFactory;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -60,6 +61,8 @@ import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.data.osm.PrimitiveId;
 import org.openstreetmap.josm.data.osm.Way;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Representing building model.
@@ -67,6 +70,7 @@ import org.openstreetmap.josm.data.osm.Way;
  * @author Tomasz Kedziora (Kendzi)
  */
 public class Building extends AbstractModel implements RebuildableWorldObject, WorldObjectDebugDrawable, OsmPrimitiveWorldObject {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Building.class);
     /**
      * Renderer of model.
      */
@@ -432,7 +436,10 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
                 GL15C.glBufferData(type, data, GL15C.GL_STATIC_DRAW);
             })) {
                 lineBo.bindBuffer();
+                // Clear the error
+                GLU.logError(str -> LOGGER.error("Clearing error\n" + str));
                 GL11C.glDrawElements(GL11C.GL_LINE, lineBo.count(), GL11C.GL_DOUBLE, 0);
+                GLU.logError(LOGGER::error);
                 lineBo.unbindBuffer();
             }
         }
@@ -512,17 +519,17 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
             return;
         }
 
-        GL11.glPushMatrix();
+        MatrixMath.glPushMatrix();
 
         Vector3dc position = getPosition();
 
-        GL11.glTranslated(position.x(), position.y(), position.z());
+        MatrixMath.glTranslated(position.x(), position.y(), position.z());
 
         if (debug != null && debug.getEdges() != null) {
             drawEdges(debug.getEdges());
         }
 
-        GL11.glPopMatrix();
+        MatrixMath.glPopMatrix();
 
         SelectionDrawUtil.drawSphereSelection(this);
     }

@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 
 import kendzi.jogl.GLAutoDrawable;
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.animator.AnimatorBase;
 import kendzi.jogl.animator.FPSAnimator;
 import kendzi.jogl.drawer.AxisLabels;
@@ -21,7 +22,8 @@ import kendzi.jogl.glu.GLU;
 import kendzi.jogl.util.GLEventListener;
 import kendzi.jogl.util.texture.awt.TextRenderer;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL11C;
+import org.lwjgl.opengl.GL13C;
 
 /**
  */
@@ -117,14 +119,14 @@ public class StaticBaseJoglFrame implements GLEventListener {
         // gl.setSwapInterval(1);
 
         // Setup the drawing area and shading mode
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11C.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        GL11.glClearDepth(1.0);
-        GL11.glClearColor(0.17f, 0.65f, 0.92f, 0.0f); // sky blue color
+        GL11C.glClearDepth(1.0);
+        GL11C.glClearColor(0.17f, 0.65f, 0.92f, 0.0f); // sky blue color
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11C.glEnable(GL11C.GL_DEPTH_TEST);
         int[] depth_bits = new int[1];
-        GL11.glGetIntegerv(GL11.GL_DEPTH_BITS, depth_bits);
+        GL11C.glGetIntegerv(GL11.GL_DEPTH_BITS, depth_bits);
 
         GL11.glShadeModel(GL11.GL_SMOOTH); // try setting this to
         // GL_FLAT and see what
@@ -136,7 +138,7 @@ public class StaticBaseJoglFrame implements GLEventListener {
 
         float[] grayCol = { 0.8f, 0.8f, 0.8f, 1.0f };
 
-        GL11.glMaterialfv(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE, grayCol);
+        GL11.glMaterialfv(GL11C.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE, grayCol);
 
     }
 
@@ -147,31 +149,31 @@ public class StaticBaseJoglFrame implements GLEventListener {
             height = 1;
         }
 
-        GL11.glViewport(0, 0, width, height); // size of drawing area
+        GL11C.glViewport(0, 0, width, height); // size of drawing area
 
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
+        MatrixMath.glMatrixMode(GL11.GL_PROJECTION);
+        MatrixMath.glLoadIdentity();
         GLU.gluPerspective(45.0f, (float) width / (float) height, 1.0f, 1500.0f); // 5
     }
 
     @Override
     public void display() {
-        // System.err.println("INIT GL IS: " + GL11.getClass().getName());
+        // System.err.println("INIT GL IS: " + GL11C.getClass().getName());
 
         // _direction_
         GL11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, this.lightPos);
 
         // clear color and depth buffers
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        // GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
+        GL11C.glClear(GL11C.GL_COLOR_BUFFER_BIT | GL11C.GL_DEPTH_BUFFER_BIT);
+        // GL11C.glClear(GL11C.GL_COLOR_BUFFER_BIT | GL11C.GL_DEPTH_BUFFER_BIT);
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glLoadIdentity();
 
         setCamera();
 
-        GL11.glEnable(GL13.GL_MULTISAMPLE);
+        GL11C.glEnable(GL13C.GL_MULTISAMPLE);
 
-        // String versionStr = GL11.glGetString( GL11.GL_VERSION );
+        // String versionStr = GL11C.glGetString( GL11C.GL_VERSION );
         // log.info( "GL version:"+versionStr );
 
         floor.draw();
@@ -181,7 +183,7 @@ public class StaticBaseJoglFrame implements GLEventListener {
         // drawTextInfo(gl, this.simpleMoveAnimator.info());
 
         // Flush all drawing operations to the graphics card
-        GL11.glFlush();
+        GL11C.glFlush();
     }
 
     /**
@@ -201,10 +203,10 @@ public class StaticBaseJoglFrame implements GLEventListener {
      * Set up a point source with ambient, diffuse, and specular color. components
      */
     private void addLight() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
         // enable a single light source
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11C.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHT0);
 
         float gray = 0.5f;
         float[] grayLight = { gray, gray, gray, 1.0f }; // weak gray ambient

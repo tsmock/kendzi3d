@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
 import kendzi.jogl.model.geometry.Model;
 import kendzi.jogl.model.geometry.material.AmbientDiffuseComponent;
@@ -44,6 +45,7 @@ import org.joml.Vector2dc;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.Way;
 
@@ -369,22 +371,22 @@ public class WayNodeModel extends AbstractWayModel implements DLODSuport {
     public void draw(Camera camera, LOD pLod) {
         Model model2 = modelLod.get(pLod);
         if (model2 != null) {
-            GL11.glPushMatrix();
+            MatrixMath.glPushMatrix();
             // GL11.glTranslated(this.getGlobalX(), 0, -this.getGlobalY());
-            GL11.glEnable(GL11.GL_NORMALIZE); // XXX
+            GL11C.glEnable(GL11.GL_NORMALIZE); // XXX
 
             for (ModelPoint modelPoint : modelPoints) {
 
-                GL11.glPushMatrix();
+                MatrixMath.glPushMatrix();
 
-                GL11.glTranslated(modelPoint.getPoint().x(), modelPoint.getPoint().y(), modelPoint.getPoint().z());
+                MatrixMath.glTranslated(modelPoint.getPoint().x(), modelPoint.getPoint().y(), modelPoint.getPoint().z());
                 // double cos = modelPoint.getOffsetVector().x();
                 // double sin = -modelPoint.getOffsetVector().y();
 
                 double cos = -modelPoint.getOffsetVector().y();
                 double sin = -modelPoint.getOffsetVector().x();
 
-                GL11.glMultMatrixd( //
+                MatrixMath.glMultMatrixd( //
                         new double[] { cos, 0, sin, 0, //
                                 0, 1, 0, 0, //
                                 -sin, 0, cos, 0, //
@@ -392,18 +394,18 @@ public class WayNodeModel extends AbstractWayModel implements DLODSuport {
 
                 PointModel.drawDebug(translate, modelPoint.getDirection());
 
-                GL11.glTranslated(translate.x(), translate.y(), translate.z());
+                MatrixMath.glTranslated(translate.x(), translate.y(), translate.z());
 
-                GL11.glScaled(scale.x(), scale.y(), scale.z());
-                GL11.glRotated(modelPoint.getDirection(), 0d, 1d, 0d);
+                MatrixMath.glScaled(scale.x(), scale.y(), scale.z());
+                MatrixMath.glRotated(modelPoint.getDirection(), 0d, 1d, 0d);
 
                 modelRenderer.render(model2);
-                GL11.glPopMatrix();
+                MatrixMath.glPopMatrix();
             }
 
-            GL11.glDisable(GL11.GL_NORMALIZE);
+            GL11C.glDisable(GL11.GL_NORMALIZE);
 
-            GL11.glPopMatrix();
+            MatrixMath.glPopMatrix();
         }
     }
 

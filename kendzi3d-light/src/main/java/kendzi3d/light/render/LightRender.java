@@ -3,8 +3,10 @@ package kendzi3d.light.render;
 import javax.inject.Inject;
 
 import kendzi.jogl.Gl2Draw;
+import kendzi.jogl.MatrixMath;
 import kendzi3d.light.service.LightRenderService;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class LightRender implements Gl2Draw {
 
@@ -40,11 +42,11 @@ public class LightRender implements Gl2Draw {
 
     public void init() {
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
 
         // enable a single light source
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_LIGHT0);
+        GL11C.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11.GL_LIGHT0);
     }
 
 }

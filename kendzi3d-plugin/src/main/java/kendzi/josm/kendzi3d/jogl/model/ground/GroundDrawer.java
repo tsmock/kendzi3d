@@ -15,6 +15,7 @@ import kendzi.jogl.texture.library.TextureLibraryStorageService;
 import kendzi.jogl.util.texture.Texture;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class GroundDrawer {
 
@@ -34,8 +35,8 @@ public class GroundDrawer {
     }
 
     public void draw(Vector3dc cameraPosition) {
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11C.glEnable(GL11.GL_LIGHTING);
+        GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
         TextureData td = this.textureLibraryStorageService.getTextureDefault("ground.unknown");
         Texture texture = this.textureCacheService.getTexture(td.getTex0());
@@ -50,7 +51,7 @@ public class GroundDrawer {
 
         Vector3dc c = cameraPosition;
 
-        // GL11.glTexCoord2d(tc.left(), tc.bottom());
+        // GL11C.glTexCoord2d(tc.left(), tc.bottom());
         double xRight = c.x() + groundSize;
         double xLeft = c.x() - groundSize;
 
@@ -72,7 +73,7 @@ public class GroundDrawer {
 
         texture.disable();
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11C.glDisable(GL11C.GL_TEXTURE_2D);
     }
 
 }

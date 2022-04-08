@@ -1,8 +1,10 @@
 package kendzi.jogl.camera;
 
+import kendzi.jogl.MatrixMath;
 import kendzi.jogl.glu.GLU;
 import org.joml.Vector3dc;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL11C;
 
 public class ViewportUtil {
 
@@ -15,8 +17,8 @@ public class ViewportUtil {
     public static void lookAt(Viewport viewport) {
 
         // Activate and reset model view matrix.
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
+        MatrixMath.glMatrixMode(GL11.GL_MODELVIEW);
+        MatrixMath.glLoadIdentity();
 
         Vector3dc position = viewport.getPosition();
         Vector3dc lookAt = viewport.getLookAt();
@@ -36,13 +38,13 @@ public class ViewportUtil {
     public static void reshapePerspective(Viewport viewport) {
 
         // size of drawing area
-        GL11.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+        GL11C.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
 
         // activate projection matrix
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        MatrixMath.glMatrixMode(GL11.GL_PROJECTION);
 
         // load identity as projection
-        GL11.glLoadIdentity();
+        MatrixMath.glLoadIdentity();
 
         // setup projection perspective
         GLU.gluPerspective((float) viewport.getFovy(), (float) viewport.viewportAspectRatio(), (float) viewport.getZNear(),

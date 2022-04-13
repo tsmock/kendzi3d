@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 public class VertexArrayObject implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(VertexArrayObject.class);
     private final int id;
+    private final boolean glBindVertexArray;
+    private final boolean ARB_vertex_array_object;
     private BufferObject indices = null;
     private BufferObject vertex = null;
     private BufferObject normal = null;
@@ -26,9 +28,11 @@ public class VertexArrayObject implements AutoCloseable {
     private BufferObject texture = null;
 
     VertexArrayObject() {
-        if (GL.getCapabilities().glBindVertexArray != MemoryUtil.NULL) {
+        this.glBindVertexArray = GL.getCapabilities().glBindVertexArray != MemoryUtil.NULL;
+        this.ARB_vertex_array_object = GL.getCapabilities().GL_ARB_vertex_array_object;
+        if (this.glBindVertexArray) {
             this.id = GL30C.glGenVertexArrays();
-        } else if (GL.getCapabilities().GL_ARB_vertex_array_object) {
+        } else if (this.ARB_vertex_array_object) {
             this.id = ARBVertexArrayObject.glGenVertexArrays();
         } else {
             this.id = 0;
@@ -38,17 +42,19 @@ public class VertexArrayObject implements AutoCloseable {
     }
 
     public void bind() {
-        if (GL.getCapabilities().glBindVertexArray != MemoryUtil.NULL) {
-            GL30C.glBindVertexArray(this.id);
-        } else if (GL.getCapabilities().GL_ARB_vertex_array_object) {
-            ARBVertexArrayObject.glBindVertexArray(this.id);
+        if (this.id > 0) {
+            if (this.glBindVertexArray) {
+                GL30C.glBindVertexArray(this.id);
+            } else if (this.ARB_vertex_array_object) {
+                ARBVertexArrayObject.glBindVertexArray(this.id);
+            }
         }
     }
 
     public void unbind() {
-        if (GL.getCapabilities().glBindVertexArray != MemoryUtil.NULL) {
+        if (this.glBindVertexArray) {
             GL30C.glBindVertexArray(0);
-        } else if (GL.getCapabilities().GL_ARB_vertex_array_object) {
+        } else if (this.ARB_vertex_array_object) {
             ARBVertexArrayObject.glBindVertexArray(0);
         }
     }

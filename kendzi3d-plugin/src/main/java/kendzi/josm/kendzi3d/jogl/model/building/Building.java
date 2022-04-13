@@ -15,7 +15,6 @@ import java.util.List;
 
 import kendzi.jogl.MatrixMath;
 import kendzi.jogl.camera.Camera;
-import kendzi.jogl.glu.GLU;
 import kendzi.jogl.model.factory.BoundsFactory;
 import kendzi.jogl.model.geometry.Bounds;
 import kendzi.jogl.model.geometry.Model;
@@ -431,15 +430,13 @@ public class Building extends AbstractModel implements RebuildableWorldObject, W
 
             Vector3dc begin = line.getBegin();
             Vector3dc end = line.getEnd();
-            try (BufferObject lineBo = new BufferObject(GL15C.GL_ARRAY_BUFFER, 1, type -> {
+            try (BufferObject lineBo = new BufferObject(GL15C.GL_ARRAY_BUFFER, GL11C.GL_DOUBLE, 1, type -> {
                 double[] data = new double[] { begin.x(), begin.y(), begin.z(), end.x(), end.y(), end.z() };
                 GL15C.glBufferData(type, data, GL15C.GL_STATIC_DRAW);
             })) {
                 lineBo.bindBuffer();
                 // Clear the error
-                GLU.logError(str -> LOGGER.error("Clearing error\n" + str));
                 GL11C.glDrawElements(GL11C.GL_LINE, lineBo.count(), GL11C.GL_DOUBLE, 0);
-                GLU.logError(LOGGER::error);
                 lineBo.unbindBuffer();
             }
         }

@@ -66,31 +66,32 @@ public class VertexArrayObject implements AutoCloseable {
     public void draw(int mode) {
         if (this.id > 0) {
             this.bind();
-            GL11C.glDrawElements(mode, this.indices.count(), GL11C.GL_INT, 0);
+            GL11C.glDrawArrays(mode, 0, this.indices.count());
+            // GL11C.glDrawElements(mode, this.indices.count(), GL11C.GL_UNSIGNED_INT, 0);
             this.unbind();
         } else {
             GL11.glEnableClientState(GL11.GL_INDEX_ARRAY);
             this.indices.bindBuffer();
-            GL11.glIndexPointer(this.indices.getType(), 0, 0);
+            GL11.glIndexPointer(this.indices.getDataType(), 0, 0);
 
             GL11.glEnableClientState(GL11C.GL_VERTEX_ARRAY);
             this.vertex.bindBuffer();
-            GL11.glVertexPointer(3, this.vertex.getType(), 0, 0);
+            GL11.glVertexPointer(3, this.vertex.getDataType(), 0, 0);
 
             if (this.normal != null) {
                 GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
                 this.normal.bindBuffer();
-                GL11.glNormalPointer(this.normal.getType(), 0, 0);
+                GL11.glNormalPointer(this.normal.getDataType(), 0, 0);
             }
             if (this.color != null) {
                 GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
                 this.color.bindBuffer();
-                GL11.glColorPointer(this.color.count(), this.color.getType(), 0, 0);
+                GL11.glColorPointer(this.color.count(), this.color.getDataType(), 0, 0);
             }
             if (this.texture != null) {
                 GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
                 this.texture.bindBuffer();
-                GL11.glTexCoordPointer(this.texture.count(), this.texture.getType(), 0, 0);
+                GL11.glTexCoordPointer(this.texture.count(), this.texture.getDataType(), 0, 0);
             }
             GL11.glDrawArrays(mode, 0, this.vertex.count());
             this.vertex.unbindBuffer();
@@ -160,49 +161,42 @@ public class VertexArrayObject implements AutoCloseable {
 
     public static VertexArrayObject createVertexArrayObject(final int[] indices, final double[] vertex, final double[] normal,
             final double[] color, final double[] texture) {
-        final VertexArrayObject vao = new VertexArrayObject();
-        vao.bind();
-        final BufferObject indexBuffer = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, indices.length,
-                type -> GL15C.glBufferData(type, indices, GL15C.GL_STATIC_DRAW));
-        indexBuffer.bindBuffer();
-        vao.indices = indexBuffer;
-        if (vertex != null) {
-            vao.vertex = createBufferObject(vertex);
-        }
-        if (normal != null) {
-            vao.normal = createBufferObject(normal);
-        }
-        if (color != null) {
-            vao.color = createBufferObject(color);
-        }
-        if (texture != null) {
-            vao.texture = createBufferObject(texture);
-        }
-
-        vao.enableAll();
-        vao.unbind();
-        return vao;
+        return getVertexArrayObject(indices, createBufferObject(vertex), createBufferObject(normal), createBufferObject(color),
+                createBufferObject(texture));
     }
 
     public static VertexArrayObject createVertexArrayObject(final int[] indices, final int[] vertex, final int[] normal,
             final int[] color, final int[] texture) {
+        return getVertexArrayObject(indices, createBufferObject(vertex), createBufferObject(normal), createBufferObject(color),
+                createBufferObject(texture));
+    }
+
+    private static VertexArrayObject getVertexArrayObject(int[] indices, BufferObject vertex, BufferObject normal,
+            BufferObject color, BufferObject texture) {
+        // Indices must all be positive. Ideally, this would only be checked if we were
+        // in debug mode
+        assert Arrays.stream(indices).allMatch(i -> i >= 0);
         final VertexArrayObject vao = new VertexArrayObject();
         vao.bind();
-        final BufferObject indexBuffer = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, indices.length,
+        final BufferObject indexBuffer = new BufferObject(GL15C.GL_ELEMENT_ARRAY_BUFFER, GL11C.GL_INT, indices.length,
                 type -> GL15C.glBufferData(type, indices, GL15C.GL_STATIC_DRAW));
         indexBuffer.bindBuffer();
         vao.indices = indexBuffer;
         if (vertex != null) {
-            vao.vertex = createBufferObject(vertex);
+            vao.vertex = vertex;
+            vertex.bindBuffer();
         }
         if (normal != null) {
-            vao.normal = createBufferObject(normal);
+            vao.normal = normal;
+            normal.bindBuffer();
         }
         if (color != null) {
-            vao.color = createBufferObject(color);
+            vao.color = color;
+            color.bindBuffer();
         }
         if (texture != null) {
-            vao.texture = createBufferObject(texture);
+            vao.texture = texture;
+            texture.bindBuffer();
         }
 
         vao.enableAll();
@@ -211,16 +205,18 @@ public class VertexArrayObject implements AutoCloseable {
     }
 
     private static BufferObject createBufferObject(final int[] data) {
-        final BufferObject textureBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, data.length,
+        if (data == null) {
+            return null;
+        }
+        return new BufferObject(GL15C.GL_ARRAY_BUFFER, GL11C.GL_INT, data.length,
                 type -> GL15C.glBufferData(type, data, GL15C.GL_STATIC_DRAW));
-        textureBuffer.bindBuffer();
-        return textureBuffer;
     }
 
     private static BufferObject createBufferObject(final double[] data) {
-        final BufferObject textureBuffer = new BufferObject(GL15C.GL_ARRAY_BUFFER, data.length,
+        if (data == null) {
+            return null;
+        }
+        return new BufferObject(GL15C.GL_ARRAY_BUFFER, GL11C.GL_DOUBLE, data.length,
                 type -> GL15C.glBufferData(type, data, GL15C.GL_STATIC_DRAW));
-        textureBuffer.bindBuffer();
-        return textureBuffer;
     }
 }

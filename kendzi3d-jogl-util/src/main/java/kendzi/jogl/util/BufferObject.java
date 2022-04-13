@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL15C;
 
 public class BufferObject implements AutoCloseable {
     private final int type;
+    private final int dataType;
     private final int id;
     private final int count;
 
@@ -16,10 +17,11 @@ public class BufferObject implements AutoCloseable {
      *            The type (see {@link GL15C#glBindBuffer(int, int)} for valid
      *            types)
      */
-    public BufferObject(int type, int count, IntConsumer generateBufferObject) {
+    public BufferObject(int type, int dataType, int count, IntConsumer generateBufferObject) {
         this.type = type;
         this.id = GL15C.glGenBuffers();
         this.count = count;
+        this.dataType = dataType;
         this.bindBuffer();
         generateBufferObject.accept(type);
         this.unbindBuffer();
@@ -44,6 +46,10 @@ public class BufferObject implements AutoCloseable {
 
     public int getType() {
         return this.type;
+    }
+
+    public int getDataType() {
+        return this.dataType;
     }
 
     public int count() {

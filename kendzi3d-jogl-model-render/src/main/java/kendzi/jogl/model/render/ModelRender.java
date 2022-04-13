@@ -154,6 +154,8 @@ public class ModelRender {
 
             GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, model.useTwoSided || drawTwoSided ? GL11C.GL_TRUE : GL11C.GL_FALSE);
 
+            // this.shaderProgram.use();
+
             for (mi = 0; mi < model.mesh.length; mi++) {
                 Mesh mesh = model.mesh[mi];
                 Material material = model.getMaterial(mesh.getMaterialID());
@@ -223,6 +225,7 @@ public class ModelRender {
             throw new RuntimeException("error model: " + model.getSource() + " mesh: " + mi + " ("
                     + (model.mesh[mi] != null ? model.mesh[mi].getName() : "") + ")" + " face: " + fi, e);
         } finally {
+            // this.shaderProgram.stopUsing();
 
             GL11.glLightModeli(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11C.GL_FALSE);
 
@@ -281,10 +284,6 @@ public class ModelRender {
             GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
             GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
-            if (colored) {
-                this.shaderProgram.use();
-            }
-
             Texture texture = getTexture(texturesComponent.get(curLayer));
             // enableTransparentText(gl);
             bindTexture(texture);
@@ -328,19 +327,14 @@ public class ModelRender {
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE0_ALPHA, GL13.GL_PREVIOUS);
                 GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL13.GL_SOURCE1_ALPHA, GL11C.GL_TEXTURE);
             }
-            if (colored) {
-                this.shaderProgram.stopUsing();
-            }
         }
 
         if (colored && 0 < curLayer && curLayer < MAX_TEXTURES_LAYERS) {
             GL13C.glActiveTexture(GL_TEXTURE[curLayer]);
             GL11C.glEnable(GL11C.GL_TEXTURE_2D);
 
-            this.shaderProgram.use();
             Texture texture = getTexture(texturesComponent.get(curLayer - 1));
             bindTexture(texture);
-            this.shaderProgram.stopUsing();
             curLayer++;
         }
     }

@@ -64,14 +64,17 @@ public class ShaderUtils {
 
     /**
      * Get a shader program
-     * 
+     *
+     * @param attributeLocations
+     *            The attribute locations
      * @param shaderTypeMap
      *            A map of shaders to shader types (see
      *            {@link GL20C#glCreateShader(int)})
      * @return The new shader program
      */
-    public static ShaderProgram getShaderProgram(final Map<String, Integer> shaderTypeMap) {
-        return new ShaderProgram(shaderTypeMap.entrySet().stream().map(entry -> getShader(entry.getKey(), entry.getValue()))
-                .toArray(Shader[]::new));
+    public static ShaderProgram getShaderProgram(final Map<String, Integer> attributeLocations,
+            final Map<String, Integer> shaderTypeMap) {
+        return new ShaderProgram(attributeLocations, shaderTypeMap.entrySet().stream()
+                .map(entry -> getShader(entry.getKey(), entry.getValue())).toArray(Shader[]::new));
     }
 }

@@ -97,7 +97,8 @@ public class VertexArrayObject implements AutoCloseable {
             if (this.texture != null) {
                 GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
                 this.texture.bindBuffer();
-                GL11.glTexCoordPointer(this.texture.count(), this.texture.getDataType(), 0, 0);
+                // FIXME: Make the coordinate size dynamic (must be 2,3,4)
+                GL11.glTexCoordPointer(2, this.texture.getDataType(), 0, 0);
             }
             GL11.glDrawArrays(mode, 0, this.vertex.count());
             this.vertex.unbindBuffer();
@@ -191,18 +192,22 @@ public class VertexArrayObject implements AutoCloseable {
         if (vertex != null) {
             vao.vertex = vertex;
             vertex.bindBuffer();
+            GL20C.glVertexAttribPointer(0, 3, vao.vertex.getDataType(), false, 0, 0);
         }
         if (normal != null) {
             vao.normal = normal;
             normal.bindBuffer();
+            GL20C.glVertexAttribPointer(1, 3, vao.normal.getDataType(), false, 0, 0);
         }
         if (color != null) {
             vao.color = color;
             color.bindBuffer();
+            GL20C.glVertexAttribPointer(2, 3, vao.color.getDataType(), false, 0, 0);
         }
         if (texture != null) {
             vao.texture = texture;
             texture.bindBuffer();
+            GL20C.glVertexAttribPointer(3, 3, vao.texture.getDataType(), false, 0, 0);
         }
 
         vao.enableAll();

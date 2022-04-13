@@ -49,12 +49,43 @@ public class Mesh implements AutoCloseable {
         }
         List<VertexArrayObject> newBufferObject = new ArrayList<>(this.face.length);
         for (Face currentFace : this.face) {
+            final double[] tVertices = createArray(currentFace.vertIndex, this.vertices);
+            final double[] tNormals = createArray(currentFace.normalIndex, this.normals);
+            final double[] tTextures = currentFace.coordIndexLayers.length >= 1
+                    ? createArray(currentFace.coordIndexLayers[0], this.texCoords)
+                    : null;
+            // FIXME add multiple textures
+            if (currentFace.coordIndexLayers.length > 1) {
+                throw new UnsupportedOperationException("We don't yet support more than one texture");
+            }
             VertexArrayObject vao = VertexArrayObject.createVertexArrayObject(
-                    IntStream.of(0, currentFace.vertIndex.length / 3).toArray(), currentFace.vertIndex, currentFace.normalIndex,
-                    null, null);
+                    IntStream.of(0, currentFace.vertIndex.length).toArray(), tVertices, tNormals, null, tTextures);
             newBufferObject.add(vao);
         }
         this.bufferObject = newBufferObject;
+    }
+
+    private static double[] createArray(int[] indices, TextCoord[] texCoords) {
+        final double[] returnArray = new double[2 * indices.length];
+        for (int i = 0; i < indices.length; i++) {
+            final TextCoord toFill = texCoords[indices[i]];
+            int index = 2 * i;
+            returnArray[index++] = toFill.u;
+            returnArray[index] = toFill.v;
+        }
+        return returnArray;
+    }
+
+    private static double[] createArray(int[] indices, Vector3dc[] toFill) {
+        final double[] returnArray = new double[3 * indices.length];
+        for (int i = 0; i < indices.length; i++) {
+            final Vector3dc v = toFill[indices[i]];
+            int index = 3 * i;
+            returnArray[index++] = v.x();
+            returnArray[index++] = v.y();
+            returnArray[index] = v.z();
+        }
+        return returnArray;
     }
 
     public TextCoord[] getTexCoords() {

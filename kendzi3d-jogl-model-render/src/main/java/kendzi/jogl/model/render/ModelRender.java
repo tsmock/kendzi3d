@@ -84,8 +84,10 @@ public class ModelRender {
         programMap.put("opengl/shaders/vertex/ModelRenderColorized.glsl", GL20C.GL_VERTEX_SHADER);
         programMap.put("opengl/shaders/fragment/ModelRenderColorized.glsl", GL20C.GL_FRAGMENT_SHADER);
         final Map<String, Integer> attributeMap = new HashMap<>(2);
-        attributeMap.put("position", 0);
-        attributeMap.put("inColour", 1);
+        attributeMap.put("inPosition", 0);
+        attributeMap.put("inNormal", 1);
+        attributeMap.put("inColour", 2);
+        attributeMap.put("inTexture", 3);
         this.shaderProgram = ShaderUtils.getShaderProgram(attributeMap, programMap);
     }
 

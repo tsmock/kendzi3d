@@ -38,7 +38,7 @@ public class RectangleTypeRoofUtil {
         List<Vector2dc> points = polygon.getPoints();
 
         double maxD = -Double.MAX_VALUE;
-        Vector2d maxV = null;
+        Vector2dc maxV = null;
 
         Vector2dc end = points.get(points.size() - 1);
         for (Vector2dc begin : points) {
@@ -68,7 +68,10 @@ public class RectangleTypeRoofUtil {
         maxV = Vector2dUtil.orthogonalLeft(maxV);
 
         if (maxV.dot(frontDirection) < 0) {
-            maxV.negate();
+            if (!(maxV instanceof Vector2d)) {
+                maxV = new Vector2d(maxV);
+            }
+            ((Vector2d) maxV).negate();
             return maxV;
         }
 

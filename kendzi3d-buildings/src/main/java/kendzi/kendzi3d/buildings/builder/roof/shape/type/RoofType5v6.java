@@ -275,7 +275,7 @@ public class RoofType5v6 extends AbstractRoofTypeBuilder {
 
     private static Vector2dc[] calsSoftNormals(Vector2dc[] crossSection) {
 
-        Vector2d[] ret = new Vector2d[crossSection.length];
+        Vector2dc[] ret = new Vector2d[crossSection.length];
 
         Vector2dc[] normals = new Vector2d[crossSection.length - 1];
         for (int i = 0; i < crossSection.length - 1; i++) {
@@ -296,8 +296,13 @@ public class RoofType5v6 extends AbstractRoofTypeBuilder {
 
         ret[crossSection.length - 1] = Vector2dUtil.orthogonalLeft(normals[normals.length - 1]);
 
-        for (Vector2d element : ret) {
-            element.negate();
+        for (int i = 0; i < ret.length; i++) {
+            Vector2dc element = ret[i];
+            if (!(element instanceof Vector2d)) {
+                element = new Vector2d(element);
+                ret[i] = element;
+            }
+            ((Vector2d) element).negate();
         }
 
         return ret;

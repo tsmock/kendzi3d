@@ -103,7 +103,7 @@ public class RoofLinesBuildier {
             Vector3dc pp2 = new Vector3d(p2.x(), h2, -p2.y());
             Vector3dc pp3 = new Vector3d(p3.x(), h3, -p3.y());
 
-            Vector3dc n = Vector3dUtil.fromTo(pp1, pp2).cross(Vector3dUtil.fromTo(pp1, pp3)).normalize();
+            Vector3dc n = new Vector3d(pp2).sub(pp1).cross(new Vector3d(pp3).sub(pp1)).normalize();
 
             Vector3dc rl = up.cross(n, new Vector3d());
             // XXX

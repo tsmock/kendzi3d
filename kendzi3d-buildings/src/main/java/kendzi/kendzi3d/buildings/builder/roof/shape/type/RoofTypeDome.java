@@ -198,7 +198,7 @@ public class RoofTypeDome extends AbstractRoofTypeBuilder {
 
                 Vector3dc p = mesh[i][j];
 
-                Vector3dc n = Vector3dUtil.fromTo(center3d, p).normalize();
+                Vector3dc n = new Vector3d(p).sub(center3d).normalize();
 
                 int in = meshFactory.addNormal(n);
                 softNormalsIndexs[i][j] = in;

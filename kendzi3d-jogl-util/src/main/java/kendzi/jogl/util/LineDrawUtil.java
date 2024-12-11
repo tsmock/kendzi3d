@@ -24,7 +24,7 @@ public class LineDrawUtil {
 
         double distance = begin.distance(end);
 
-        Vector3dc segmentVector = Vector3dUtil.fromTo(begin, end).normalize().mul(segmentLength);
+        Vector3dc segmentVector = new Vector3d(end).sub(begin).normalize().mul(segmentLength);
 
         boolean fill = true;
         double drawedDistance = 0;

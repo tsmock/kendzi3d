@@ -62,7 +62,7 @@ public class MeasureDrawer {
         drawLine(bottomArrowhead, topArrowhead);
 
         // vertical line arrows
-        Vector3d arrowVector = Vector3dUtil.fromTo(bottomArrowhead, topArrowhead).normalize().mul(arrowHeight);
+        Vector3d arrowVector = new Vector3d(topArrowhead).sub(bottomArrowhead).normalize().mul(arrowHeight);
 
         Vector3dc bottomArrowheadRight = new Vector3d(bottomArrowhead).add(arrowVector).sub(arrowheadBaseWidthVector);
 
